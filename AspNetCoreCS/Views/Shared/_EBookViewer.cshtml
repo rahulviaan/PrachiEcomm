@@ -1,0 +1,591 @@
+﻿@model LibraryVM
+@{
+    Layout = null;
+    var book = ViewBag.Book; // READEDGE_30012020A001 SiddharthSingh Applying condition if available then link appear
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/3.4.1_jquery.min.js"></script>
+    <script src="~/js/4.3.1_bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/css/viewer.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+    
+    <title>e-Book Viewer</title>
+</head>
+
+<body id="fullscreen">
+    <div id="BookMarkId" class="sidenav">
+        <div class="col-md-12 bookMarkHead">
+            <h4>Book Mark<a href="javascript:void(0)" class="closebtn" onclick="closeNav_1()">&times;</a></h4>
+        </div>
+        <div id="BookMarkList"></div>
+
+    </div>
+    <div id="NotesId" class="sidenav">
+        <div class="col-md-12 bookMarkHead">
+            <h4>Notes<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></h4>
+        </div>
+        <div id="NotesList"></div>
+    </div>
+    <div class="container">
+        <div class="panel-body">
+            <div class="row">
+                @Html.Hidden("CurrentIndex", Model.startindex)
+                <div class="col-lg-12 col-md-12 col-sm-12 topNav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-2">
+                                <button type="button" class="btn btn-header mrg-right" id="idback" onclick="history.go(-1)" title="Back">
+                                    <i class="ft-corner-up-left" aria-hidden="true"></i>&nbsp;Back
+                                </button>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-7">
+                                <h3 class="text-center">
+                                    <span id="title" style="font-size:x-large;"></span>
+                                    @*<span class="pull-right">
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav_1()"><i class="fa fa-book" title="BookMark" aria-hidden="true"></i></a>
+                                            <a href="#" class="btn btn-secondary btn-lg" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>
+                                        </span>*@
+                                </h3>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 text-right">
+                                @*<a href="#" class="btn btn-secondary" onclick="openNav()"><i class="fa fa-file-text-o" title="Notes" aria-hidden="true"></i></a>*@
+                                <div class="btn-group">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="ft-book" aria-hidden="true"></i> <span class="ft-chevron-down"></span></button>
+                                    <ul class="dropdown-menu">
+
+                                        <!-- READEDGE_30012020A001 Start SiddharthSingh Applying condition if available then link appear -->
+                                        @if (@book.IsEbook)
+                                        {
+                                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=0 })">Course Book</a></li>
+                                            <li><a href="@Url.Action("ViewContent", "home", new { BookId = @Model.BookId, BookName = @Model.BookName, type = 5 })">Course Book Pdf</a></li>
+
+                                        }@if (@book.IsLessonPlan)
+                                        {
+                                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=1 })">Lesson Plans</a></li>
+                                        }@if (@book.IsWorkbook)
+                                        {
+                                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=2 })">Worksheets</a></li>
+                                        }@if (@book.IsSolutions)
+                                        {
+                                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=4})">Solutions</a></li>
+                                        }@if (@book.IsMultiMedia)
+                                        {
+                                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=3 })">Video Tutorials</a></li>
+                                        }
+                                        <!-- READEDGE_30012020A001 End -->
+
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="ft-bookmark" aria-hidden="true"></i> <span class="ft-chevron-down"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="JavaScript:Void(0)" onclick="BookMarkValidity()">Add BookMark</a></li>
+                                        <li><a href="JavaScript:Void(0)" onclick="GetBookMarks()">View BookMarks</a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="ft-clipboard" aria-hidden="true"></i> <span class="ft-chevron-down"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="JavaScript:Void(0)" data-toggle="modal" data-target="#DetailsModal">Add Notes</a></li>
+                                        <li><a href="JavaScript:Void(0)" onclick="GetNotes()">View Notes</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <div class="panel-body" id="resultDiv" style="margin-top:5%">
+                        @*@Html.Raw(ViewBag.Ebook)*@
+                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(ViewBag.Ebook));
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 footNav">
+                    <div class="container" style="width:100%; margin:0 auto;text-align: center;">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <span style="font-size:16px;">Page :</span> @Html.DropDownList("PageList", ViewBag.PageList as SelectList)
+                            <button type="button" class="btn button btn-sm" id="previous" title="Previous">
+                                <i class="ft-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="next" title="Next">
+                                <i class="ft-chevron-right" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-In" title="Zoom-In">
+                                <i class="ft-plus" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="Zoom-Out" title="Zoom-Out">
+                                <i class="ft-minus" aria-hidden="true"></i>
+                            </button>
+                            <span style="display: inline-flex;height: 13px;"><input type="range" id="idslider" class="custom-range" onchange="ZoomInOut(this.value)" min="25" max="200" value="100" style="display: inline-flex;width:200px;" /> <span id="idspanslider">100%</span></span>
+                            <button type="button" class="btn button btn-sm" title="Full Screen" onclick="openFullscreen();">
+                                <i class="ft-maximize-2" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" title="Fit Width" onclick="resizeWin()">
+                                <i class="ft-minimize" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="playAudio" title="Play">
+                                <i class="ft-play" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn button btn-sm" id="stopAudio" title="Stop">
+                                <i class="ft-square" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <form enctype="multipart/form-data" asp-controller="home" asp-action="Configuration" method="post" class="mt-3">
+        <div class="modal fade bs-example-modal-center" aria-hidden="true" aria-labelledby="myCenterModalLabel" tabindex="-1" id="DetailsModal" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Notes  <button type="button" class="close" data-dismiss="modal">
+                            x
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <div class="col-md-12 form-group pd-top">
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <input type="text" class="form-control" name="Description" id="Description" placeholder="Enter description here..." />
+                                <input type="hidden" value="@ViewBag.UserId" id="UserId" name="UserId" />
+                                <input type="hidden" value="@ViewBag.Id" id="ContentId" name="ContentId" />
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="custom-file">
+                                    <input asp-for="NoteFile" class="form-control custom-file-input">
+                                    <label class="custom-file-label" style="font-size: 16px;">Choose File...</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group text-left" style="font-size:14px;">
+                                <input type="checkbox" id="AddToPage" /> Add to current page.
+                            </div>
+                    </div>
+                    <div style="display:none" class="pageLoader" id="loader"><img src="/Content/images/loader.gif" style="padding-top:25%;width: 100px;height: auto;" /></div>
+                    <div class="modal-footer">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-header" id="SaveNote" data-dismiss="modal">Save Note</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </form>
+
+</body>
+</html>
+
+
+<script src="~/js/toastr.min.js"></script>
+<link href="~/css/toastr.css" rel="stylesheet" />
+<script>
+        var PgNumber = 1;
+        function openNav() {
+            document.getElementById("NotesId").style.width = "250px";
+            document.getElementById("BookMarkId").style.width = "0";
+        }
+
+        function closeNav() {
+            document.getElementById("NotesId").style.width = "0";
+            document.getElementById("BookMarkId").style.width = "250px";
+        }
+
+        function closeNav_1() {
+            document.getElementById("BookMarkId").style.width = "0";
+        }
+        $(document).ready(function () {
+            $("#title").text('@ViewBag.Title');
+            IsAudio();
+            //$("#previous").attr("disabled", true);
+            EnableDisableNextPrev(1)
+        })
+
+
+        $("#PageList").change(function () {
+
+            var id = parseInt($(this).val());
+            $("#CurrentIndex").val(id);
+            LoadPage(id);
+            EnableDisableNextPrev(id);
+            pageNumber = id;
+        })
+
+
+
+
+        $('#ContentBtn').click(function (e) {
+            $('#Content').fadeIn('slow');
+
+        });
+
+    $("#playAudio").click(function () {
+            var audioPlayer = document.getElementById('audioPlayer1');
+            //audioPlayer.play();
+            $("#play1").click();
+
+        })
+
+        $("#stopAudio").click(function () {
+            var audioPlayer = document.getElementById('audioPlayer1');
+            audioPlayer.pause();
+        })
+
+        $("#previous").click(function () {
+            var index = parseInt($("#CurrentIndex").val());
+
+            if (index !=@Model.startindex) {
+            index = index - 1
+        }
+        LoadPage(index);
+        updateDropdownList(index);
+        EnableDisableNextPrev(index);
+        $("#CurrentIndex").val(index);
+        PgNumber = index;
+        })
+
+        $("#next").click(function () {
+            var index = parseInt($("#CurrentIndex").val());
+
+            if (index !=@Model.endindex) {
+            index = index + 1
+        }
+        LoadPage(index);
+        updateDropdownList(index);
+        EnableDisableNextPrev(index);
+        $("#CurrentIndex").val(index);
+        PgNumber = index;
+        })
+
+
+        $("#Zoom-In").click(function () {
+            var val = parseInt($("#idslider").val());
+            val = val + 1;
+            $("#idslider").val(val)
+            ZoomInOut(val)
+        })
+
+        $("#Zoom-Out").click(function () {
+            var val = parseInt($("#idslider").val());
+            val = val - 1;
+            $("#idslider").val(val)
+            ZoomInOut(val)
+        })
+        function ZoomInOut(id) {
+            //var pagesize = $("resultDiv").css("zoom",id/100);
+            $("#resultDiv").css("zoom", id / 100);
+            //$("#resultDiv").addClass("zoom");
+            $("#idspanslider").text(id + "%");
+        }
+
+        function IsAudio() {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("IsAudio", "Home")',
+                success: function (data) {
+
+                    if (data) {
+                        $("#playAudio").removeAttr("disabled");
+                        $("#stopAudio").removeAttr("disabled");
+                    }
+                    else {
+
+                        $("#playAudio").attr("disabled", "disabled");
+                        $("#stopAudio").attr("disabled", "disabled");
+                    }
+                }
+            });
+        }
+
+        function GetHtml(val) {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("OpenLink", "Library")',
+                data: { PageReference: val },
+                success: function (data) {
+                    $("#resultDiv").html(data);
+                }
+            });
+            event.preventDefault();
+        }
+
+        function updateDropdownList(pageid) {
+            $("#PageList").val(pageid)
+        }
+
+        function EnableDisableNextPrev(id) {
+            //var currentindex = parse.parseInt($("#CurrentIndex").val());
+            if (@Model.startindex == id) {
+                $("#previous").attr("disabled", true);
+            }
+                    else {
+                $("#previous").attr("disabled", false);
+            }
+
+
+            if (@Model.endindex == id) {
+                $("#next").attr("disabled", true);
+            }
+                    else {
+                $("#next").attr("disabled", false);
+            }
+        }
+
+        function LoadPage(id) {
+            $.ajax({
+                url: '@Url.Action("Loadpage", "Home")',
+                type: 'Get',
+                data: { PageId: id },
+                success: function (data) {
+                    IsAudio();
+                    $("#resultDiv").html(data);
+                },
+            });
+        }
+
+
+        function AddBookMarks() {
+            var UserId = '@ViewBag.UserId';
+            var ContentId = '@ViewBag.Id';
+            var PageNumber = $("#PageList").val();
+            $.ajax(
+                {
+                    url: '@Url.Action("AddBookMarks", "Home")',
+                    type: 'post',
+                    data: { userid: UserId, ContentId: ContentId, PageNumber: PageNumber, ContentType:1 },
+                    success: function (data) {
+                        GetBookMarks();
+                        toastr.success('Bookmark added successfully....');
+                    }
+                });
+        }
+
+
+
+        function RemoveBookMark(BookMarkId) {
+            $.ajax(
+                {
+                    url: '@Url.Action("RemveBookMark","Home")',
+                    type: 'Get',
+                    data: { BookMarkId: BookMarkId },
+                    success: function (data) {
+                        toastr.success('Bookmark removed successfully....');
+                        GetBookMarks();
+                    }
+                });
+
+        }
+
+
+        function BookMarkValidity() {
+            var UserId = '@ViewBag.UserId';
+            var ContentId = '@ViewBag.Id';
+            var PageNumber = $("#PageList").val();
+            $.ajax(
+                {
+                    url: '@Url.Action("BookMarkValidity", "Home")',
+                    type: 'post',
+                    data: { userid: UserId, ContentId: ContentId, PageNumber: PageNumber },
+                    success: function (data) {
+                        if (data) {
+                            toastr.warning('This page is already book marked....');
+                        }
+                        else {
+                            AddBookMarks();
+                        }
+
+                    }
+                });
+
+        }
+
+        $('#SaveNote').click(function (e) {
+
+            debugger;
+            var notes = $("#Description").val();
+ 
+            if (notes != "") {
+                // Stop the button from submitting the form:
+                e.preventDefault();
+                //$("#loader").css("display", "block");
+                // Serialize the entire form:
+                var data = new FormData(this.form);
+                if ($("#AddToPage").is(":checked")) {
+                    data.set("PageNumber", PgNumber);
+                }
+                else {
+                    data.set("PageNumber", 0);
+                }
+                data.set("ContentType", 1);
+                $.ajax(
+                    {
+                        url: '@Url.Action("AddNotes", "Home")',
+                        type: 'post',
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            $("#loader").css("display", "none");
+                            toastr.success('Note Added Successfully....');
+                            $('#DetailsModal').modal('hide');
+                            GetNotes();
+                            clearControls();
+                        }
+                    });
+
+            }
+            else {
+                toastr.error('Description is requried....');
+                e.preventDefault();
+            }
+        });
+
+        function OpenPage(pageNumber) {
+            //documentViewer.setCurrentPageNumber(pageNumber);
+            //LoadPage(pageNumber)
+            LoadPage(pageNumber);
+            if (pageNumber !=@Model.startindex) {
+                pageNumber = pageNumber - 1
+            }
+
+            if (pageNumber !=@Model.endindex) {
+                pageNumber = pageNumber + 1
+            }
+
+            updateDropdownList(pageNumber);
+            EnableDisableNextPrev(pageNumber);
+            $("#CurrentIndex").val(pageNumber);
+            PgNumber = pageNumber;
+
+        }
+
+    function GetBookMarks() {
+            document.getElementById("BookMarkId").style.width = "250px";
+            document.getElementById("NotesId").style.width = "0";
+
+            var UserId = '@ViewBag.UserId';
+            var ContentId = '@ViewBag.Id';
+            $.ajax(
+                {
+                    url: '@Url.Action("GetBookMarksByUserAndContentId", "Home")',
+                    type: 'Get',
+                    data: { userid: UserId, ContentId: ContentId, ContentType: 1 },
+                    success: function (data) {
+                        console.log(data);
+                        $("#BookMarkList").empty();
+                        $.each(data, function (k, v) {
+
+                            var result = '<div class="col-md-12 bookStiky"><div class="date_time"><i class="fa fa-calendar" aria-hidden="true"></i> ' + v.createdDate + '</div><div class="pageCount"><a href="#" onclick="OpenPage(' + v.pageNumber + ')"><b> ' + v.pageNumber + '</b></a></div><div class="dltbtn"><a href="javascript:void(0)" onclick="RemoveBookMark(' + v.id + ')"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div>';
+                            $("#BookMarkList").append(result);
+
+                        });
+
+                    }
+                });
+        }
+        function GetNotes() {
+            document.getElementById("BookMarkId").style.width = "0px";
+            document.getElementById("NotesId").style.width = "250px";
+            var UserId = '@ViewBag.UserId';
+            var ContentId = '@ViewBag.Id';
+            $.ajax(
+                {
+                    url: '@Url.Action("GetNotesByUserAndContentId", "Home")',
+                    type: 'Get',
+                    data: { userid: UserId, ContentId: ContentId, ContentType: 1 },
+                    success: function (data) {
+                        console.log(data);
+                        $("#NotesList").empty();
+                        $.each(data, function (k, v) {
+                            var display = "none";
+                            if (v.FileName != null) {
+                                display = "block";
+                            }
+                            var result = '<div class="col-md-12 bookStiky"><div class="date_time"><i class="fa fa-calendar" aria-hidden="true"></i> : ' + v.createdDate + '</div><div class="pageCount"><a href="#" onclick="OpenPage(' + v.PageNumber + ')"><b> ' + v.pageNumber + '</b></div><a>' + v.description + '</a><p><b><a style="display:' + display + '" href="' + v.filePath + '" target="_blank"><b>View File : ' + v.fileName + '</a></b></p><div class="dltbtn"><a href="javascript:void(0)" onclick="RemoveNotes(' + v.Id + ')"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></div>';
+                            $("#NotesList").append(result);
+
+                        });
+
+                    }
+                });
+        }
+
+        function RemoveNotes(NoteID) {
+            $.ajax(
+                {
+                    url: '@Url.Action("RemoveNotes", "Home")',
+                    type: 'Get',
+                    data: { NoteId: NoteID },
+                    success: function (data) {
+                        toastr.warning('Note removed successfully....');
+                        GetNotes();
+                    }
+                });
+
+        }
+        function clearControls() {
+            $("#AddToPage").attr("checked", false);
+            $("#Description").val("")
+            $("#file").val("")
+        }
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(document).click(function () {
+            $('.book-1').hide(); //hide the button
+
+        });
+        $(".book-0").click(function () {
+            $(".book-1").show();
+        });
+        $(document).click(function () {
+            $('.notes-1').hide(); //hide the button
+
+        });
+        $(".notes-0").click(function () {
+            $(".notes-1").show();
+        });
+    });
+
+
+    function resizeWin() {
+        $("#resultDiv").css("zoom", 0);
+        $("#idspanslider").text("100%");
+
+        var val = parseInt($("#idslider").val());
+        val = 100;
+        $("#idslider").val(val);
+    }
+
+    var elem = document.getElementById("fullscreen");
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+
+        
+    }
+</script>
+

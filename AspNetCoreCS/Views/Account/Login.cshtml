@@ -1,0 +1,84 @@
+﻿@{Layout = null; }
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Readedge</title>
+    <link href="~/css/vendors.min.css" rel="stylesheet" />
+    <link href="~/css/chartist.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-extended.min.css" rel="stylesheet" />
+    <link href="~/css/components.min.css" rel="stylesheet" />
+    <link href="~/css/vertical-menu.min.css" rel="stylesheet" />
+    <link href="~/css/chat-application.css" rel="stylesheet" />
+    <link href="~/css/dashboard-analytics.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+    <link href="~/css/login-register.min.css" rel="stylesheet" />
+</head>
+<!-- END: Head-->
+<!-- BEGIN: Body-->
+<body class="vertical-layout vertical-menu 1-column  bg-full-screen-image blank-page blank-page" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="1-column">
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-body">
+                <section class="flexbox-container">
+                    <div class="col-md-12" style="top:8%;position: absolute;z-index: -1;left: 4%;">
+                        <img src="~/images/login-icon.png" style="width:200px;" />
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-lg-4 col-md-6 col-12" style="float:right;">
+                            <div class="cardDiv border-grey border-lighten-3 px-1 py-1 m-0">
+                                <!--<div class="card-header border-0">
+                    <div class="text-center mb-1">
+                        <img src="images/login-logo.png" />
+                    </div>
+
+                </div>-->
+                                <div class="card-content">
+
+                                    <div class="panel-body" style="padding:4.5rem 2rem 2.2em;">
+                                        <form class="form-horizontal" asp-controller="Account" asp-action="Login" method="post">
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control round" name="UserName" placeholder="Enter Your Email">
+                                                <div class="form-control-position">
+                                                    <i class="ft-mail"></i>
+                                                </div>
+                                            </fieldset>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="password" class="form-control round" name="Password" placeholder="Enter Your Password">
+                                                <div class="form-control-position">
+                                                    <i class="ft-lock"></i>
+                                                </div>
+                                            </fieldset>
+                                            <div class="form-group row">
+
+
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <button type="submit" class="btn btn-default loginBtn col-md-12">Login</button>
+                                                <b style="color:white">@ViewBag.Message</b>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+
+                                </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-right" style="color:#232020;bottom:11px;position: absolute; font-weight:bold;">Version 1.0.0.0 | Powered by <a href="#">Prachi India Pvt.</a></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

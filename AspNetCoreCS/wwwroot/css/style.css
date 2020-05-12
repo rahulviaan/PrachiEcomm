@@ -1,0 +1,507 @@
+﻿body {
+    font-family: futuralightbt !important;
+    font-size: 16px;
+    letter-spacing: 1px;
+    font-weight:600;
+}
+.btn-2 {
+    background: #00366c;
+    color: #ffffff;
+    box-shadow: 0 5px #bfc8cc;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+.orderNow-btn {
+    box-shadow: 0 4px #ab3c3c;
+    top: 2px;
+    color: #ffffff;
+    background: #cb4e4e;
+    border-radius: 40px;
+}
+    .orderNow-btn:hover {
+        background: #00366c;
+        color: #ffffff;
+        box-shadow: 0 5px #bfc8cc;
+        -webkit-transition: none;
+        -moz-transition: none;
+        transition: none;
+    }
+    .btn-2g {
+        border-radius: 40px;
+    }
+.btn-library {
+    width: auto !important;
+    padding: 4% 10% !important;
+}
+    .btn-2g:hover {
+        box-shadow: 0 4px #ab3c3c;
+        top: 2px;
+        color: #ffffff;
+        background: #cb4e4e;
+    }
+
+    .btn-2g:active {
+        box-shadow: 0 0 #ab3c3c;
+        top: 6px;
+    }
+a[disabled], a[disabled]:hover, a[disabled]:active {
+    border-color: #eaeaea;
+    background: #fafafa;
+    cursor: default;
+    position: static;
+    color: #999;
+    /* Usually, !important should be avoided but here it's really needed :) */
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+.btn {
+    cursor: pointer;
+    padding: 10px;
+    display: inline-block;
+    margin: 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+    .btn::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+.project-f {
+    width: 100%;
+    float: left;
+    height: auto;
+}
+
+.card-body {
+    width: 100%;
+    float: left;
+    height: auto;
+}
+
+.subjectDetails {
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 30px;
+    box-shadow: 0 0 10px #f0e9ff;
+    border-radius: 8px;
+}
+
+    .subjectDetails p {
+        width: 100%;
+        float: left;
+        height: auto;
+    }
+
+.subjectBtn {
+    width: 200px;
+    height: 40px;
+    border: solid 1px #00366c;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 30px;
+    background-color: #00366c;
+    margin: 0;
+    color: #fff;
+}
+
+hr {
+    width: 100%;
+    float: left;
+}
+
+.BooksDiv {
+    text-align: center;
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 10px 30px 20px 30px;
+    box-shadow: 0 0 10px #f0e9ff;
+    border-radius: 8px;
+    margin-bottom: 5%;
+    border: solid 1px #e4d6d6;
+}
+
+    .BooksDiv p {
+        margin: 5px auto;
+        margin: 10px 0 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .BooksDiv h3 {
+        margin: 10px 0 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        text-align: center
+    }
+
+.submitBtn {
+    width: 100%;
+    height: 40px;
+    border: solid 1px #f4f2f2;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 30px;
+    background-color: #fdfdfd;
+}
+
+.submitBtn {
+    color: #34495e;
+    text-decoration: none;
+    transition: all .5s ease;
+    z-index: 2;
+    position: relative;
+}
+
+.eff-4 {
+    width: 100%;
+    height: 50px;
+    left: -100%;
+    background: #00366c;
+    position: absolute;
+    transition: all .5s ease;
+    z-index: -1;
+    top: 0;
+}
+
+.submitBtn:hover .eff-4 {
+    left: 0;
+    top: 0;
+    color: #fff;
+}
+
+.submitBtn:hover {
+    color: #fff;
+}
+
+.card-header {
+    border-bottom: solid 1px #ececec;
+    padding: 15px;
+}
+
+.subjectDiv {
+    width: 100%;
+    height: auto;
+    float: left;
+    /*padding: 5% 20%;*/
+    text-align: center;
+    background-image: url("../images/subject-bg.png");
+    background-size: 100% 100%;
+}
+
+    .subjectDiv img {
+        width: 256px;
+        max-width: 100%;
+        transition: transform .9s;
+        -ms-transform: scale(1); /* IE 9 */
+        -webkit-transform: scale(1); /* Safari 3-8 */
+        transform: scale(1);
+    }
+
+        .subjectDiv img:hover {
+            -ms-transform: scale(1.1); /* IE 9 */
+            -webkit-transform: scale(1.1); /* Safari 3-8 */
+            transform: scale(1.1);
+        }
+
+.img-responsive {
+    width: 100%;
+}
+.btn-header {
+    background-color: #e7e8ed;
+    border-color: #c0c6dd;
+    color: #5a5d60 !important;
+    box-shadow: 3px 3px 1px #f1f1f1;
+    border-radius:5px;
+}
+.nav-fill .nav-item {
+    flex: inherit !important;
+    padding: 10px 25px;
+}
+
+.BooksDiv img {
+    object-fit: cover;
+    box-shadow: 0px 0px 15px 0 rgba(120, 122, 234, 0.3);
+    display: block;
+    transition: all .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform: scale(0.9);
+    width: 180px;
+    text-align: center;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.BooksDiv:hover img {
+    box-shadow: 0px 0px 5px 0 rgba(120, 122, 234, 0.3);
+    transform: scale(1);
+}
+
+.subDiv {
+    border: solid 1px #c5d3db;
+    box-shadow: 0 0px 5px 1px rgba(196, 190, 255,0.5);
+}
+
+.progress {
+    margin-top: 6px;
+    width: 80%;
+    float: left;
+}
+.processingDiv {
+    padding: 10px 20px;
+    width: 100%;
+    float: left;
+    height: auto;
+    margin: 14px 0;
+}
+.progresConfiguration, .progresBundle {
+    width: 20%;
+    float: left;
+    height: auto;
+    text-align: center;
+    position: relative;
+    top: 0px;
+    font-weight: 600;
+    padding-left: 7px;
+}
+.card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
+    font-size: 1.8rem!important;
+}
+.card-header {
+    background-color: #fff!important;
+}
+.mr-auto, .mx-auto {
+    margin-right: 0 !important;
+    width: 100%;
+    text-align: center;
+}
+.btnCreate {
+    background-color: #00366c;
+    width: auto;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+partial {
+    width: 100%;
+    height: auto;
+    float: left;
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.svg') format('svg');
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.eot') format('embedded-opentype');
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.otf') format('opentype');
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.woff') format('woff');
+}
+@font-face {
+    font-family: 'futuralightbt';
+    src: url('../fonts/futuralightbt.woff2') format('woff2');
+}
+
+
+li {
+    list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.nbs-flexisel-container {
+    position: relative;
+    max-width: 100%;
+}
+
+.nbs-flexisel-ul {
+    position: relative;
+    width: 99999px;
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    text-align: center;
+    overflow: auto;
+}
+
+.nbs-flexisel-inner {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 100%;
+   
+}
+
+.nbs-flexisel-item {
+    float: left;
+    cursor: pointer;
+    position: relative;
+    line-height: 0px;
+}
+
+    .nbs-flexisel-item img {
+        max-width: 100%;
+        cursor: pointer;
+        position: relative;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+/*** Navigation ***/
+
+.nbs-flexisel-nav-left,
+.nbs-flexisel-nav-right {
+    padding: 7px 13px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 4;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(38, 4, 79, 0.5);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+}
+
+.nbs-flexisel-nav-left {
+    left: 10px;
+}
+
+    .nbs-flexisel-nav-left:before {
+        content: "\e928";
+        font-family: feather !important;
+    }
+
+    .nbs-flexisel-nav-left.disabled {
+        opacity: 0.4;
+    }
+
+.nbs-flexisel-nav-right {
+    right: 5px;
+}
+
+    .nbs-flexisel-nav-right:before {
+        content: "\e929";
+            font-family: feather !important;
+    }
+
+    .nbs-flexisel-nav-right.disabled {
+        opacity: 0.4;
+    }
+.loader {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('../images/loader.gif') 50% 50% no-repeat rgb(249,249,249);
+    background-size: 50px;
+    background-color: #ffffff;
+}
+.icon-shadow {
+    line-height: 40px;
+    position: relative;
+    width: 40px;
+    max-width: 40px;
+    height: 38px;
+    text-align: center;
+    border-radius: 12%;
+    font-size: 1.5em;
+}
+    .icon-shadow.icon-shadow-primary {
+        -webkit-box-shadow: 0 1px 3px #b5b4e7;
+        box-shadow: 0 1px 3px #b5b4e7;
+    }
+.icon-shadow, .toast {
+    background-color: #fff;
+}
+.icon-shadow{
+    vertical-align: middle;
+}
+.form-control {
+    font-family: arial;
+}
+
+
+
+
+.select-css {
+    font-size: 16px;
+    font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: .5em 2em .5em .8em;
+    box-sizing: border-box;
+    margin: 0;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    background-image: url('../images/arrow-down.png');
+    background-repeat: no-repeat, repeat;
+    background-position: right .7em top 57%, 0 0;
+    background-size: .65em auto, 100%;
+    border: 1px solid #eae6e6;
+}

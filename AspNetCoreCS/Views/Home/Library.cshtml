@@ -1,0 +1,68 @@
+﻿@model IEnumerable<LibraryVM>
+<div class="content-header row">
+    <div class="content-header-left col-md-12 col-12 mb-4">
+        <div class="breadcrumbs-top">
+            <div class="breadcrumb-wrapper mr-1">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item">
+                        <div class="fonticon-wrap icon-shadow icon-shadow-primary">
+                            <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
+                        </div>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Library
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 form-group">
+        <input type="text" placeholder="Search by Title" id="Parameter" class="form-control" style="font-size: 1em;height:50px;border-radius: 6px;box-shadow: 0 0 10px #f0e9ff;border: solid 1px #e7e0f6;">
+        <span style="position:absolute;right: 27px;top: 8px;font-size: 1.5em;"><i class="ft-search"></i></span>
+    </div>
+</div>
+<div class="row" id="resultDiv">
+    @{
+        Html.RenderPartial("_Library", Model);
+    }
+</div>
+<script src="~/js/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    var globalTimeout = null;
+    $("#Parameter").keyup(function () {
+        if (globalTimeout != null) {
+            clearTimeout(globalTimeout);
+        }
+        globalTimeout = setTimeout(function () {
+            globalTimeout = null;
+
+            GetContent();
+
+        }, 1000);
+    });
+     function GetContent() {
+        var valid = true;
+         $("#resultDiv").html("<div style='width:100%!important; text-align:center!important;'><img src='~/images/loader.gif' style='height:50px;width:50px;'/></div>");
+        var SearchParameter = $("#Parameter").val();
+        // if (SearchParameter == "") {
+        //        alert("please enter valid parameter!")
+        //        valid = false;
+        //    }
+        //if (valid) {
+            $.ajax({
+                url: '@Url.Action("SearchLibrary", "Home")',
+                type: 'Get',
+                data: { parameter: SearchParameter},
+                success: function (data) {
+                    $("#resultDiv").html(data);
+                },
+            });
+        //}
+    }
+</script>
+

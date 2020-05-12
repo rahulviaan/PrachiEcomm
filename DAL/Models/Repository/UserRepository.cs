@@ -1,0 +1,119 @@
+﻿using DAL.Models.Entities;
+using DAL.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL.Models.Repository
+{
+     public class UserRepository : IUserRepository
+     {
+        private readonly ReadEdgeCoreContext context;
+        public UserRepository(ReadEdgeCoreContext readEdgeCoreContext)
+        {
+            context = readEdgeCoreContext;
+        }
+        public async Task Add(UserMaster userMaster)
+        {
+            await context.AddAsync(userMaster);
+            await context.SaveChangesAsync();
+            //return userMaster;
+        }
+
+        public async Task AddUserLogin(UserLogin userLogin)
+        {
+            await context.AddAsync(userLogin);
+            await context.SaveChangesAsync();
+            //return userLogin;
+        }
+        public async Task Delete(int Id)
+        {
+            UserMaster userMaster = context.UserMaster.Find(Id);
+            if (userMaster != null)
+            {
+                context.UserMaster.Remove(userMaster);
+                await context.SaveChangesAsync();
+            }
+            //return userMaster;
+        }
+
+        public async Task<IEnumerable<UserMaster>> GetAllUser()
+        {
+            return await context.UserMaster.ToListAsync();
+        }
+
+        public async Task GetUserLogin(int Id)
+        {
+            await context.UserLogin.FindAsync(Id);
+        }
+
+        public async Task GetUser(int Id)
+        {
+           await context.UserMaster.FindAsync(Id);
+        }
+
+        public async Task Update(UserMaster userMaster)
+        {
+            var employee = context.UserMaster.Attach(userMaster);
+            employee.State = EntityState.Modified;
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<UserLogin> GetUserLogin(string UserName, string Password)
+        {
+            try
+            {
+                var res = await context.UserLogin.FirstOrDefaultAsync(x => x.UserName == UserName && x.Password == Password);
+                return res;
+            }
+            catch (Exception ex)
+            { return null; }
+
+            //return await context.UserLogin.FirstOrDefaultAsync(x=>x.UserName==UserName && x.Password==Password);
+        }
+
+    }
+
+    public class PrachiUserLoginRepository :IPrachiUserRepository
+    {
+        private readonly UserContext context;
+        public PrachiUserLoginRepository(UserContext userContext)
+        {
+            context = userContext;
+        }
+
+        public async Task<AspNetUsers> GetUserLogin(string UserName, string Password)
+        {
+            try
+            {
+                //Task<AspNetUsers> user =  context.AspNetUsers.FirstOrDefaultAsync(x => x.UserName == UserName && x.PasswordHash == Password);
+                AspNetUsers user =  context.AspNetUsers.Select(x=> new AspNetUsers{Id=x.Id,Email=x.Email,UserName=x.UserName,PasswordHash=x.PasswordHash}).FirstOrDefault(x => x.UserName == UserName && x.PasswordHash == Password);
+                var res =   user;
+               // var res = await context.AspNetUsers.FirstOrDefaultAsync(x => x.UserName == UserName && x.PasswordHash == Password);
+                return res;
+            }
+            catch (Exception ex)
+            { return null; }
+
+            //return await context.UserLogin.FirstOrDefaultAsync(x=>x.UserName==UserName && x.Password==Password);
+        }
+
+        public AspNetRoles GetUserRole(string userid)
+        {
+            try
+            {
+                var aspNetRoles = context.AspNetRoles.FromSql("GETUserRole @p0", userid)
+                       .FirstOrDefault();
+                return aspNetRoles;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+    }
+}

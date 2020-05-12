@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @{
+        string Path = ViewBag.file;
+    }
+    <title>Multimedia Player</title>
+    <link href="~/css/3.4.0.bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/1.10.2.jquery.min.js"></script>
+    <script src="~/js/3.1.1.bootstrap.min.js"></script>
+    <link href="~/Content/Bootstrap/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .card-box {
+            box-shadow: 0px 0px 10px rgba(103,151,255,.11) !important;
+            -webkit-box-shadow: 0px 0px 10px rgba(103,151,255,.11) !important;
+            background-color: #fff;
+            padding: 0;
+            margin-bottom: 24px;
+            border-radius: .25rem;
+        }
+
+        .btn-secondary {
+            background-color: #59575c !important;
+            border-color: #59575c !important;
+            color: #ffffff;
+        }
+
+            .btn-secondary:hover {
+                color: #f9f4f4;
+            }
+
+        audio {
+            width: 100%;
+        }
+
+        .panel-default > .panel-heading {
+            width: 100%;
+            float: left;
+            height: auto;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="panel-body">
+            <div class="panel panel-default card-box">
+                <div class="panel-heading">
+                    @*<div class="col-xs-12 col-sm-6 col-md-2"> <button type="button" class="btn btn-secondary" onclick="history.go(-1)"><i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</button></div>*@
+                    <div class="col-xs-12 col-sm-6 col-md-10"><h3 style="margin:0">@ViewBag.Title</h3></div>
+                </div>
+                <div class="panel-body" oncontextmenu="return false;">
+                    <div class="col-lg-12" oncontextmenu="return false;">
+
+                        <div class="panel-body">
+                            <video controls="controls" controlsList="nodownload" class="afterglow" id="myvideo" style="width:100%; float:left;height:auto;" autoplay="autoplay">
+                                @*<source type="video/mp4" src="/Books/Prachi%20-%20Live%20with%20Nature%20-%202/201641154324769.mp4" />*@
+                                <source type="video/mp4" src="@ViewBag.file" />
+                            </video>
+
+                           
+                        </div>
+               
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="~/js/jquery.1.7.jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.fade bs-example-modal-center').show('modal');
+    })
+
+</script>

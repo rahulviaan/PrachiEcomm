@@ -1,0 +1,55 @@
+﻿@model LibraryVM
+@{
+    var book = ViewBag.Book;
+}
+<div class="content-header row">
+    <div class="content-header-left col-md-12 col-12 mb-4">
+        <div class="breadcrumbs-top">
+            <div class="breadcrumb-wrapper mr-1">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <div class="fonticon-wrap icon-shadow icon-shadow-primary">
+                            <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
+                        </div>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Book Detail
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel-body subjectDetails">
+            <div class="row">
+                <div class="col-md-4">
+                    <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="~/images/books/@book.ImageName" /></p>
+                </div>
+                <div class="col-md-8">
+                    <h3>@book.Title</h3>
+                    <p>@book.Author</p>
+                    <hr />
+                    @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section scripts{
+
+<script>
+
+    $("#test").click(function () {
+       
+    })
+</script>
+}

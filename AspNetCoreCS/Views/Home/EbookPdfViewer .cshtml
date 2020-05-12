@@ -1,0 +1,101 @@
+﻿@model LibraryVM
+@{
+    Layout = null;
+    var book = ViewBag.Book;
+}
+<link href="~/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/css/style.css" rel="stylesheet" />
+<link href="~/css/style.min.css" rel="stylesheet" />
+<link href="/css/viewer.css" rel="stylesheet" />
+<style>
+    .btn {
+        width: auto !important;
+    }
+        .btn::after {
+            content: none!important;
+        }
+        #documentViewer {
+            width: 100% !important;
+            float: left;
+        }
+
+    .icon-shadow a {
+        width: 40px;
+        height: 40px;
+        float: left;
+        padding: 8px;
+        color: #4340c2;
+    }
+</style>
+<div class="container">
+    <div class="panel-body subjectDetails" style="padding-top: 0px;">
+        <div class="row">
+            <div class="col-md-6">
+                @*<button type="button" class="btn btn-secondary" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></button>*@
+                <div class="fonticon-wrap icon-shadow icon-shadow-primary mt-3">
+                    <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="btn-group mt-2">
+                    <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="ft-book" aria-hidden="true"></i> <span class="ft-chevron-down"></span></button>
+                    <ul class="dropdown-menu">
+                        <!-- READEDGE_30012020A001 Start SiddharthSingh Applying condition if available then link appear -->
+                        @if (@book.IsEbook)
+                        {
+                            @*<li><a href="@Url.Action("ViewContent", "home", new { BookId = @Model.BookId, BookName = @Model.BookName, type = 0 })">Course Book</a></li>*@
+                            <li><a href="@Url.Action("ViewContent", "home", new { BookId = @Model.BookId, BookName = @Model.BookName, type = 5 })">Course Book</a></li>
+                        }@if (@book.IsLessonPlan)
+                        {
+                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=1 })">Lesson Plans</a></li>
+                        }@if (@book.IsWorkbook)
+                        {
+                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=2 })">Worksheets</a></li>
+                        }@if (@book.IsSolutions)
+                        {
+                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=4})">Solutions</a></li>
+                        }@if (@book.IsMultiMedia)
+                        {
+                            <li><a href="@Url.Action("ViewContent", "home",new { BookId= @Model.BookId, BookName= @Model.BookName,type=3 })">Video Tutorials</a></li>
+                        }
+                        <!-- READEDGE_30012020A001 End -->
+                    </ul>
+                </div>
+            </div>
+
+            <div id="result" class="form-group col-md-12">
+                @{
+                    Html.RenderPartial("_PdfViewer");
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.4.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/3.4.1_jquery.min.js"></script>
+<script src="/js/4.3.1_bootstrap.min.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        var filename = '@ViewBag.FileName';
+        var Title = '@ViewBag.BooName'
+        loaddocument(Title, filename);
+        //loadtitle();
+    });
+  
+    function loaddocument(Title,FIle) {
+
+                    $.ajax({
+                    url: '@Url.Action("TestPartial", "Home")',
+                        data: { Title: Title, pdfFIle: FIle, EbookPdf:true},
+                    type: 'Get',
+                    success: function (data) {
+                        $("#result").html(data);
+                },
+            });
+    }
+
+</script>

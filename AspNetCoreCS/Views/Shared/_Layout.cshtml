@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compent="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>@ViewData["Title"]  ReadEdge</title>
+
+    <environment include="atible" content="IE=edge">
+    <meta name="viewport" contDevelopment">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+    </environment>
+    <link href="~/css/vendors.min.css" rel="stylesheet" />
+    <link href="~/css/chartist.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-extended.min.css" rel="stylesheet" />
+    <link href="~/css/components.min.css" rel="stylesheet" />
+    <link href="~/css/vertical-menu.min.css" rel="stylesheet" />
+    <link href="~/css/chat-application.css" rel="stylesheet" />
+    <link href="~/css/dashboard-analytics.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+</head>
+<body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light">
+        <div class="navbar-wrapper">
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse show" id="navbar-mobile">
+                    <ul class="nav navbar-nav mr-auto float-left">
+                        @*<li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>*@
+                       @* <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>*@
+                        @*<li class="nav-item d-none d-md-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>*@
+
+
+                    </ul>
+                    <div class="container">
+                        <div class="row">
+                        <div id="Progresstext" style="display:none">
+                            Configuration....
+                        </div>
+                        <div class="col-md-4">
+                            <div class="progress" id="Progressbar" style="display:none">
+                                <div class="progress-bar" style="width:0%"></div>
+                            </div>
+                            <div class="progresConfiguration" style="display:none"></div>
+                        </div>
+                        <div id="Progresstextbundle" style="display:none">
+                            Uploading Bundle....
+                        </div>
+                        <div class="col-md-4">
+                            <div class="progress" id="Progressbarbundle" style="display:none">
+                                <div class="progress-bar" style="width:5%"></div>
+                            </div>
+                            <div class="progresBundle" style="display:none"></div>
+                        </div>
+                    </div></div>
+                    <ul class="nav navbar-nav float-right">
+
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="avatar avatar-online"><img src="~/images/user.jpg" alt="avatar"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="arrow_box_right">
+                                    @*<a class="dropdown-item" asp-controller="home" asp-action="Configuration"><i class="ft-settings"></i> Configuration</a>
+                                    <a class="dropdown-item" asp-controller="home" asp-action="UploadBundle"><i class="ft-upload"></i> Upload Bundle</a>*@
+                                    <div class="dropdown-divider"></div><a class="dropdown-item"asp-controller="Account" asp-action="logoff"><i class="ft-power"></i> Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mr-auto">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                        <h3 class="brand-text">
+                            <img src="~/images/login-logo.png" />
+                        </h3>
+                    </a>
+                </li>
+                <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
+            </ul>
+        </div>
+        <div class="navigation-background"></div>
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                <li class=" nav-item">
+                    <a asp-area="" asp-controller="Home" asp-action="Dashboard"><i class="ft-home"></i><span class="menu-title">Home</span></a>
+
+                </li>
+                @*<li class=" nav-item">
+                    <a asp-area="" asp-controller="Home" asp-action="Library"><i class="ft-layers"></i><span class="menu-title">Library</span></a>
+
+                </li>*@
+                <li class=" nav-item">
+                    <a asp-area="" asp-controller="Home" asp-action="MyLibrary"><i class="ft-book"></i><span class="menu-title">My Library</span></a>
+
+                </li>
+                
+                @*<li class=" nav-item">
+            <a href="#"><i class="ft-clock"></i><span class="menu-title">Test Hour</span></a>
+
+        </li>*@
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    @*<header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <div class="col-md-8">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ReadEdgeCore</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Configuration</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                
+            </div>
+        </nav>
+
+    </header>*@
+
+
+
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-wrapper-before"></div>
+            <div class="content-body">
+                <div class="row">
+                    <partial name="_CookieConsentPartial" />
+                    <main role="main" class="col-md-12 pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="border-top footer text-muted">
+        <div class="container-fluid text-right">
+            &copy; 2019 - ReadEdgeCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script>
+    $(document).ready(function () {
+        $("#Progresstext").css("display", "None");
+        $("#Progressbar").css("display", "None");
+        //doPoll();
+        //$("#Progresstext").css("display", "block");
+        //$("#Progressbar").css("display", "flex");
+    });
+                @*function doPoll() {
+                  $.ajax(
+                   {
+                       url: '@Url.Action("GetProgress", "Home")',
+                       type: 'Get',
+                          success: function (data) {
+                              $("#Progresstext").html("testing..");
+                              $(".progress-bar").css("width", data+"%");
+                              setTimeout(doPoll, 2000);
+                       }
+                   });
+            }*@
+
+    </script>
+    @*<script src="~/js/vendors.min.js"></script>
+    <script src="~/js/switchery.min.js"></script>
+    <script src="~/js/switch.min.js"></script>
+    <script src="~/js/app-menu.min.js"></script>
+    <script src="~/js/app.min.js"></script>
+    <script src="~/js/customizer.min.js"></script>
+    <script src="~/js/jquery.sharrre.js"></script>*@
+</body>
+</html>

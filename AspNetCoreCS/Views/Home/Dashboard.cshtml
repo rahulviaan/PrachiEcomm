@@ -1,0 +1,115 @@
+﻿@model IEnumerable<LibraryVM>
+<div class="content-header row">
+    <div class="content-header-left col-md-12 col-12 mb-4">
+        <div class="breadcrumbs-top">
+            <div class="breadcrumb-wrapper mr-1">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">
+                        Dashboard
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8 col-md-12" id="resultDiv">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">My Library</h3>
+                <a class="heading-elements-toggle">
+                    <i class="la la-ellipsis-v font-medium-3"></i>
+                </a>
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div id="flexiselDemo3">
+                            @{
+                                Html.RenderPartial("_Library", Model);
+                            }
+
+                        </div>
+                    </div>
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Class</h3>
+                <a class="heading-elements-toggle">
+                    <i class="la la-ellipsis-v font-medium-3"></i>
+                </a>
+            </div>
+            <div class="card-content">
+                <div class="card-body" style="padding-top:0">
+                    <div class="project">
+                        @foreach (var item in ViewBag.ClassList)
+                        {
+                            <div class="project-f">
+                                <a asp-controller="home" asp-action="SubjectDetails" asp-route-ClassId="@item.Id" class="btn-2 btn-2g btn">Class -@item.Title</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        var globalTimeout = null;
+        $("#Parameter").keyup(function () {
+        if (globalTimeout != null) {
+            clearTimeout(globalTimeout);
+        }
+        globalTimeout = setTimeout(function () {
+            globalTimeout = null;
+
+            GetContent();
+
+        }, 1000);
+    });
+     function GetContent() {
+        var valid = true;
+         $("#resultDiv").html("<div style='width:100%!important; text-align:center!important;'><img src='~/images/loader.gif' style='height:50px;width:50px;'/></div>");
+        var SearchParameter = $("#Parameter").val();
+
+            $.ajax({
+                url: '@Url.Action("SearchMyLibrary", "Home")',
+                type: 'Get',
+                data: { parameter: SearchParameter, SubjectID:@ViewBag.SubjectId},
+                success: function (data) {
+                    $("#resultDiv").html(data);
+                },
+            });
+    }
+</script>
+@section scripts{
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="~/js/jquery.flexisel.js"></script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $("#flexiselDemo3").flexisel({
+                visibleItems: 3,
+                itemsToScroll: 1,
+                autoPlay: {
+                    enable: true,
+                    interval: 5000,
+                    pauseOnHover: true
+                }
+            });
+            $(".loader").fadeOut("slow");
+        });
+    </script>
+}
