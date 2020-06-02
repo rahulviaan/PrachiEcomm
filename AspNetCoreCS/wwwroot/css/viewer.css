@@ -355,3 +355,20 @@ input[type=range]::-webkit-slider-thumb {
     .custom-range::-ms-fill-upper {
         background-color: #dee2e6 !important;
     }
+
+
+
+
+.leftalign {
+    left: -97px !important;
+}
+
+#documentViewer {
+    height: 900px!important;
+}
+
+@media (max-width:767px) {
+    #documentViewer {
+        height: 520px!important;
+    }
+}

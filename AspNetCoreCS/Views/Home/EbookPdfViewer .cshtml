@@ -31,16 +31,16 @@
 <div class="container">
     <div class="panel-body subjectDetails" style="padding-top: 0px;">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="width:50%;float:left;height:auto;">
                 @*<button type="button" class="btn btn-secondary" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></button>*@
                 <div class="fonticon-wrap icon-shadow icon-shadow-primary mt-3">
                     <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
                 </div>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-6 text-right" style="width:50%;float:left;height:auto;">
                 <div class="btn-group mt-2">
                     <button class="btn btn-header dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"> <i class="ft-book" aria-hidden="true"></i> <span class="ft-chevron-down"></span></button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu leftalign">
                         <!-- READEDGE_30012020A001 Start SiddharthSingh Applying condition if available then link appear -->
                         @if (@book.IsEbook)
                         {

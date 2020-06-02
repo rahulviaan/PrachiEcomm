@@ -1,0 +1,59 @@
+﻿@model IEnumerable<LibraryVM>
+@if (Model.Count() > 0)
+{
+    @foreach (var Item in Model)
+    {
+
+        <div class="col-md-3">
+            <div class="panel-body BooksDiv">
+                <p style="margin-top:0;"><img class="img-responsive" src="~/images/books/@Item.Image" /></p>
+                <h3 data-toggle="tooltip" data-original-title="@Item.BookName">@Item.BookName</h3>
+                <p data-toggle="tooltip" data-original-title="@Item.Author">@Item.Author</p>
+
+                @if (Item.IsInLibrary)
+                {
+                    if (Item.IsBundleUploaded)
+                    {
+                        <p><a asp-controller="home" asp-action="BookDetail" asp-route-bookid="@Item.BookId" class="btn-2 btn-library btn-2g btn">Read Now</a></p>
+
+                    }
+                    else
+                    {
+                        <p><a disabled="disabled" class="btn-2 btn-library btn-2g btn">Read Now</a></p>
+                    }
+                }
+                else
+                {
+                    @*<p><a disabled="disabled" asp-controller="home" asp-action="" asp-route-bookid="" class="orderNow-btn btn-library btn">Order Now</a></p>*@
+                    <p><a disabled="disabled" class="orderNow-btn btn-library btn">Order Now</a></p>
+                }
+
+
+
+            </div>
+        </div>
+    }
+}
+else
+{
+
+    <div class="col-lg-12">
+        <div class="card-box">
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="panel-body">
+                        <p class="text-center">
+                            <img class="img-responsive imgWidth" src="~/images/no-itemFound.png" alt="no image" style="width:auto" />
+
+                        </p>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+}

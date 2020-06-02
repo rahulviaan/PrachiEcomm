@@ -8,7 +8,7 @@
          documentViewer = new DocumentViewer
         {
             Width = 800,
-            Height = 1100,
+            Height = 500,
             Document = ViewBag.file,
 
             DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf
@@ -19,7 +19,7 @@
          documentViewer = new DocumentViewer
         {
             Width = 800,
-            Height = 1100,
+           Height = 500,
             Document = ViewBag.file
 
         };
@@ -28,6 +28,7 @@
 }
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @this.RenderHead(documentViewer)
 </head>
 <body>

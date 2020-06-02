@@ -1,0 +1,357 @@
+﻿body {
+    width: 100% !important;
+    float: left;
+    background-color: #fafafb !important;
+}
+
+.modal {
+    z-index: 999999999999999 !important;
+}
+
+#Content {
+    display: none;
+}
+
+.btn {
+    width: auto !important;
+}
+
+.pageCount {
+    width: 20%;
+    float: left;
+    height: auto;
+    margin-bottom: 5%;
+}
+
+    .pageCount a {
+        text-align: center;
+        background-color: #e3c847;
+        padding: 4px;
+        font-size: 11px;
+    }
+
+.date_time {
+    font-size: 12px;
+    width: 80%;
+    float: left;
+}
+
+.contentDiv {
+    border: solid 1px #f3f0f0;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 1px #f3ebeb;
+    float: left;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+
+    .contentDiv ul {
+        padding: 0;
+        margin: 0;
+    }
+
+        .contentDiv ul li {
+            list-style: none;
+        }
+
+            .contentDiv ul li a {
+                color: #423f3f;
+                padding: 15px 10px;
+                font-size: 16px;
+                border-bottom: solid 1px #f9f0f0;
+                float: left;
+                width: 100%;
+                text-decoration: none;
+            }
+
+.shortNav a {
+    color: #423f3f;
+    font-size: 16px;
+    padding: 4px 10px;
+    text-decoration: none;
+    font-weight: bold;
+    border: solid 1px #f7f1f1;
+    float: left;
+    margin: 5px;
+}
+
+.topMrg {
+    margin-top: 13%;
+}
+
+.footNav {
+    background-color: #ffffff;
+    position: fixed;
+    z-index: 9999999;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 5px 0;
+    box-shadow: 0 -6px 10px 0 rgba(181, 175, 175, 0.01),0 15px 32px 0 rgba(215, 202, 202, 0.05);
+}
+
+.topNav {
+    background-color: #ffffff;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 5px 0;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,.01),0 15px 32px 0 rgba(0,0,0,.05);
+}
+
+.mrg-right {
+    margin-right: 5%;
+}
+
+img {
+    width: auto !important;
+}
+
+#PageList {
+    font-size: 16px;
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 9999999999;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    transition: 0.5s;
+    overflow: hidden;
+    scrollbar-color: #59575c #ffffff;
+    scrollbar-width: thin;
+    box-shadow: 0 0 15px #ebebec;
+}
+
+    .sidenav:hover {
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .sidenav a {
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #3e3a3a;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.5em;
+        margin-left: 50px;
+        color: #ffffff;
+    }
+
+.bookStiky {
+    background-color: #eafbf7;
+    margin: 10px;
+    box-shadow: 0 0 10px #f9f3f3;
+    font-size: 12px;
+    padding: 5px;
+    width: 92%;
+    float: left;
+    border: solid 1px #e4e4e4;
+}
+
+.dltbtn {
+    width: 100%;
+    height: auto;
+    float: left;
+}
+
+    .dltbtn a {
+        font-size: 18px;
+        line-height: 10px;
+        float: right;
+        padding: 5px !important;
+        text-align: right;
+    }
+
+.bookStiky a:hover {
+    color: #59575c;
+}
+
+.ebookRange {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+    .ebookRange:hover {
+        opacity: 1;
+    }
+
+input[type=range]::-webkit-slider-thumb {
+    background: #4CAF50!important;
+}
+.custom-range::-webkit-slider-thumb {
+   
+    background: #4CAF50;
+   
+}
+
+.custom-range::-moz-range-thumb {
+    background: #4CAF50;
+   }
+
+#idspanslider {
+    font-size: 20px;
+    padding: 0px 10px;
+    float: left;
+    position: relative;
+    top: -12px;
+}
+
+.btn-group a {
+    font-size: 14px;
+    padding: 6px 10px;
+    color: #2f2f2d;
+    width: 100%;
+    float: left;
+    height: auto;
+}
+
+.toast-message {
+    font-size: 13px;
+}
+
+#BookMarkList p {
+    font-size: 12px;
+}
+.custom-file {
+    height: auto;
+}
+#BookMarkList h5 {
+    font-size: 12px;
+}
+
+.bookMarkHead {
+    background-color: #2d5872;
+    padding: 0.6em 6px;
+}
+
+    .bookMarkHead h4 {
+        font-size: 18px;
+        color: #ffffff;
+        font-weight: normal;
+        margin: 4px 0;
+    }
+.button {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    padding: 5px 10px;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    overflow: visible;
+    font: bold 18px arial, helvetica, sans-serif;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #555;
+    background-color: #eaeaea;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,1)), to(rgba(255,255,255,0)));
+    background-image: -webkit-linear-gradient(top, rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: -moz-linear-gradient(top, rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: -ms-linear-gradient(top, rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: -o-linear-gradient(top, rgba(255,255,255,1), rgba(255,255,255,0));
+    background-image: linear-gradient(top, rgba(255,255,255,1), rgba(255,255,255,0));
+    -webkit-transition: background-color .2s ease-out;
+    -moz-transition: background-color .2s ease-out;
+    -ms-transition: background-color .2s ease-out;
+    -o-transition: background-color .2s ease-out;
+    transition: background-color .2s ease-out;
+    background-clip: padding-box; /* Fix bleeding */
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 2px 2px -1px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .3) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 2px 2px -1px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .3) inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 2px 2px -1px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .3) inset;
+    text-shadow: 0 1px 0 rgba(255,255,255, .9);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    .button:hover {
+        background-color: #eee;
+        color: #555;
+    }
+
+    .button:active {
+        background: #e9e9e9;
+        position: relative;
+        top: 1px;
+        text-shadow: none;
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+    }
+
+    .button[disabled], .button[disabled]:hover, .button[disabled]:active {
+        border-color: #eaeaea;
+        background: #fafafa;
+        cursor: default;
+        position: static;
+        color: #999;
+        /* Usually, !important should be avoided but here it's really needed :) */
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+.btn-header {
+    background-color: #2d5872;
+    border-color: #2d5872;
+    color: #fff !important;
+    box-shadow: 3px 3px 1px #f1f1f1;
+    border-radius: 5px;
+}
+
+#PageList {
+    border: solid 1px #f0e3e3;
+    padding: 5px;
+}
+.custom-range {
+    background-color: #dee2e6 !important;
+    height: 5px;
+}
+
+    .custom-range::-moz-range-progress {
+        background-color: #dee2e6 !important;
+    }
+
+    .custom-range::-moz-range-track {
+        background-color: #dee2e6 !important;
+    }
+/* IE*/
+    .custom-range::-ms-fill-lower {
+        background-color: #dee2e6 !important;
+    }
+
+    .custom-range::-ms-fill-upper {
+        background-color: #dee2e6 !important;
+    }

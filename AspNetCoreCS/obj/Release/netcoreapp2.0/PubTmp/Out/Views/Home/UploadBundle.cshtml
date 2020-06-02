@@ -1,0 +1,156 @@
+﻿@model LibraryVM
+<div class="content-header row">
+    <div class="content-header-left col-md-12 col-12 mb-4">
+        <div class="breadcrumbs-top">
+            <div class="breadcrumb-wrapper mr-1">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <div class="fonticon-wrap icon-shadow icon-shadow-primary">
+                            <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
+                        </div>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Upload Bundle
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="col-md-12">
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#MyLibrary" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#UploadedContent" role="tab" aria-controls="nav-profile" aria-selected="false">Pick One</a>
+            </div>
+
+            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="MyLibrary" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <form enctype="multipart/form-data" asp-controller="home" asp-action="UploadBundlePackage"
+                                  method="post" class="mt-3 col-md-12">
+
+
+                                <div class="form-group col-md-12">
+                                    <label asp-for="ConfigurationFile" class="col-form-label">Upload Bundle</label>
+                                    <div class="custom-file">
+                                        <input asp-for="ConfigurationFile" class="form-control custom-file-input">
+                                        <label class="custom-file-label">Choose File...</label>
+                                    </div>
+                                </div>
+
+                                <div asp-validation-summary="All" class="text-danger"></div>
+
+                                <div class="form-group text-center col-md-12">
+                                    <button type="submit" id="UploadConfiguration" class="btn btnCreate">Upload</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="UploadedContent" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <form enctype="multipart/form-data" asp-controller="home" asp-action="UploadBundle"
+                          method="post" class="mt-3 col-md-12">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="ClassId" class="col-form-label">Class</label>
+                                    <select asp-for="ClassId" class="form-control" asp-items="@(new SelectList(ViewBag.ListOfClasses,"Id","Title"))"></select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="BookId" class="col-form-label">Book</label>
+                                    <select asp-for="BookId" class="form-control" asp-items="@(new SelectList(ViewBag.LiostOfBooks,"Id","Title"))"></select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="BundleFile" class="col-form-label">Upload Bundle</label>
+                                    <div class="custom-file">
+                                        <input asp-for="BundleFile" class="form-control custom-file-input">
+                                        <label class="custom-file-label">Choose File...</label>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center col-md-12">
+                                    <button type="submit" id="UploadBundle" class="btn btnCreate" >Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+            });
+
+            $("#UploadConfiguration").click(function (e) {
+                e.preventDefault();
+                var data = new FormData(this.form);
+                $("#Progresstextbundle").css("display", "block");
+                $("#Progressbarbundle").css("display", "flex");
+                UploadbBundle();
+                 $.ajax(
+                   {
+                       url: '@Url.Action("UploadBundlePackage", "Home")',
+                       type: 'post',
+                       data: data,
+                       processData: false,
+                       contentType: false,
+                         success: function (data) {
+
+                       }
+                   });
+            })
+
+        $("#UploadBundle").click(function (e) {
+                e.preventDefault();
+                var data = new FormData(this.form);
+                $("#Progresstextbundle").css("display", "block");
+                $("#Progressbarbundle").css("display", "flex");
+                UploadbBundle();
+                 $.ajax(
+                   {
+                       url: '@Url.Action("UploadBundle", "Home")',
+                       type: 'post',
+                       data: data,
+                       processData: false,
+                       contentType: false,
+                         success: function (data) {
+
+                       }
+                   });
+            })
+
+            $("#ClassId").change(function () {
+            var classid = $(this).val();
+                $.ajax({
+                url: '@Url.Action("GetBookByClass", "Home")',
+                type: 'Get',
+                    data: { ClassId: classid},
+                    success: function (data) {
+                    var $el = $("#BookId");
+                    $el.empty();
+                    $el.append($("<option></option>")
+                        .attr("value", '').text('--Select--'));
+                        $.each(data, function (value, key) {
+                            $el.append($("<option></option>").attr("value", key.id).text(key.title));
+                    });
+                },
+            });
+        })
+
+    </script>
+
+
+}
