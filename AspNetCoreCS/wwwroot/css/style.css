@@ -537,14 +537,24 @@ li {
     background-size: .65em auto, 100%;
     border: 1px solid #eae6e6;
 }
-
-
-@media (max-width:767.98px) {
-    .subjectDetails {
-        padding: 10px;
-    }
-
-    .leftalign {
-        left: -94px !important;
+.readLogo {
+    display: none;
+}
+@media (max-width:767px) {
+    .readLogo {
+        display: block;
     }
 }
+    @media (max-width:767.98px) {
+        .subjectDetails {
+            padding: 10px;
+        }
+
+        .leftalign {
+            left: -94px !important;
+        }
+
+        .readLogo {
+            display: block;
+        }
+    }
