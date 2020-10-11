@@ -540,9 +540,16 @@ li {
 .readLogo {
     display: none;
 }
+
 @media (max-width:767px) {
     .readLogo {
+        float: left;
+        height: auto;
+        position: absolute;
+        text-align: center;
+        padding: 14px 0;
         display: block;
+        width: 96%;
     }
 }
     @media (max-width:767.98px) {
@@ -554,7 +561,5 @@ li {
             left: -94px !important;
         }
 
-        .readLogo {
-            display: block;
-        }
+       
     }

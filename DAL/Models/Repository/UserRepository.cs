@@ -85,6 +85,8 @@ namespace DAL.Models.Repository
             context = userContext;
         }
 
+
+
         public async Task<AspNetUsers> GetUserLogin(string UserName, string Password)
         {
             try
@@ -115,5 +117,64 @@ namespace DAL.Models.Repository
             }
         }
 
+        public List<UserBookIds> GetUserBookIds(string userid)
+        {
+            try
+            {
+                var userBookIds = context.UserBookIds.FromSql("GETUserBookIds @p0", userid)
+                       .ToList();
+                return userBookIds;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public List<ReadEdgeLogins> GetReadEdgeLogins()
+        {
+            return context.ReadEdgeLogins.ToList();
+        }
+
+        public ReadEdgeLogins GetReadEdgeLoginByIds(string userid)
+        {
+            try
+            {
+                return context.ReadEdgeLogins.FirstOrDefault(x => x.Userid == userid);
+            }
+            catch (Exception ex) {
+                var result = ex;
+                return null;
+            }
+        }
+        public int UpdateReadEdgeLogin(ReadEdgeLogins readEdgeLogins)
+        {
+             context.Entry(readEdgeLogins).State=EntityState.Modified;
+             return context.SaveChanges();
+        }
+
+        public int InsertReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo)
+        {
+            context.ReadEdgeUserLoginInfo.Add(readEdgeUserLoginInfo);
+            return context.SaveChanges();
+        }
+        public int UpdtaeReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo)
+        {
+            context.Entry(readEdgeUserLoginInfo).State = EntityState.Modified;
+            return context.SaveChanges();
+        }
+
+        public ReadEdgeUserLoginInfo GetReadEdgeUserLoginInfoByIds(int id)
+        {
+            try
+            {
+                return context.ReadEdgeUserLoginInfo.FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                var result = ex;
+                return null;
+            }
+        }
     }
 }

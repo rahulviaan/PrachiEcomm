@@ -77,4 +77,29 @@ namespace DAL.Models.Entities
         public string Name { get; set; }
      
     }
+
+    public partial class UserBookIds
+    {
+        public string Id { get; set; }
+        public Int64 BookId { get; set; }
+    }
+
+    public partial class ReadEdgeLogins
+    {
+        public int Id { get; set; }
+        public int AllowedSystems { get; set; }
+        public int CurrentLogins { get; set; }
+        public string Userid { get; set; }
+        public bool LoginAllowed { get; set; }
+    }
+
+    public partial class ReadEdgeUserLoginInfo
+    {
+        public int Id { get; set; }
+        public DateTime? LoginTime { get; set; }
+        public DateTime? LogoutTime { get; set; }
+        public string Userid { get; set; }
+        public bool LogedOut { get; set; }
+    }
+    
 }

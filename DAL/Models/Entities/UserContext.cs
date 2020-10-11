@@ -21,5 +21,8 @@ namespace DAL.Models.Entities
 
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<UserBookIds> UserBookIds { get; set; }
+        public virtual DbSet<ReadEdgeLogins> ReadEdgeLogins { get; set; }
+        public virtual DbSet<ReadEdgeUserLoginInfo> ReadEdgeUserLoginInfo { get; set; }
     }
 }

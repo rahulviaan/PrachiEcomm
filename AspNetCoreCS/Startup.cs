@@ -95,10 +95,11 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             services.AddScoped<IReaderBookService, ReaderBookService>();
             services.AddScoped<IReaderBooks, ReaderBooks>();
             services.AddScoped<IEbookReader, EbookReader>();
+            services.AddScoped<ReadEdgeUserLoginInfo, ReadEdgeUserLoginInfo>();
 
 
             ///===============
-            
+
             #endregion
         }
 
@@ -118,8 +119,8 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
 
              app.UseExceptionHandler("/Home/Error");
              app.UseGleamTech();
-            //DocumentUltimateConfiguration.Current.LicenseKey = "YGHMATRXDZ-HAUWP8LXUZ-BUAB7S1KTG-5JCZ1CUDRH-APE27QXK2F-U3HUSF4MCX-NSFZ64XN7H-F";
-            //DocumentUltimateConfiguration.Current.LicenseKey = "QUHPE7A8M6-2LXQ79ASGX-88CBL3DQ19-UKYXWZ1CUD-RHAPC27QXK-2FU3HUSF4M-CXNSFZ64XN-7HF";
+           // DocumentUltimateConfiguration.Current.LicenseKey = "YGHMATRXDZ-HAUWP8LXUZ-BUAB7S1KTG-5JCZ1CUDRH-APE27QXK2F-U3HUSF4MCX-NSFZ64XN7H-F";
+            DocumentUltimateConfiguration.Current.LicenseKey = "QUHPE7A8M6-2LXQ79ASGX-88CBL3DQ19-UKYXWZ1CUD-RHAPC27QXK-2FU3HUSF4M-CXNSFZ64XN-7HF";
             //The default CacheLocation value is "~/App_Data/DocumentCache"
             //Both virtual and physical paths are allowed (or a Location instance for one of the supported 
             //file systems like Amazon S3 and Azure Blob).

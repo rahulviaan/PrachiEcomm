@@ -79,6 +79,8 @@ namespace ReadEdgeCore.Models
             _prachiUserRepository = userRepository;
         }
 
+   
+
         public async Task<AspNetUsers> GetUserLogin(string UserName, string Password)
         {
             UserName = UserName.Trim().ToLower();
@@ -93,6 +95,48 @@ namespace ReadEdgeCore.Models
         {
             var aspNetRoles = _prachiUserRepository.GetUserRole(userid);
             return aspNetRoles;
+        }
+        public List<UserBookIds> GetUserBookIds(string userid)
+        {
+            var userBookIds = _prachiUserRepository.GetUserBookIds(userid);
+            return userBookIds;
+        }
+
+        public List<ReadEdgeLogins> GetReadEdgeLogins()
+        {
+            return _prachiUserRepository.GetReadEdgeLogins();
+         
+        }
+
+        public ReadEdgeLogins GetReadEdgeLoginByIds(string userid)
+        {
+            return _prachiUserRepository.GetReadEdgeLoginByIds(userid);
+        }
+
+        public int UpdateReadEdgeLogin(ReadEdgeLogins readEdgeLogins)
+        {
+            return _prachiUserRepository.UpdateReadEdgeLogin(readEdgeLogins);
+        }
+
+        public int InsertReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo)
+        {
+            try
+            {
+                return _prachiUserRepository.InsertReadEdgeUserLoginInfo(readEdgeUserLoginInfo);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+        public int UpdtaeReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo)
+        {
+            return _prachiUserRepository.UpdtaeReadEdgeUserLoginInfo(readEdgeUserLoginInfo);
+        }
+
+        public ReadEdgeUserLoginInfo GetReadEdgeUserLoginInfoByIds(int id)
+        {
+            return _prachiUserRepository.GetReadEdgeUserLoginInfoByIds(id);
         }
     }
 }

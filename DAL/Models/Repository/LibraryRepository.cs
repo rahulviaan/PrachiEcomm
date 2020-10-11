@@ -127,7 +127,7 @@ namespace DAL.Models.Repository
         {
             try
             {
-                return await context.ClassModel.OrderBy(t => t.OredrNo).ToListAsync();
+                return  context.ClassModel.OrderBy(t => t.OredrNo).ToList();
             }
             catch (Exception ex)
             {
@@ -142,7 +142,7 @@ namespace DAL.Models.Repository
 
         public async Task<IEnumerable<BookModel>> GetBooks()
         {
-            return await context.BookModel.ToListAsync();
+            return  context.BookModel.ToList();
         }
 
         public  async Task<IEnumerable<long>> GetSubjectByClass(long Id)
@@ -158,7 +158,7 @@ namespace DAL.Models.Repository
 
         public async Task<IEnumerable<SubjectModel>> GetSubjects()
         {
-            return await context.SubjectModel.OrderBy(t => t.OredrNo).ToListAsync();
+            return  context.SubjectModel.OrderBy(t => t.OredrNo);
         }
 
         #region BookMarks

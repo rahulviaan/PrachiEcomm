@@ -14,11 +14,12 @@ using DAL.Models.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Filters;
+using System.Collections;
 
 namespace ReadEdgeCore.Controllers
 {
     #region Home
-    [ServiceFilter(typeof(AsyncActionFilter))] 
+    [ServiceFilter(typeof(AsyncActionFilter))]
     #endregion
     public class HomeController : Controller
     {
@@ -28,8 +29,8 @@ namespace ReadEdgeCore.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private static IReaderBooks _readerBooks;
         private readonly IEbookReader _ebookReader;
-       // private IHttpContextAccessor _HttpContextAccessor;
-       // private ISession _session => _httpContextAccessor.HttpContext.Session;
+        // private IHttpContextAccessor _HttpContextAccessor;
+        // private ISession _session => _httpContextAccessor.HttpContext.Session;
         public HomeController(IUser user, ILibrary library, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment, IReaderBooks readerBooks, IEbookReader ebookReader)
         {
             _user = user;
@@ -45,7 +46,7 @@ namespace ReadEdgeCore.Controllers
             {
                 //if (_user.GetAllUser().Result.Any())
                 //{
-                    return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Account");
 
                 //}
                 //return View("Configuration");
@@ -64,9 +65,9 @@ namespace ReadEdgeCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Configuration(LibraryVM userVM)
         {
-           
-                await _library.UploadConfig(userVM.ConfigurationFile);
-                return Json("true");
+
+            await _library.UploadConfig(userVM.ConfigurationFile);
+            return Json("true");
         }
 
         public async Task<IActionResult> ReConfiguration()
@@ -124,10 +125,11 @@ namespace ReadEdgeCore.Controllers
             {
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-          //  return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            //  return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public async Task<JsonResult> GetBookByClass(Int32 ClassId)
@@ -146,19 +148,46 @@ namespace ReadEdgeCore.Controllers
             //var login = _httpContextAccessor.HttpContext.Session.GetInt32("login");
             //if (login == 1)
             //{
-                var classes = await _library.GetClass();
-                List<ClassModel> classList = Factory.GetClassModelList();
+            var classes = await _library.GetClass();
+            List<ClassModel> classList = Factory.GetClassModelList();
 
-                classList = classes.Where(x => x.Status == 1).OrderBy(y => y.OredrNo).ToList();
-                ViewBag.ClassList = classList;
-                var userLibrary = await _library.GetAllLibrary();
-                var BookIds = userLibrary.Select(y => y.BookId).ToList();
-                var books = await _library.GetBooks();
-                ViewBag.SubjectId = 0;
-                List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
-            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true)
-                           .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded =true }).Take(50).ToList();
-            //libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true)
+            classList = classes.Where(x => x.Status == 1).OrderBy(y => y.OredrNo).ToList();
+            ViewBag.ClassList = classList;
+            var userLibrary = await _library.GetAllLibrary();
+
+
+            List<long> BookIds = new List<long>();
+
+            var Userbookids = _httpContextAccessor.HttpContext.Session.GetString("Userbookids") ?? "";
+            var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
+            var TeacherclassIds = "16,17,18,19";
+            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+            var lstuserbookidids = Userbookids.Split(',').ToList();
+            if (Userbookids != "")
+            {
+                BookIds = lstuserbookidids.Select(x => long.Parse(x)).ToList();
+            }
+
+            else
+            {
+                BookIds = userLibrary.Select(y => y.BookId).ToList();
+            }
+
+            var books = await _library.GetBooks();
+            ViewBag.SubjectId = 0;
+            List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
+            if (role.ToLower() == "teacher")
+            {
+                libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId))
+              .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+
+            }
+            else {
+                libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true)
+                              .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+
+            }
+           //libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true)
             //             .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true }).Take(50).ToList();
             return View(libraryVMs);
             //}
@@ -177,28 +206,69 @@ namespace ReadEdgeCore.Controllers
             ViewBag.ClassID = ClassId;
             return View();
         }
-        public async Task<IActionResult> MyLibrary(Int32 SubjectID = 0,Int32 ClassID=0)
+        public async Task<IActionResult> MyLibrary(Int32 SubjectID = 0, Int32 ClassID = 0)
         {
             //Searching by Subject and class added 17.03.2020
             var SubjectList = await _library.GetSubjects();
             ViewBag.Subject = SubjectList;
             var ClassList = await _library.GetClass();
             ViewBag.Class = ClassList;
+           
+         
+                var userLibrary = await _library.GetAllLibrary();
+            List<long> BookIds = new List<long>();
+       
+            var Userbookids = _httpContextAccessor.HttpContext.Session.GetString("Userbookids") ?? "";
+            var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
+            var TeacherclassIds = "16,17,18,19";
+            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
 
-            var userLibrary = await _library.GetAllLibrary();
-            var BookIds = userLibrary.Select(y => y.BookId).ToList();
+            var lstuserbookidids = Userbookids.Split(',').ToList();
+            if (Userbookids != "")
+            {
+                BookIds = lstuserbookidids.Select(x => long.Parse(x)).ToList();
+            }
+
+            else
+            {
+                BookIds = userLibrary.Select(y => y.BookId).ToList();
+            }
+
             var books = await _library.GetBooks();
             var uploadedBundle = userLibrary.Where(x => x.BundleUploaded == true).Select(y => y.BookId);
             ViewBag.SubjectId = SubjectID;
             ViewBag.ClassID = ClassID;
-            List<LibraryVM> libraryVMs= Factory.GetLibrayVMList();
+            
+            List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
             if (SubjectID != 0)
-                libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && (x.ClassId == ClassID || ClassID == 0))
-                               .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+            {
+           
+                if (role.ToLower() == "teacher")
+                {
+                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && (classidlist.Contains(x.ClassId)  || ClassID == 0))
+                                   .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+                }
+                else {
+                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && (x.ClassId == ClassID || ClassID == 0))
+                                              .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+
+                }
+            }
             else
-                libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && (x.ClassId == ClassID || ClassID == 0))
-                    .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
-            return View(libraryVMs);
+            {
+                if (role.ToLower() == "teacher")
+                {
+                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && (classidlist.Contains(x.ClassId)))
+                   .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+
+                }
+                else {
+                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && (x.ClassId == ClassID || ClassID == 0))
+                   .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+
+                }
+            }
+                return View(libraryVMs);
 
             //if (SubjectID != 0)
             //    libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && (x.ClassId == ClassID || ClassID == 0))
@@ -209,19 +279,56 @@ namespace ReadEdgeCore.Controllers
             //return View(libraryVMs);
 
         }
-        public async Task<IActionResult> SearchMyLibrary(string parameter,Int32 SubjectID = 0,Int32 ClassID=0)
-            {
-                var userLibrary = await _library.GetAllLibrary();
-                var BookIds = userLibrary.Select(y => y.BookId).ToList();
-                var books = await _library.GetBooks();
-                var uploadedBundle = userLibrary.Where(x => x.BundleUploaded == true).Select(y => y.BookId);
-                List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
-                IEnumerable<BookModel> bookModels;
-            if (!string.IsNullOrWhiteSpace(parameter) || !string.IsNullOrEmpty(parameter))
-                bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (x.ClassId == ClassID || ClassID == 0));
-            else
-                bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (x.ClassId == ClassID || ClassID == 0));
+        public async Task<IActionResult> SearchMyLibrary(string parameter, Int32 SubjectID = 0, Int32 ClassID = 0)
+        {
+            var userLibrary = await _library.GetAllLibrary();
+            //var BookIds = userLibrary.Select(y => y.BookId).ToList();
+            List<long> BookIds = new List<long>();
+            var Userbookids = _httpContextAccessor.HttpContext.Session.GetString("Userbookids") ?? "";
 
+            var lstuserbookidids = Userbookids.Split(',').ToList();
+            if (Userbookids != "")
+            {
+                BookIds = lstuserbookidids.Select(x => long.Parse(x)).ToList();
+            }
+
+            else
+            {
+                BookIds = userLibrary.Select(y => y.BookId).ToList();
+            }
+
+            var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
+            var TeacherclassIds = "16,17,18,19";
+            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+
+            var books = await _library.GetBooks();
+            var uploadedBundle = userLibrary.Where(x => x.BundleUploaded == true).Select(y => y.BookId);
+            List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
+            IEnumerable<BookModel> bookModels;
+            if (!string.IsNullOrWhiteSpace(parameter) || !string.IsNullOrEmpty(parameter))
+            {
+                if (role.ToLower() == "teacher")
+                {
+
+                    bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (classidlist.Contains(x.ClassId)));
+                }
+                else
+                {
+
+                    bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (x.ClassId == ClassID || ClassID == 0));
+                }
+            }
+            else
+            {
+                if (role.ToLower() == "teacher")
+                {
+
+                    bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (classidlist.Contains(x.ClassId)));
+                }
+                else {
+                    bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (x.ClassId == ClassID || ClassID == 0));
+                }
+            }
             //if (!string.IsNullOrWhiteSpace(parameter) || !string.IsNullOrEmpty(parameter))
             //    bookModels = books.Where(x => x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && (x.ClassId == ClassID || ClassID == 0));
             //else
@@ -229,19 +336,19 @@ namespace ReadEdgeCore.Controllers
 
 
             libraryVMs = bookModels.Select(x => new LibraryVM
-                {
-                    BookId = x.Id,
-                    Author = x.Author,
-                    Image = x.ImageName,
-                    BookName = x.Title,
-                    IsInLibrary = true,
-                    IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false,
-                }).ToList();
+            {
+                BookId = x.Id,
+                Author = x.Author,
+                Image = x.ImageName,
+                BookName = x.Title,
+                IsInLibrary = true,
+                IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false,
+            }).ToList();
 
-                return PartialView("_Library", libraryVMs);
-            }
-       
-        
+            return PartialView("_Library", libraryVMs);
+        }
+
+
         public async Task<IActionResult> Library()
         {
             var userLibrary = await _library.GetAllLibrary();
@@ -249,11 +356,16 @@ namespace ReadEdgeCore.Controllers
             var uploadedBundle = userLibrary.Where(x => x.BundleUploaded == true).Select(y => y.BookId);
             var books = await _library.GetBooks();
             List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
-                libraryVMs = books.Where(x => x.Status == true && x.IsEbook==true)
-                    .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title,
-                    IsInLibrary= BookIds.Contains(x.Id)?true:false,
-                    IsBundleUploaded= uploadedBundle.Contains(x.Id)?true:false,
-                    }).ToList();
+            libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true)
+                .Select(x => new LibraryVM
+                {
+                    BookId = x.Id,
+                    Author = x.Author,
+                    Image = x.ImageName,
+                    BookName = x.Title,
+                    IsInLibrary = BookIds.Contains(x.Id) ? true : false,
+                    IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false,
+                }).ToList();
             return View(libraryVMs);
         }
         public async Task<IActionResult> SearchLibrary(string parameter)
@@ -268,15 +380,15 @@ namespace ReadEdgeCore.Controllers
                 bookModels = books.Where(x => x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()));
             else
                 bookModels = books.Where(x => x.Status == true && x.IsEbook == true);
-                libraryVMs= bookModels.Select(x => new LibraryVM
-                {
-                    BookId = x.Id,
-                    Author = x.Author,
-                    Image = x.ImageName,
-                    BookName = x.Title,
-                    IsInLibrary = BookIds.Contains(x.Id) ? true : false,
-                    IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false,
-                }).ToList();
+            libraryVMs = bookModels.Select(x => new LibraryVM
+            {
+                BookId = x.Id,
+                Author = x.Author,
+                Image = x.ImageName,
+                BookName = x.Title,
+                IsInLibrary = BookIds.Contains(x.Id) ? true : false,
+                IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false,
+            }).ToList();
 
             return PartialView("_Library", libraryVMs);
         }
@@ -351,9 +463,9 @@ namespace ReadEdgeCore.Controllers
             ViewBag.Chapters = chapterList;
 
 
-            var ChapterIds = chapterList.Select(x =>Convert.ToInt64(x.Id)).ToList();
+            var ChapterIds = chapterList.Select(x => Convert.ToInt64(x.Id)).ToList();
             var chapterContents = await _library.GetChapterContents();
-            var reuslt = chapterContents.Where(x => (ChapterIds.Contains(x.ChapterId)) && x.BookId==bookid).ToList();
+            var reuslt = chapterContents.Where(x => (ChapterIds.Contains(x.ChapterId)) && x.BookId == bookid).ToList();
             ViewBag.ChapterContents = reuslt;
 
             return View();
@@ -376,9 +488,9 @@ namespace ReadEdgeCore.Controllers
                 * Setting conditions of books
                 */
                 var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
-                
+
                 var book = await _library.GetBooks(libraryVM.BookId);
-                
+
                 if (File.BundleUploaded && book.IsEbook)
                 {
                     book.IsEbook = true;
@@ -433,9 +545,9 @@ namespace ReadEdgeCore.Controllers
                 libraryVM.endindex = Common.readerBooks.Pages.Count();
                 return View("~/Views/Shared/_EBookViewer.cshtml", libraryVM);
             }
-            else if (libraryVM.type == Enums.BpType.Solutions|| libraryVM.type == Enums.BpType.Workheet|| libraryVM.type == Enums.BpType.LessonPlan)
+            else if (libraryVM.type == Enums.BpType.Solutions || libraryVM.type == Enums.BpType.Workheet || libraryVM.type == Enums.BpType.LessonPlan)
             {
-               return await DocumentData(libraryVM, "~/Views/Home/PdfViewer.cshtml");
+                return await DocumentData(libraryVM, "~/Views/Home/PdfViewer.cshtml");
 
             }
             else if (libraryVM.type == Enums.BpType.AudioVideo)
@@ -445,13 +557,13 @@ namespace ReadEdgeCore.Controllers
 
             else if (libraryVM.type == Enums.BpType.EbookPdf)
             {
-                return await DocumentData(libraryVM, "~/Views/Home/EbookPdfViewer .cshtml",true);
+                return await DocumentData(libraryVM, "~/Views/Home/EbookPdfViewer .cshtml", true);
             }
             return View();
 
         }
 
-        private async Task<IActionResult> DocumentData(LibraryVM libraryVM,string ViewName,bool EbookPdf=false)
+        private async Task<IActionResult> DocumentData(LibraryVM libraryVM, string ViewName, bool EbookPdf = false)
         {
             List<Chapter> chapterList = await ChapterList(libraryVM);
             ViewBag.Chapters = chapterList.Where(x => x.BookId == libraryVM.BookId && x.Status == 1);
@@ -461,10 +573,10 @@ namespace ReadEdgeCore.Controllers
 
             var library = await _library.GetAllLibrary();
             ViewBag.BooName = library.FirstOrDefault(x => x.BookId == libraryVM.BookId).EpubName.Split('.')[0];
-            if(!EbookPdf)
-            ViewBag.FileName = reuslt.FirstOrDefault().Name;
+            if (!EbookPdf)
+                ViewBag.FileName = reuslt.FirstOrDefault().Name;
             else
-            ViewBag.FileName = ViewBag.BooName + ".pdf";
+                ViewBag.FileName = ViewBag.BooName + ".pdf";
             ViewBag.Type = Convert.ToInt32(libraryVM.type);
 
             var result = _library.GetAllLibrary().Result;
@@ -614,10 +726,10 @@ namespace ReadEdgeCore.Controllers
             var isAudio = Convert.ToBoolean(_httpContextAccessor.HttpContext.Session.GetInt32("Audio"));
             return Json(isAudio);
         }
-        public async Task<JsonResult> GetContenByChapter(Int32 Chapter,Int32 BookID,Int32 Type)
+        public async Task<JsonResult> GetContenByChapter(Int32 Chapter, Int32 BookID, Int32 Type)
         {
             var chapterContents = await _library.GetChapterContents();
-            var reuslt = chapterContents.Where(x => x.ChapterId== Chapter && x.BookId == BookID && x.Type == Type && x.Status == 1).ToList();
+            var reuslt = chapterContents.Where(x => x.ChapterId == Chapter && x.BookId == BookID && x.Type == Type && x.Status == 1).ToList();
             List<ChapterContent> bookList = Factory.GetChapterContentlList();
 
             bookList = chapterContents.Where(x => x.ChapterId == Chapter && x.BookId == BookID && x.Type == Type && x.Status == 1).ToList();
@@ -625,12 +737,12 @@ namespace ReadEdgeCore.Controllers
 
             return Json(bookList);
         }
-        public PartialViewResult TestPartial(string pdfFIle="", string Title="",bool EbookPdf=false)
+        public PartialViewResult TestPartial(string pdfFIle = "", string Title = "", bool EbookPdf = false)
         {
             string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "books");
             if (EbookPdf)
             {
-                uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PdfEbooks\\"+pdfFIle);
+                uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PdfEbooks\\" + pdfFIle);
                 ViewBag.file = Path.Combine(uploadsFolder, pdfFIle);
                 ViewBag.file = uploadsFolder;
             }
@@ -639,7 +751,7 @@ namespace ReadEdgeCore.Controllers
                 ViewBag.file = Path.Combine(uploadsFolder, Title + "\\" + pdfFIle);
             }
             ViewBag.EbookPdf = EbookPdf;
-           // ViewBag.file = Path.Combine(uploadsFolder, Title + "\\" + pdfFIle);
+            // ViewBag.file = Path.Combine(uploadsFolder, Title + "\\" + pdfFIle);
             return PartialView("~/Views/Shared/_PdfViewer.cshtml");
         }
 
@@ -733,7 +845,7 @@ namespace ReadEdgeCore.Controllers
                 UserId = x.UserId,
                 PageNumber = x.PageNumber.ToString(),
                 CreatedDate = x.CreatedDate.ToString(),
-                Description=x.Description
+                Description = x.Description
             }).OrderBy(y => y.PageNumber).Where(x => x.UserId == userNote.UserId).ToList();
             return Json(result);
         }
