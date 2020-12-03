@@ -138,5 +138,19 @@ namespace ReadEdgeCore.Models
         {
             return _prachiUserRepository.GetReadEdgeUserLoginInfoByIds(id);
         }
+        public Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUsers()
+        {
+            return _prachiUserRepository.GetReadEdgeTrialUsers();
+        }
+
+        public Task AddReadEdgeTrialUsers(ReadEdgeTrialUsers readEdgeTrialUsers)
+        {
+            return _prachiUserRepository.AddReadEdgeTrialUsers(readEdgeTrialUsers);
+        }
+
+        public List<ClassSubjects> GetSubjectByClassType(int Classtype)
+        {
+            return _prachiUserRepository.GetSubjectByClassType(Classtype);
+        }
     }
 }

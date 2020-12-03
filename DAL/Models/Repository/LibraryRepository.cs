@@ -224,5 +224,24 @@ namespace DAL.Models.Repository
             }
         }
         #endregion
+
+        public List<ClassSubjects> GetSubjectByClassType(int Classtype)
+        {
+            try
+            {
+                var ClassSubjects = context.ClassSubjects.FromSql("USP_GET_SUBJECT_BY_CLASS @p0", Classtype)
+                       .ToList();
+                return ClassSubjects;
+            }
+            catch (Exception ex)
+            {
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"D:\ReadEdge\AspNetCoreCS\AspNetCoreCS\wwwroot\Log.txt", true))
+                {
+                    file.WriteLine(ex);
+                }
+                return null;
+            }
+        }
     }
 }

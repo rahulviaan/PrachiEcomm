@@ -23,5 +23,8 @@ namespace ReadEdgeCore.Models.Interfaces
         #region Notes
         Task<IEnumerable<UserNote>> GetNotesByUserAndContentId(UserNote userNote);
         #endregion
+        Task AddReadEdgeTrialUser(ReadEdgeTrialUsers readEdgeTrialUsers);
+        Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUser();
+         List<ClassSubjects> GetSubjectByClassType(int ClassType);
     }
 }

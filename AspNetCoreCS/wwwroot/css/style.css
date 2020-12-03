@@ -551,6 +551,9 @@ li {
         display: block;
         width: 96%;
     }
+    .offset-4 {
+        margin-left: 0;
+    }
 }
     @media (max-width:767.98px) {
         .subjectDetails {
@@ -563,3 +566,24 @@ li {
 
        
     }
+
+
+
+
+.dashbrd {
+    width: 100%;
+    float: left;
+    height: auto;
+    margin-bottom: 2%;
+}
+
+    .dashbrd a {
+        padding: 2%;
+    }
+
+.splasdiv {
+    padding: 5rem 0;
+    width: 100%;
+    float: left;
+    height: auto;
+}

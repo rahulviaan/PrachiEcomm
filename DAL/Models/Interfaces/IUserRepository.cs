@@ -30,6 +30,9 @@ namespace DAL.Models.Interfaces
         int UpdateReadEdgeLogin(ReadEdgeLogins readEdgeLogins);
         int UpdtaeReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo);
         int InsertReadEdgeUserLoginInfo(ReadEdgeUserLoginInfo readEdgeUserLoginInfo);
+        Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUsers();
+        Task AddReadEdgeTrialUsers(ReadEdgeTrialUsers readEdgeTrialUsers);
+        List<ClassSubjects> GetSubjectByClassType(int Classtype);
     }
 
 }

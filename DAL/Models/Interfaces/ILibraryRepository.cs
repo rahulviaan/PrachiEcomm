@@ -59,5 +59,7 @@ namespace DAL.Models.Interfaces
         Task RemoveNotes(long Id);
         #endregion
 
+        List<ClassSubjects> GetSubjectByClassType(int Classtype);
+
     }
 }

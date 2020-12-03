@@ -37,7 +37,9 @@
     <EmbeddedResource Remove="wwwroot\App_Data\**" />
     <None Remove="wwwroot\App_Data\**" />
     <_CustomFiles Remove="Views\Home\EbookPdfViewer .cshtml" />
+    <_CustomFiles Remove="Views\Home\Home.cshtml" />
     <_CustomFiles Remove="Views\Home\ReConfiguration.cshtml" />
+    <_CustomFiles Remove="Views\Shared\_Subjects.cshtml" />
     <Content Include="bin\Debug\netcoreapp2.0\GleamTech.DocumentUltimateExamples.AspNetCoreCS.deps.json" />
     <Content Include="bin\Debug\netcoreapp2.0\GleamTech.DocumentUltimateExamples.AspNetCoreCS.runtimeconfig.dev.json" />
     <Content Include="bin\Debug\netcoreapp2.0\GleamTech.DocumentUltimateExamples.AspNetCoreCS.runtimeconfig.json" />
@@ -709,6 +711,12 @@
   
   <ItemGroup>
     <Content Update="Views\Home\EbookPdfViewer .cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Home\Home.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_Subjects.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

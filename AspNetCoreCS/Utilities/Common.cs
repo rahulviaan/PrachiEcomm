@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -80,6 +82,42 @@ namespace ReadEdgeCore.Utilities
 
             double percentage = ((currnetFile * 100 / NoOfFiles));
             return percentage;
+        }
+
+        public static int GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
+        }
+        public static int SendSMS(string mobileNumber, string message)
+        {
+
+            var Url = "http://www.kit19.com/ComposeSMS.aspx?username=prachi88225&password=73780&sender=PIPLIN&to=" + mobileNumber + "&message=" + message + "&priority=1&dnd=1&unicode=0";
+            try
+            {
+                //Create HTTPWebrequest
+                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(Url);
+                //Prepare and Add URL Encoded data
+                UTF8Encoding encoding = new UTF8Encoding();
+                httpWReq.Method = "POST";
+                httpWReq.ContentType = "application/x-www-form-urlencoded";
+                httpWReq.ContentLength = 0;
+                //Get the response
+                HttpWebResponse response = (HttpWebResponse)httpWReq.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string responseString = reader.ReadToEnd();
+                //Close the response
+                reader.Close();
+                response.Close();
+            }
+            catch (SystemException ex)
+            {
+                // MessageBox.Show(ex.Message.ToString());
+            }
+
+            return 0;
         }
     }
 }

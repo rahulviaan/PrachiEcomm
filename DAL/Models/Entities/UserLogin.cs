@@ -93,6 +93,14 @@ namespace DAL.Models.Entities
         public bool LoginAllowed { get; set; }
     }
 
+    public partial class ClassSubjects
+    {
+        public Int64 Id { get; set; }
+        public string Title { get; set; }
+        public int OredrNo { get; set; }
+        public string Image { get; set; }
+        public int Status { get; set; }
+    }
     public partial class ReadEdgeUserLoginInfo
     {
         public int Id { get; set; }
@@ -101,5 +109,11 @@ namespace DAL.Models.Entities
         public string Userid { get; set; }
         public bool LogedOut { get; set; }
     }
-    
+    public partial class ReadEdgeTrialUsers
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string ContactNo { get; set; }
+    }
 }

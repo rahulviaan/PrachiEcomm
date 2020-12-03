@@ -131,6 +131,20 @@ namespace DAL.Models.Repository
             }
         }
 
+        public List<ClassSubjects> GetSubjectByClassType(int Classtype)
+        {
+            try
+            {
+                var ClassSubjects = context.ClassSubjects.FromSql("USP_GET_SUBJECT_BY_CLASS @p0", Classtype)
+                       .ToList();
+                return ClassSubjects;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public List<ReadEdgeLogins> GetReadEdgeLogins()
         {
             return context.ReadEdgeLogins.ToList();
@@ -175,6 +189,25 @@ namespace DAL.Models.Repository
                 var result = ex;
                 return null;
             }
+        }
+
+        public async Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUsers()
+        {
+            return await context.ReadEdgeTrialUsers.ToListAsync();
+            //return userLogin;
+        }
+
+        public async Task AddReadEdgeTrialUsers(ReadEdgeTrialUsers readEdgeTrialUsers)
+        {
+            try
+            {
+                await context.AddAsync(readEdgeTrialUsers);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+            }
+            //return userLogin;
         }
     }
 }

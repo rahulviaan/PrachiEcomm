@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,16 +74,16 @@
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-user nav-item">
                             @*<a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                    <span class="avatar avatar-online"><img src="~/images/user.jpg" alt="avatar"></span>
-                </a>*@
-                            <a class="btn btn-light round" asp-controller="Account" asp-action="logoff"><i class="ft-power" style="margin:0;font-size: 20px;"></i></a>
+                                    <span class="avatar avatar-online"><img src="~/images/user.jpg" alt="avatar"></span>
+                                </a>*@
+                            <a class="btn btn-light round" asp-controller="Account" id="logoff" asp-action="logoff"><i class="ft-power" style="margin:0;font-size: 20px;"></i></a>
                             @*<div class="dropdown-menu dropdown-menu-right">
-                                <div class="arrow_box_right">
-                                    <a class="dropdown-item" asp-controller="home" asp-action="Configuration"><i class="ft-settings"></i> Configuration</a>
-                <a class="dropdown-item" asp-controller="home" asp-action="UploadBundle"><i class="ft-upload"></i> Upload Bundle</a>
-                                    <a class="dropdown-item" asp-controller="Account" asp-action="logoff"><i class="ft-power"></i> Logout</a>
-                                </div>
-                            </div>*@
+                                                <div class="arrow_box_right">
+                                                    <a class="dropdown-item" asp-controller="home" asp-action="Configuration"><i class="ft-settings"></i> Configuration</a>
+                                <a class="dropdown-item" asp-controller="home" asp-action="UploadBundle"><i class="ft-upload"></i> Upload Bundle</a>
+                                                    <a class="dropdown-item" asp-controller="Account" asp-action="logoff"><i class="ft-power"></i> Logout</a>
+                                                </div>
+                                            </div>*@
                         </li>
                     </ul>
                 </div>
@@ -105,7 +107,10 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class=" nav-item">
-                    <a asp-area="" asp-controller="Home" asp-action="Dashboard"><i class="ft-home"></i><span class="menu-title">Home</span></a>
+                    <a asp-area="" asp-controller="Home" asp-action="Home"><i class="ft-home"></i><span class="menu-title">Home</span></a>
+                </li>
+                <li class=" nav-item">
+                    <a asp-area="" asp-controller="Home" asp-action="Dashboard" asp-route-type="@HttpContextAccessor.HttpContext.Session.GetInt32("ClassType")"><i class="ft-monitor"></i><span class="menu-title">Dashboard</span></a>
                 </li>
                 @*<li class=" nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="Library"><i class="ft-layers"></i><span class="menu-title">Library</span></a>
@@ -203,6 +208,10 @@
     $(document).ready(function () {
         $("#Progresstext").css("display", "None");
         $("#Progressbar").css("display", "None");
+           if ("@HttpContextAccessor.HttpContext.Session.GetString("IsVerified")" == "NO") {
+
+               $('#logoff').css('display','none');
+            }
         //doPoll();
         //$("#Progresstext").css("display", "block");
         //$("#Progressbar").css("display", "flex");

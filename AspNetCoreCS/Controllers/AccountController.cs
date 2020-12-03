@@ -95,7 +95,8 @@ namespace ReadEdgeCore.Controllers
                         _readEdgeUserLoginInfo.LoginTime = DateTime.UtcNow.ToLocalTime();
                         _prachiUser.InsertReadEdgeUserLoginInfo(_readEdgeUserLoginInfo);
                         _HttpContextAccessor.HttpContext.Session.SetString("Id", _readEdgeUserLoginInfo.Id.ToString());
-                        return RedirectToAction("Dashboard", "Home");
+                        _HttpContextAccessor.HttpContext.Session.SetString("IsVerified", "YES");
+                        return RedirectToAction("Home", "Home");
 
                     }
                     else {
@@ -127,8 +128,9 @@ namespace ReadEdgeCore.Controllers
             var readEdgeLogin = _prachiUser.GetReadEdgeLoginByIds(userid);
             var readEdgeUserLoginInfo = _prachiUser.GetReadEdgeUserLoginInfoByIds(Convert.ToInt32(id));
 
-            
-          
+             //_HttpContextAccessor.HttpContext.Session.SetString("IsVerified","NO");
+             //_HttpContextAccessor.HttpContext.Session.SetString("OTP",null);
+
             //if (readEdgeLogin.CurrentLogins != readEdgeLogin.AllowedSystems)
             //{
             //    readEdgeLogin.LoginAllowed = true;
@@ -145,7 +147,8 @@ namespace ReadEdgeCore.Controllers
      
         
             _HttpContextAccessor.HttpContext.Session.SetString("UserId", "");
-
+            _HttpContextAccessor.HttpContext.Session.SetString("IsVerified","");
+            _HttpContextAccessor.HttpContext.Session.SetString("OTP", "");
             return RedirectToAction("Login");
 
         }

@@ -36,5 +36,11 @@ namespace DAL.Models.Entities
         public string Size { get; set; }
         public bool ImageDownloaded { get; set; }
         public bool EpubDownloaded { get; set; }
+        public bool CBSE { get; set; }
+        public bool MTP { get; set; }
+        public bool BEP { get; set; }
+        public bool TPG { get; set; }
+        public bool ConceptMap { get; set; }
+        public int AllowedCBPages { get; set; }
     }
 }

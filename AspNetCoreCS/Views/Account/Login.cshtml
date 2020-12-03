@@ -32,9 +32,7 @@
                     <div class="col-md-12" style="top:8%;position: absolute;z-index: -1;left: 4%;">
                         <img src="~/images/login-icon.png" style="width:200px;" />
                     </div>       
-                    <div class="col-md-12" style="top:20%;position: absolute;z-index: -1;left: 0;background-color: #f7f1f1;">
-                        <marquee><h3>ReadEdge online portal will be down for maintenance. 17 July 2020 08:00PM - 11:00PM</h3></marquee>
-                    </div>
+                 
                     <div class="col-md-12">
                         <div class="col-lg-4 col-md-6 col-12" style="float:right;">
                             <div class="cardDiv border-grey border-lighten-3 px-1 py-1 m-0">
@@ -67,6 +65,10 @@
                                             <div class="form-group text-center">
                                                 <button type="submit" class="btn btn-default loginBtn col-md-12">Login</button>
                                                 <b style="color:white">@ViewBag.Message</b>
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <p><a asp-controller="Home" asp-action="Home"  style="height:54px;color:white">Guest User ?</a></p>
+
                                             </div>
                                         </form>
                                     </div>

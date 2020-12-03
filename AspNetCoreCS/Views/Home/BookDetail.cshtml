@@ -1,7 +1,21 @@
 ﻿@model LibraryVM
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     var book = ViewBag.Book;
 }
+<style>
+    #otpLoader {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .subjectBtn span {
+        font-size: 9px;
+        width: 100%;
+        float: left;
+    }
+</style>
 <div class="content-header row">
     <div class="content-header-left col-md-12 col-12 mb-4">
         <div class="breadcrumbs-top">
@@ -25,58 +39,74 @@
         <div class="panel-body subjectDetails">
             <div class="row">
                 <div class="col-md-4">
-                    <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="~/images/books/@book.ImageName" /></p>
+
+                    <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="https://www.prachiindia.com/ModuleFiles/Items/@book.ImageName" /></p>
                 </div>
-                <div class="col-md-8">
-                    <h3>@book.Title</h3>
-                    <p>@book.Author</p>
-                    <hr />
-                    @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
-                    @if (book.IsEbook)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
-                    }
-                    else
-                    {
-                        <p><a class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
-                    }
-                    @if (book.IsLessonPlan)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
-                    }
-                    else
-                    {
-                        <p><a class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
+                @if (((book.Id >= 942 && book.Id <= 949) || book.Id == 312) ||(book.Id>=921 && book.Id<=923))
+                {
+                    <div class="col-md-8">
+                        <h3>@book.Title</h3>
+                        <hr />
+                        <p>@book.Author</p>
+                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
 
-                    }
-                    @if (book.IsWorkbook)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
-                    }
-                    else
-                    {
-                        <p><a class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
+                        @if (book.CBSE)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Chapter <span>Based Self Evaluation</span></a></p>
+                        }
 
-                    }
-                    @if (book.IsSolutions)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
-                    }
-                    else
-                    {
-                        <p><a class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
+                        @if (book.MTP)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Model <span>Test Papers</span></a></p>
+                        }
 
-                    }
-                    @if (book.IsMultiMedia)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
-                    }
-                    else
-                    {
-                        <p><a class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
+                        @if (book.BEP)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solved CBSE Board <span>Examination Papers (5*3 Sets)</span></a></p>
+                        }
 
-                    }
-                </div>
+                        @if (book.ConceptMap)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn">Concept Map</a></p>
+                        }
+
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-8">
+                        <h3>@book.Title</h3>
+                        <hr />
+                        <p>@book.Author</p>
+                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
+                        @if (book.IsEbook)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-AllowedCBPages="@book.AllowedCBPages" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+                        }
+                       
+                        @if (book.IsLessonPlan)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
+                        }
+                        
+                        @if (book.IsWorkbook)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
+                        }
+                      
+                        @if (book.IsSolutions)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
+                        }
+                      
+                        @if (book.IsMultiMedia)
+                        {
+                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
+                        }
+                       
+                    </div>
+                }
+
             </div>
         </div>
     </div>
@@ -84,11 +114,206 @@
 
 </div>
 @section scripts{
+    <script src="~/js/toastr.min.js"></script>
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $('#exampleModalCenter').modal('hide');
+            var AlreadyUser = '@ViewBag.AlreadyUser'
+            if (AlreadyUser=="False") {
+                $('#exampleModalCenter').modal('show');
+            }
+            if ("@HttpContextAccessor.HttpContext.Session.GetString("IsVerified")" == "NO" && "@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
 
-<script>
+                $('#OtpCenter').modal('show');
+            }
+        })
 
-    $("#test").click(function () {
-       
-    })
-</script>
+        $("#btnGetOtp").click(function () {
+            resendOTP();
+        })
+
+        function resendOTP() {
+
+            //var Name = $("#Name").val();
+            //var Email = $("#Email").val();
+            var MobileNo = $("#Mobile").val();
+            var isValid = true;
+
+            //if (Name == "") {
+            //    toastr.error('NAME REQUIRED');
+            //    isValid = false;
+            //    return false;
+            //}
+           
+            var Contactnumber = "@HttpContextAccessor.HttpContext.Session.GetString("ContactNo")";
+         
+            if (Contactnumber != "") {
+                MobileNo= Contactnumber
+            }
+ 
+            if (MobileNo == "") {
+                toastr.error('MOBILENO REQUIRED');
+                isValid = false;
+                return false;
+            }
+            if (isValid) {
+                $("#otpLoader").css("display", "block");
+                $("#btnGetOtp").css("display", "none");
+                $.ajax({
+                    data: { ContactNo: MobileNo },
+                    url: '@Url.Action("GetOTP", "Home")',
+                    type: 'Get',
+                    success: function (data) {
+                        if (data != "Failed") {
+                            $('#exampleModalCenter').modal('hide');
+                            $('#OtpCenter').modal('show');
+                            $("#spanMobileNumber").html(data);
+                            $("#otpLoader").css("display", "none");
+                            $("#btnGetOtp").css("display", "block");
+                            $("#divresendotp").css("display", "none");
+                            $("#divcountdown").css("display", "block");
+
+
+                            var timer2 = "0:30";
+                            var interval = setInterval(function () {
+
+
+                                var timer = timer2.split(':');
+                                //by parsing integer, I avoid all extra string processing
+                                var minutes = parseInt(timer[0], 10);
+                                var seconds = parseInt(timer[1], 10);
+                                --seconds;
+                                minutes = (seconds < 0) ? --minutes : minutes;
+                                if (minutes < 0) clearInterval(interval);
+                                seconds = (seconds < 0) ? 59 : seconds;
+                                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                                //minutes = (minutes < 10) ?  minutes : minutes;
+
+
+
+                                if (minutes < 0) {
+                                    $("#divresendotp").css("display", "block");
+                                    $("#divcountdown").css("display", "none");
+                                }
+                                $('.countdown').html(minutes + ':' + seconds);
+                                timer2 = minutes + ':' + seconds;
+                            }, 1000);
+                        }
+                    }
+
+
+                })
+            }
+        }
+
+
+        $("#btnSave").click(function () {
+            var Name = $("#Name").val();
+            var Email = $("#Email").val();
+            var MobileNo = $("#Mobile").val();
+            var OTP = $("#OTP").val();
+            var isValid = true;
+
+            if (OTP == "") {
+                toastr.error('OTP REQUIRED');
+                isValid = false;
+                return false;
+            }
+            if (isValid) {
+                $("#otpVerifyLoader").css("display", "block");
+                $("#btnSave").css("display", "none");
+                $.ajax({
+                    data: { ContactNo: MobileNo, Name: Name, Email: Email, OTP: OTP },
+                    url: '@Url.Action("VerifyOTP", "Home")',
+                    type: 'Get',
+                    success: function (data) {
+                        if (data == "Success") {
+                            $('#exampleModalCenter').modal('hide');
+                            $('#OtpCenter').modal('hide');
+                            //$("#spanMobileNumber").html(data);
+                            //$("#otpLoader").css("display", "none");
+                            //$("#btnGetOtp").css("display", "block");
+                            //$("#divresendotp").css("display", "none");
+                            //$("#divcountdown").css("display", "block");
+                        }
+
+                        if (data == "Invalid") {
+
+                            toastr.error('INVALID OTP');
+                            $("#otpVerifyLoader").css("display", "none");
+                            $("#btnSave").css("display", "block");
+                        }
+
+                        if (data == "Failed") {
+                            toastr.error('SOMETHING WENT WRONG ,PLEASE TRY AGAIN LATER');
+                        }
+                    }
+
+
+                })
+            }
+        })
+
+        $("#test").click(function () {
+
+        })
+    </script>
+
 }
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="UserDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="UserDetail">User Info</h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="Name" maxlength="30" placeholder="Name" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" id="Email" maxlength="30" placeholder="Email" />
+                </div>
+                <div class="col-md-12 form-group">
+                    <label>Mobile</label>
+                    <input type="text" class="form-control" id="Mobile" maxlength="10" placeholder="Mobile" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a asp-controller="Account" style="background-color:#b62025;" asp-action="Login" asp-route-type="@ViewBag.CourseBookType" class="btn btn-default btn-2 subjectBtn">Already User</a>
+                <button style="margin:0 auto" type="button" class="btn btn-default btn-2 subjectBtn" aria-label="Close" id="btnGetOtp">Save</button>
+
+                <div id="otpLoader" style="display: none">
+                    <img src="~/images/loader.gif" height="60" /> Please wait...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="OtpCenter" tabindex="-1" role="dialog" aria-labelledby="OtpDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="OtpDetail">Verification</h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <label>OTP sent to your mobile number <span id="spanMobileNumber"></span></label>
+                    <input type="text" class="form-control" id="OTP" maxlength="4" placeholder="Enter OTP here !!!" />
+                </div>
+                <div class="col-md-12 form-group text-right" id="divresendotp">
+                    <a href="javascript:resendOTP()">Resend OTP</a>
+                </div>
+                <div class="countdown" id="divcountdown"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-2 subjectBtn" style="margin:0 auto" id="btnSave">Save</button>
+                <div id="otpVerifyLoader" style="display: none">
+                    <img src="~/images/loader.gif" height="60" /> Please wait...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

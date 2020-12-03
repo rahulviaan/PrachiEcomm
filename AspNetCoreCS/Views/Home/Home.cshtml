@@ -1,0 +1,60 @@
+﻿@{ 
+    Layout = "";
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compent=" width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>ReadEdge</title>
+    <link href="~/css/vendors.min.css" rel="stylesheet" />
+    <link href="~/css/chartist.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-extended.min.css" rel="stylesheet" />
+    <link href="~/css/components.min.css" rel="stylesheet" />
+    <link href="~/css/vertical-menu.min.css" rel="stylesheet" />
+    <link href="~/css/chat-application.css" rel="stylesheet" />
+    <link href="~/css/chat-application.css" rel="stylesheet" />
+    <link href="~/css/dashboard-analytics.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/style.min.css" rel="stylesheet" />
+    <link href="~/css/login-register.min.css" rel="stylesheet" />
+
+</head>
+<body class="vertical-layout vertical-menu 1-column blank-page blank-page" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="1-column">
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-body">
+                <section class="flexbox-container">
+
+                    <div class="col-md-12">
+                        <div class="col-lg-4 col-md-4 col-12 offset-4">
+                            <p class="text-center"><img src="/images/login-icon.png" class="img-responsive" style="width:300px;" /></p>
+                            <div class="card-content">
+                                <div class="panel-body text-center splasdiv">
+                                    <div class="col-md-12 dashbrd">
+                                        @*<a href="index.html" class="btn-2 btn-2g btn dashBtn">Class : Pre - 8</a>*@
+                                       <a asp-controller="home" asp-action="Dashboard" asp-route-type="1" class="btn-2 btn-2g btn dashBtn">Class : Pre - 8</a>
+                                    </div>
+                                    <div class="col-md-12 dashbrd">
+                                        @*<a href="dashboard-2.html" class="btn-2 btn-2g btn dashBtn">Class : 9 - 12</a>*@
+                                       <a asp-controller="home" asp-action="Dashboard" asp-route-type="2" class="btn-2 btn-2g btn dashBtn">Class : 9 - 12</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-right" style="color:#232020;bottom:11px;position: absolute; font-weight:bold;">Version 1.0.0.0 | Powered by <a href="#">Prachi India Pvt.</a></div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

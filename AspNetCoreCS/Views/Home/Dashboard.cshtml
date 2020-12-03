@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<LibraryVM>
+@{ 
+    var ClassSubjects = ViewBag.Subjects as IEnumerable<DAL.Models.Entities.ClassSubjects>;
+}
 <div class="content-header row">
     <div class="content-header-left col-md-12 col-12 mb-4">
         <div class="breadcrumbs-top">
@@ -13,14 +16,38 @@
     </div>
 </div>
 <div class="row">
+
     <div class="col-lg-8 col-md-12" id="resultDiv">
+
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Subjects</h3>
+                @*<a class="heading-elements-toggle">
+                    <i class="la la-ellipsis-v font-medium-3"></i>
+                </a>*@
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="flexiselDemo4">
+                            @{
+                                Html.RenderPartial("_Subjects", ClassSubjects);
+                            }
+                        </div>
+                    </div>
+                    <div class="loader"></div>
+                </div>
+               
+
+
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">My Library</h3>
-                @*<a class="heading-elements-toggle">
-                        <i class="la la-ellipsis-v font-medium-3"></i>
-                    </a>*@
-            </div>
+</div>
             <div class="card-content">
                 <div class="card-body">
                     <div class="row">
@@ -34,6 +61,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <div class="col-xl-4 col-lg-12">
         <div class="card">
@@ -43,8 +71,10 @@
                         <i class="la la-ellipsis-v font-medium-3"></i>
                     </a>*@
             </div>
+
             <div class="card-content">
                 <div class="card-body" style="padding-top:0">
+                
                     <div class="project">
                         @foreach (var item in ViewBag.ClassList)
                         {
@@ -96,6 +126,15 @@
     <script type="text/javascript">
         $(window).load(function () {
             $("#flexiselDemo3").flexisel({
+                visibleItems: 3,
+                itemsToScroll: 1,
+                autoPlay: {
+                    enable: true,
+                    interval: 5000,
+                    pauseOnHover: true
+                }
+            });
+            $("#flexiselDemo4").flexisel({
                 visibleItems: 3,
                 itemsToScroll: 1,
                 autoPlay: {

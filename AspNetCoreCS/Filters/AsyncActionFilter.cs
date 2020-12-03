@@ -19,22 +19,26 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS.Filters
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-        // execute any code before the action executes
-           var login = context.HttpContext.Session.GetString("UserId");
-
-            if (login == "" || login ==null)
-            {
-             context.Result = new RedirectToRouteResult(
-             new RouteValueDictionary
-             {
+            // execute any code before the action executes
+            var login = context.HttpContext.Session.GetString("UserId");
+            var otp = context.HttpContext.Session.GetString("OTP");
+       
+                if (login == "" && otp==null)
+                {
+                    context.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary
+                    {
                      { "controller", "Account" },
                      { "action", "Login" }
-             });
+                    });
+                }
+
+                else
+                {
+                    var result = await next();
+                }
             }
-            else
-            {
-                var result = await next();
-            }
+            
         }
-    }
+    
 }

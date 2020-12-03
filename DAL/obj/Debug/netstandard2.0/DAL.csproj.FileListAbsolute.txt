@@ -1,9 +1,0 @@
-D:\ReadEdge\AspNetCoreCS\DAL\bin\Debug\netstandard2.0\DAL.deps.json
-D:\ReadEdge\AspNetCoreCS\DAL\bin\Debug\netstandard2.0\DAL.dll
-D:\ReadEdge\AspNetCoreCS\DAL\bin\Debug\netstandard2.0\DAL.pdb
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.csprojAssemblyReference.cache
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.csproj.CoreCompileInputs.cache
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.AssemblyInfoInputs.cache
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.AssemblyInfo.cs
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.dll
-D:\ReadEdge\AspNetCoreCS\DAL\obj\Debug\netstandard2.0\DAL.pdb

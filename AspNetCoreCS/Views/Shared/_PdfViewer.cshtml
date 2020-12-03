@@ -1,27 +1,33 @@
 ﻿@using GleamTech.AspNet.Core
 @using GleamTech.DocumentUltimate.AspNet.UI
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 <!DOCTYPE html>
 @{
     var documentViewer = new DocumentViewer();
-    @if (ViewBag.EbookPdf==true)
+    @if (ViewBag.EbookPdf == true)
     {
-         documentViewer = new DocumentViewer
+        documentViewer = new DocumentViewer
         {
             Width = 800,
             Height = 500,
             Document = ViewBag.file,
+            SidePaneVisible = false,
 
-            DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf
 
+            DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf | DocumentViewerPermissions.ViewThumbnails | DocumentViewerPermissions.SelectText
         };
+        documentViewer.ClientEvents.PageChanged = "documentViewerPageChanged";
     }
-    else {
-         documentViewer = new DocumentViewer
+    else
+    {
+        documentViewer = new DocumentViewer
         {
             Width = 800,
-           Height = 500,
-            Document = ViewBag.file
-
+            Height = 500,
+            Document = ViewBag.file,
+            SidePaneVisible = false,
+            DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf | DocumentViewerPermissions.ViewThumbnails | DocumentViewerPermissions.SelectText
         };
     }
 
@@ -31,7 +37,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @this.RenderHead(documentViewer)
 </head>
-<body>
+<body id="documentViewerbody">
     @this.RenderBody(documentViewer)
 </body>
 </html>
+
+<div class="modal fade" id="OtpCenter" tabindex="-1" role="dialog" aria-labelledby="OtpDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="OtpDetail">Notification</h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <label><b>Thanks for your interest, getting full version of this book either purchase e-book or choose subscription plan from <a href="https://www.prachiindia.com/" target="_blank">prachiindia.com</a></b><span id="spanMobileNumber"></span></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-2 subjectBtn" style="margin:0 auto" id="btnSave">Back</button>
+                <div id="otpVerifyLoader" style="display: none">
+                    <img src="~/images/loader.gif" height="60" /> Please wait...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function documentViewerPageChanged(sender, e) {
+
+        if ("@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == null || "@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
+
+            var pagenumber = parseInt(e.pageNumber)
+
+            if (Number.isNaN(pagenumber)) {
+                pagenumber = parseInt(e.pageNumber.pageNumber)
+            }
+            var allowedPages = parseInt('@ViewBag.AllowedPages')
+
+            if (pagenumber > allowedPages) {
+                $('#OtpCenter').modal('show');
+            }
+        }
+        //alert("Viewing page " + e.pageNumber);
+    }
+     $("#btnSave").click(function () {
+           location.href ="http://readedgetrial.mielib.com/home/BookDetail?bookid="+@ViewBag.BookId
+        })
+</script>

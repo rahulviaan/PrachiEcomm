@@ -29,7 +29,8 @@ namespace ReadEdgeCore.Models
         private readonly IHttpContextAccessor _httpContextAccessor;
         private SessionMgt sessionMgt=new SessionMgt();
         private ISession _session => _httpContextAccessor.HttpContext.Session;
-        public Library(ILibraryRepository ILibraryRepository, IUser user, IHostingEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor, IHubContext<BroadcastHub> context,IBundleConfiguration bundleConfiguration)
+        private IPrachiuser _prachiUser { get; set; }
+        public Library(ILibraryRepository ILibraryRepository, IUser user, IHostingEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor, IHubContext<BroadcastHub> context,IBundleConfiguration bundleConfiguration, IPrachiuser prachiuser)
         {
             _ILibraryRepository = ILibraryRepository;
             _user= user;
@@ -37,6 +38,7 @@ namespace ReadEdgeCore.Models
             _httpContextAccessor = httpContextAccessor;
             _hubContext = context;
             _IbundleConfiguration = bundleConfiguration;
+            _prachiUser = prachiuser;
             //_sessionMgt = sessionMgt;
         }
         public async Task Add(UserLibrary userLibrary)
@@ -715,5 +717,24 @@ namespace ReadEdgeCore.Models
             await _ILibraryRepository.RemoveNotes(Id);
         }
         #endregion
+
+        public async Task AddReadEdgeTrialUser(ReadEdgeTrialUsers readEdgeTrialUsers)
+        {
+            await _prachiUser.AddReadEdgeTrialUsers(readEdgeTrialUsers);
+        }
+
+        public async Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUser()
+        {
+            return await _prachiUser.GetReadEdgeTrialUsers();
+        }
+
+   
+
+       public List<ClassSubjects> GetSubjectByClassType(int Classtype)
+        {
+            return _ILibraryRepository.GetSubjectByClassType(Classtype);
+        }
+
+
     }
 }
