@@ -38,6 +38,8 @@ namespace ReadEdgeCore.Models.ViewModel
         public BpType type { get; set; }
         public ContentTypes ContentType { get; set; }
         public int AllowedCBPages { get; set; }
+        public List<Chapter> Chapters { get; set; }
+        public List<ChapterContent> ChapterContents { get; set; }
 
     }
 }

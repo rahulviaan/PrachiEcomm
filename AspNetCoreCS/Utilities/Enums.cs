@@ -14,7 +14,13 @@ namespace ReadEdgeCore.Utilities
             Workheet = 2,
             AudioVideo = 3,
             Solutions = 4,
-            EbookPdf=5
+            EbookPdf=5,            
+            BEP = 6,
+            ConceptMap = 7,
+            CBSE = 8,
+            MTP =9,
+            TPG=10,
+          
         }
     }
 }

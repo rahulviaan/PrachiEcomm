@@ -82,12 +82,19 @@ namespace DAL.Models.Repository
 
         public async Task<IEnumerable<ChapterContent>> GetChapterContents()
         {
-            return  await context.ChapterContent.ToListAsync();
+            return   context.ChapterContent.ToList();
         }
 
         public async Task<IEnumerable<Chapter>> GetChapters()
         {
-            return await context.Chapter.ToListAsync();
+            try
+            {
+                return  context.Chapter.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
 
@@ -243,5 +250,20 @@ namespace DAL.Models.Repository
                 return null;
             }
         }
+
+        public async Task LogError(ErrorLog errorLog)
+        {
+            try
+            {
+                await context.AddAsync(errorLog);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return ;
+            }
+        }
+
+      
     }
 }

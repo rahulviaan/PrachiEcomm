@@ -152,5 +152,10 @@ namespace ReadEdgeCore.Models
         {
             return _prachiUserRepository.GetSubjectByClassType(Classtype);
         }
+
+        public List<TeacherSubjectClass> GetTeacherSubjectClasses(string TeacherId = "")
+        {
+            return _prachiUserRepository.GetTeacherSubjectClasses(TeacherId);
+        }
     }
 }

@@ -16,6 +16,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Filters;
 using System.Collections;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
+using static GleamTech.DocumentUltimateExamples.AspNetCoreCS.Models.TestHOurModels;
+using System.Net.Http.Headers;
+using RestSharp;
+using System.Net;
 
 namespace ReadEdgeCore.Controllers
 {
@@ -31,9 +39,16 @@ namespace ReadEdgeCore.Controllers
         private static IReaderBooks _readerBooks;
         private readonly IEbookReader _ebookReader;
         private readonly IConfiguration _iConfig;
+        private readonly ErrorLog _errorLog;
+
+        private Dictionary<string, string> Inputs = new Dictionary<string, string>();
+        public string Url = "http://202.140.136.39:82/Account/GoToTestEdge";
+        //public string Method = "post";
+        public string FormName = "TestHourForm";
+
         // private IHttpContextAccessor _HttpContextAccessor;
         // private ISession _session => _httpContextAccessor.HttpContext.Session;
-        public HomeController(IUser user, ILibrary library, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment, IReaderBooks readerBooks, IEbookReader ebookReader, IConfiguration iConfig)
+        public HomeController(IUser user, ILibrary library, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment, IReaderBooks readerBooks, IEbookReader ebookReader, IConfiguration iConfig, ErrorLog errorLog)
         {
             _user = user;
             _library = library;
@@ -42,11 +57,13 @@ namespace ReadEdgeCore.Controllers
             _ebookReader = ebookReader;
             _readerBooks = readerBooks;
             _iConfig = iConfig;
+            _errorLog = errorLog;
         }
         public IActionResult Index()
         {
             try
             {
+
                 //if (_user.GetAllUser().Result.Any())
                 //{
                 return RedirectToAction("Login", "Account");
@@ -131,6 +148,16 @@ namespace ReadEdgeCore.Controllers
         {
             try
             {
+                var exceptionObject = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+                if (null != exceptionObject)
+                {
+                    var errorMessage = exceptionObject.Error.Message + exceptionObject.Error.StackTrace;
+                    _errorLog.ErrorMsg = errorMessage;
+                    _errorLog.CreatedDate = DateTime.UtcNow.ToLocalTime();
+                    _library.LogError(_errorLog);
+                }
+
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
             catch (Exception ex)
@@ -177,8 +204,8 @@ namespace ReadEdgeCore.Controllers
 
             var Userbookids = _httpContextAccessor.HttpContext.Session.GetString("Userbookids") ?? "";
             var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
-            var TeacherclassIds = "16,17,18,19";
-            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+            //var TeacherclassIds = "16,17,18,19";
+            //var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
             var lstuserbookidids = Userbookids.Split(',').ToList();
             if (Userbookids != "")
             {
@@ -195,18 +222,44 @@ namespace ReadEdgeCore.Controllers
             List<LibraryVM> libraryVMs = Factory.GetLibrayVMList();
             if (role.ToLower() == "teacher")
             {
-
+                var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+                var TeacherSubjectClasses = _library.GetTeacherSubjectClasses(Userid);
+                var classidlist = TeacherSubjectClasses.Select(x => long.Parse(x.ClassId.ToString())).ToList();
+                var subjectList = TeacherSubjectClasses.Select(x => long.Parse(x.SubjectId.ToString())).ToList();
+                if (TeacherSubjectClasses.Count == 0)
+                {
+                    var TeacherclassIds = "16,17,18,19";
+                    classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+                }
                 if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
                 {
-                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && x.ClassId < 16)
-          .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+                    if (TeacherSubjectClasses.Count != 0)
+                    {
+                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && subjectList.Contains(x.SubjectId) && x.ClassId < 16)
+                   .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+
+
+                    }
+                    else {
+                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && x.ClassId < 16)
+               .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+
+                    }
 
                 }
                 else
                 {
-                    libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && x.ClassId > 15)
+                    if (TeacherSubjectClasses.Count != 0)
+                    {
+                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && subjectList.Contains(x.SubjectId) && x.ClassId > 15)
 .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
+                    }
+                    else
+                    {
+                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && classidlist.Contains(x.ClassId) && x.ClassId > 15)
+  .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = true }).Take(50).ToList();
 
+                    }
                 }
 
             }
@@ -263,8 +316,8 @@ namespace ReadEdgeCore.Controllers
 
             var Userbookids = _httpContextAccessor.HttpContext.Session.GetString("Userbookids") ?? "";
             var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
-            var TeacherclassIds = "16,17,18,19";
-            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+            //var TeacherclassIds = "16,17,18,19";
+            //var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
 
             var lstuserbookidids = Userbookids.Split(',').ToList();
             if (Userbookids != "")
@@ -288,17 +341,43 @@ namespace ReadEdgeCore.Controllers
 
                 if (role.ToLower() == "teacher")
                 {
+                    var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+                    var TeacherSubjectClasses = _library.GetTeacherSubjectClasses(Userid);
+                    var classidlist = TeacherSubjectClasses.Select(x => long.Parse(x.ClassId.ToString())).ToList();
+                    var subjectList = TeacherSubjectClasses.Select(x => long.Parse(x.SubjectId.ToString())).ToList();
+                    if (TeacherSubjectClasses.Count == 0)
+                    {
+                        var TeacherclassIds = "16,17,18,19";
+                        classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+                    }
                     if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
                     {
-                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && x.ClassId < 16))
-                        .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && subjectList.Contains(x.SubjectId) && x.ClassId < 16))
+                            .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
 
+                        }
+                        else {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && x.ClassId < 16))
+                          .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+
+                        }
                     }
                     else
                     {
-                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && x.ClassId > 15))
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && subjectList.Contains(x.SubjectId) && x.ClassId > 15))
                          .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
 
+                        }
+                        else {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.SubjectId == SubjectID && ((classidlist.Contains(x.ClassId) || ClassID == 0) && x.ClassId > 15))
+.Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false, }).ToList();
+
+                        }
                     }
 
                 }
@@ -322,16 +401,43 @@ namespace ReadEdgeCore.Controllers
             {
                 if (role.ToLower() == "teacher")
                 {
+                    var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+                    var TeacherSubjectClasses = _library.GetTeacherSubjectClasses(Userid);
+                    var classidlist = TeacherSubjectClasses.Select(x => long.Parse(x.ClassId.ToString())).ToList();
+                    var subjectList = TeacherSubjectClasses.Select(x => long.Parse(x.SubjectId.ToString())).ToList();
+                    if (TeacherSubjectClasses.Count == 0)
+                    {
+                        var TeacherclassIds = "16,17,18,19";
+                        classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+                    }
                     if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
                     {
-                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16))
-                        .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId < 16))
+                            .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
 
+                        }
+
+                        else {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16))
+.Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+
+                        }
                     }
                     else
                     {
-                        libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15))
-                        .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId > 15))
+                    .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+
+                        }
+                        else {
+                            libraryVMs = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15))
+                    .Select(x => new LibraryVM { BookId = x.Id, Author = x.Author, Image = x.ImageName, BookName = x.Title, IsInLibrary = true, IsBundleUploaded = uploadedBundle.Contains(x.Id) ? true : false }).ToList();
+
+                        }
 
                     }
 
@@ -384,8 +490,8 @@ namespace ReadEdgeCore.Controllers
             }
 
             var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
-            var TeacherclassIds = "16,17,18,19";
-            var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+            //var TeacherclassIds = "16,17,18,19";
+            //var classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
 
             var books = await _library.GetBooks();
             var uploadedBundle = userLibrary.Where(x => x.BundleUploaded == true).Select(y => y.BookId);
@@ -395,14 +501,37 @@ namespace ReadEdgeCore.Controllers
             {
                 if (role.ToLower() == "teacher")
                 {
+                    var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+                    var TeacherSubjectClasses = _library.GetTeacherSubjectClasses(Userid);
+                    var classidlist = TeacherSubjectClasses.Select(x => long.Parse(x.ClassId.ToString())).ToList();
+                    var subjectList = TeacherSubjectClasses.Select(x => long.Parse(x.SubjectId.ToString())).ToList();
+
+                    if (TeacherSubjectClasses.Count == 0)
+                    {
+                        var TeacherclassIds = "16,17,18,19";
+                        classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+                    }
                     if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
                     {
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId < 16));
+                        }
+                        else {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16));
 
-                        bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16));
+                        }
                     }
                     else
                     {
-                        bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15));
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId > 15));
+                        }
+                        else {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && x.Title.ToLower().Contains(parameter.ToLower()) && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15));
+
+                        }
                     }
                 }
                 else
@@ -420,16 +549,39 @@ namespace ReadEdgeCore.Controllers
             }
             else
             {
+
+
                 if (role.ToLower() == "teacher")
                 {
+                    var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+                    var TeacherSubjectClasses = _library.GetTeacherSubjectClasses(Userid);
+                    var classidlist = TeacherSubjectClasses.Select(x => long.Parse(x.ClassId.ToString())).ToList();
+                    var subjectList = TeacherSubjectClasses.Select(x => long.Parse(x.SubjectId.ToString())).ToList();
+                    if (TeacherSubjectClasses.Count == 0)
+                    {
+                        var TeacherclassIds = "16,17,18,19";
+                        classidlist = TeacherclassIds.Split(',').ToList().Select(x => long.Parse(x)).ToList();
+                    }
                     if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
                     {
-                        bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16));
+                        if (TeacherSubjectClasses.Count != 0)
+                        {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId < 16));
+                        }
+                        else {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId < 16));
+
+                        }
                     }
                     else
                     {
-                        bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15));
-
+                        if (subjectList.Count != 0)
+                        {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((classidlist.Contains(x.ClassId)) && subjectList.Contains(x.SubjectId) && x.ClassId > 15));
+                        }
+                        else {
+                            bookModels = books.Where(x => BookIds.Contains(x.Id) && x.Status == true && x.IsEbook == true && ((x.SubjectId == SubjectID) || (SubjectID == 0)) && ((classidlist.Contains(x.ClassId)) && x.ClassId > 15));
+                        }
                     }
                 }
                 else
@@ -475,7 +627,7 @@ namespace ReadEdgeCore.Controllers
 
             if (_httpContextAccessor.HttpContext.Session.GetInt32("ClassType") == 1)
             {
-                libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true && x.ClassId<16)
+                libraryVMs = books.Where(x => x.Status == true && x.IsEbook == true && x.ClassId < 16)
          .Select(x => new LibraryVM
          {
              BookId = x.Id,
@@ -592,6 +744,47 @@ namespace ReadEdgeCore.Controllers
             {
                 book.IsSolutions = false;
             }
+
+            if (File.BundleUploaded && book.BEP)
+            {
+                book.BEP = true;
+            }
+            else
+            {
+                book.BEP = false;
+            }
+            if (File.BundleUploaded && book.CBSE)
+            {
+                book.CBSE = true;
+            }
+            else
+            {
+                book.CBSE = false;
+            }
+            if (File.BundleUploaded && book.MTP)
+            {
+                book.MTP = true;
+            }
+            else
+            {
+                book.MTP = false;
+            }
+            if (File.BundleUploaded && book.TPG)
+            {
+                book.TPG = true;
+            }
+            else
+            {
+                book.TPG = false;
+            }
+            if (File.BundleUploaded && book.ConceptMap)
+            {
+                book.ConceptMap = true;
+            }
+            else
+            {
+                book.ConceptMap = false;
+            }
             var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
             if (role.ToLower() == "user")
             {
@@ -601,11 +794,93 @@ namespace ReadEdgeCore.Controllers
                 //book.IsMultiMedia = false;
             }
             ViewBag.Book = book;
+            ViewBag.UserName = _httpContextAccessor.HttpContext.Session.GetString("UserName") ?? "";
+            ViewBag.Password = _httpContextAccessor.HttpContext.Session.GetString("Password") ?? "";
+            //var client = new HttpClient();
+            //// var clie  client.BaseAddress = new Uri("http://localhost:60464/api/");nt = new HttpClient("http://testhour.mielib.com/api/masterdata");
+            //client.BaseAddress = new Uri("http://testhour.mielib.com/api/masterdata");
+            ////var request = new RestRequest(Method.GET);
+            //client.DefaultRequestHeaders.Add("api_key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=");
+            ////client.AddHeader("api_key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=");
+            //// IRestResponse response = client.Execute(request);
+            //var response = client.GetAsync(client.BaseAddress);
+            ////var results = JsonConvert.DeserializeObject<Response<MasterDatatModel>>(response);
+            ///
+
+            //var client = new RestClient("http://testhour.mielib.com/api/masterdata");
+            //client.Timeout = -1;
+            //var request = new RestRequest(Method.GET);
+            //request.AddHeader("api_key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=");
+            //IRestResponse response = client.Execute(request);
+            //var results = JsonConvert.DeserializeObject<Response<MasterDatatModel>>(response.Content)
+
+
+
+
+            var classTitle = await _library.GetClass(Convert.ToString(book.ClassId));
+            var subjectTitle = await _library.GetSubjects(Convert.ToString(book.SubjectId));
+            var client = new HttpClient();
+
+            //client.BaseAddress = new Uri("https://api.github.com");
+            client.DefaultRequestHeaders.Add("api_key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //client.DefaultRequestHeaders.Add("bookname", book.Title);
+            //client.DefaultRequestHeaders.Add("subjectname", book.SubjectId.ToString());
+            //client.DefaultRequestHeaders.Add("isbnname", "");
+            //client.DefaultRequestHeaders.Add("classname", book.ClassId.ToString());
+
+            var parameters = new Dictionary<string, string> { { "bookname", book.Title }, { "subjectname", subjectTitle.Title.Trim() },{ "isbnname", book.Isbn }, { "classname", classTitle.Title.Trim() } };
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+
+            var url = "http://202.140.136.39:82/api/MasterData/SearchBook";
+            //HttpResponseMessage response = await client.GetAsync(url);
+            //response.EnsureSuccessStatusCode();
+            //var resp = await response.Content.ReadAsStringAsync();
+
+            var response = await client.PostAsync(url, encodedContent);
+            //var response = client.PostAsync(url, new StringContent(parameters)).GetAwaiter().GetResult();
+            var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var results = JsonConvert.DeserializeObject<Response<SearchBookModel>>(content);
+            //return content;
+
+            //var Masterdata = JsonConvert.DeserializeObject<Response<MasterDatatModel>>(resp);
+            //var TestHourBooks = Masterdata.Data.Books;
+
+            //var TestHourbook = TestHourBooks.Where(x => x.Title==book.Title).FirstOrDefault();
+           
+            ViewBag.THBid = 0;
+            if (results.Data != null)
+            {
+                ViewBag.THBid = results.Data.bookid;
+            }
+            //contributors.ForEach(Console.WriteLine);
+
+            //var classTitle= await _library.GetClass(Convert.ToString(book.ClassId));
+            //var subjectTitle= await _library.GetSubjects(Convert.ToString(book.SubjectId));
+            //var client = new RestClient("http://202.140.136.39:82/api/MasterData/SearchBook");
+            //client.Timeout = -1;
+            //var request = new RestRequest(Method.POST);
+            //request.AddHeader("api_key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=");
+            //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.AddParameter("bookname", book.Title.Trim());
+            //request.AddParameter("subjectname", subjectTitle.Title.Trim());
+            //request.AddParameter("isbnname", "");
+            //request.AddParameter("classname", classTitle.Title.Trim());
+            //IRestResponse response = client.Execute(request);
+            //var results = JsonConvert.DeserializeObject<Response<SearchBookModel>>(response.Content);
+            ////var TestHourbook = "";
+            //ViewBag.THBid = 0;
+            //if (results.Data != null)
+            //{
+            //    ViewBag.THBid = results.Data.bookid;
+            //}
             return View();
         }
 
         public async Task<IActionResult> PdfViewer(long bookid)
         {
+
             var Chapters = await _library.GetChapters();
             List<Chapter> chapterList = Factory.GetChapterList();
 
@@ -696,8 +971,18 @@ namespace ReadEdgeCore.Controllers
                 libraryVM.endindex = Common.readerBooks.Pages.Count();
                 return View("~/Views/Shared/_EBookViewer.cshtml", libraryVM);
             }
-            else if (libraryVM.type == Enums.BpType.Solutions || libraryVM.type == Enums.BpType.Workheet || libraryVM.type == Enums.BpType.LessonPlan)
+            else if (libraryVM.type == Enums.BpType.Solutions || libraryVM.type == Enums.BpType.Workheet || libraryVM.type == Enums.BpType.LessonPlan ||
+                libraryVM.type == Enums.BpType.CBSE | libraryVM.type == Enums.BpType.BEP ||
+                libraryVM.type == Enums.BpType.MTP || libraryVM.type == Enums.BpType.TPG ||
+                libraryVM.type == Enums.BpType.ConceptMap)
             {
+                ViewBag.LblChapter = "Chapter";
+                ViewBag.LblContent = "Title";
+                if (libraryVM.type == Enums.BpType.BEP)
+                {
+                    ViewBag.LblChapter = "Region";
+                    ViewBag.LblContent = "Set";
+                }
                 return await DocumentData(libraryVM, "~/Views/Home/PdfViewer.cshtml");
 
             }
@@ -716,77 +1001,130 @@ namespace ReadEdgeCore.Controllers
 
         private async Task<IActionResult> DocumentData(LibraryVM libraryVM, string ViewName, bool EbookPdf = false)
         {
-            List<Chapter> chapterList = await ChapterList(libraryVM);
-            ViewBag.Chapters = chapterList.Where(x => x.BookId == libraryVM.BookId && x.Status == 1);
+            try
+            {
+                //List<Chapter> chapterList = await ChapterList(libraryVM);
+                //libraryVM.Chapters = chapterList.Where(x => x.BookId == libraryVM.BookId && x.Status == 1).ToList();
 
-            List<ChapterContent> reuslt = await ChapterContents(libraryVM, chapterList);
-            ViewBag.ChapterContents = reuslt;
+                //List<ChapterContent> reuslt = await ChapterContents(libraryVM, chapterList);
+                //libraryVM.ChapterContents = reuslt.ToList();
 
-            var library = await _library.GetAllLibrary();
-            ViewBag.BooName = library.FirstOrDefault(x => x.BookId == libraryVM.BookId).EpubName.Split('.')[0];
-            if (!EbookPdf)
-                ViewBag.FileName = reuslt.FirstOrDefault().Name;
-            else
-                ViewBag.FileName = ViewBag.BooName + ".pdf";
-            ViewBag.Type = Convert.ToInt32(libraryVM.type);
+                //// var Contentchapters = reuslt.Select(x => Convert.ToString(x.ChapterId)).ToList();
+                //// ViewBag.Chapters = Chapters.Where(x => Contentchapters.Contains(x.Id)).ToList();
 
-            var result = _library.GetAllLibrary().Result;
-            var File = result.Where(x => x.BookId == libraryVM.BookId).FirstOrDefault();
+                //var library = await _library.GetAllLibrary();
+                //ViewBag.BooName = library.FirstOrDefault(x => x.BookId == libraryVM.BookId).EpubName.Split('.')[0];
+                //if (!EbookPdf)
+                //    ViewBag.FileName = reuslt.FirstOrDefault().Name;
+                //else
+                //    ViewBag.FileName = ViewBag.BooName + ".pdf";
+                //ViewBag.Type = Convert.ToInt32(libraryVM.type);
 
-            var book = await _library.GetBooks(libraryVM.BookId);
+                //var result = _library.GetAllLibrary().Result;
+                //var File = result.Where(x => x.BookId == libraryVM.BookId).FirstOrDefault();
 
-            if (File.BundleUploaded && book.IsEbook)
-            {
-                book.IsEbook = true;
-            }
-            else
-            {
-                book.IsEbook = false;
-            }
-            if (File.BundleUploaded && book.IsLessonPlan)
-            {
-                book.IsLessonPlan = true;
-            }
-            else
-            {
-                book.IsLessonPlan = false;
-            }
-            if (File.BundleUploaded && book.IsMultiMedia)
-            {
-                book.IsMultiMedia = true;
-            }
-            else
-            {
-                book.IsMultiMedia = false;
-            }
+                //var book = await _library.GetBooks(libraryVM.BookId);
 
-            if (File.BundleUploaded && book.IsWorkbook)
-            {
-                book.IsWorkbook = true;
-            }
-            else
-            {
-                book.IsWorkbook = false;
-            }
 
-            if (File.BundleUploaded && book.IsSolutions)
-            {
-                book.IsSolutions = true;
+
+
+                List<Chapter> chapterList = await ChapterList(libraryVM);
+                // ViewBag.Chapters = chapterList.Where(x => x.BookId == libraryVM.BookId && x.Status == 1);
+                var chptlist = chapterList.Where(x => x.BookId == libraryVM.BookId && x.Status == 1).ToList();
+
+
+                //ViewBag.Chapters = new SelectList(chptlist, "Id", "Title");
+                libraryVM.Chapters = chptlist;
+                List<ChapterContent> reuslt = await ChapterContents(libraryVM, chapterList);
+
+                var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+
+                ViewBag.ChapterContents = new SelectList(reuslt, "Name", "Title");
+                var Contentchapters = reuslt.Select(x => Convert.ToString(x.ChapterId)).ToList();
+
+                var ddlChapters = chptlist.Where(x => Contentchapters.Contains(x.Id));
+
+
+                if (string.IsNullOrEmpty(Userid))
+                {
+
+                    //ddlChapters = ddlChapters.Take(3).ToList();
+                    /*Modified on 28122020 by Rahul*/
+                    ddlChapters = ddlChapters.Where(x => x.IsAllowed == true).ToList();
+                }
+                ViewBag.Chapters = new SelectList(ddlChapters.ToList(), "Id", "Title");
+                //ViewBag.ChapterContents = reuslt;
+                libraryVM.ChapterContents = reuslt.ToList();
+                var library = await _library.GetAllLibrary();
+                ViewBag.BooName = library.FirstOrDefault(x => x.BookId == libraryVM.BookId).EpubName.Split('.')[0];
+                if (!EbookPdf)
+                    ViewBag.FileName = reuslt.FirstOrDefault().Name;
+                else
+                    ViewBag.FileName = ViewBag.BooName + ".pdf";
+                ViewBag.Type = Convert.ToInt32(libraryVM.type);
+
+                var result = _library.GetAllLibrary().Result;
+                var File = result.Where(x => x.BookId == libraryVM.BookId).FirstOrDefault();
+
+                var book = await _library.GetBooks(libraryVM.BookId);
+
+                if (File.BundleUploaded && book.IsEbook)
+                {
+                    book.IsEbook = true;
+                }
+                else
+                {
+                    book.IsEbook = false;
+                }
+                if (File.BundleUploaded && book.IsLessonPlan)
+                {
+                    book.IsLessonPlan = true;
+                }
+                else
+                {
+                    book.IsLessonPlan = false;
+                }
+                if (File.BundleUploaded && book.IsMultiMedia)
+                {
+                    book.IsMultiMedia = true;
+                }
+                else
+                {
+                    book.IsMultiMedia = false;
+                }
+
+                if (File.BundleUploaded && book.IsWorkbook)
+                {
+                    book.IsWorkbook = true;
+                }
+                else
+                {
+                    book.IsWorkbook = false;
+                }
+
+                if (File.BundleUploaded && book.IsSolutions)
+                {
+                    book.IsSolutions = true;
+                }
+                else
+                {
+                    book.IsSolutions = false;
+                }
+                var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
+                if (role.ToLower() == "user")
+                {
+                    book.IsLessonPlan = false;
+                    //book.IsSolutions = false;
+                    //book.IsWorkbook = false;
+                    //book.IsMultiMedia = false;
+                }
+                ViewBag.Book = book;
+                return View(ViewName, libraryVM);
             }
-            else
+            catch (Exception ex)
             {
-                book.IsSolutions = false;
+                return View(ViewName, libraryVM);
             }
-            var role = _httpContextAccessor.HttpContext.Session.GetString("Role") ?? "";
-            if (role.ToLower() == "user")
-            {
-                book.IsLessonPlan = false;
-                //book.IsSolutions = false;
-                //book.IsWorkbook = false;
-                //book.IsMultiMedia = false;
-            }
-            ViewBag.Book = book;
-            return View(ViewName, libraryVM);
         }
 
         //private async Task<IActionResult> EBookDocumentData(LibraryVM libraryVM, string ViewName)
@@ -882,18 +1220,22 @@ namespace ReadEdgeCore.Controllers
             var chapterContents = await _library.GetChapterContents();
             var reuslt = chapterContents.Where(x => x.ChapterId == Chapter && x.BookId == BookID && x.Type == Type && x.Status == 1).ToList();
             List<ChapterContent> bookList = Factory.GetChapterContentlList();
-
-            bookList = chapterContents.Where(x => x.ChapterId == Chapter && x.BookId == BookID && x.Type == Type && x.Status == 1).ToList();
+            var Userid = _httpContextAccessor.HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(Userid))
+            {
+                reuslt = reuslt.Take(3).ToList();
+            }
+            bookList = reuslt;
             bookList.Insert(0, new ChapterContent { Id = 0, Title = "Select" });
 
             return Json(bookList);
         }
-        public PartialViewResult TestPartial(string pdfFIle = "", string Title = "", bool EbookPdf = false, int BookId = 0, string AllowedPage = "1")
+        public PartialViewResult TestPartial(string pdfFIle = "", string Title = "", bool EbookPdf = false, int BookId = 0, string AllowedPage = "1", string Type = "")
         {
             string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "books");
             string booklocation = _iConfig.GetValue<string>("AppSettings:BookLocation");
             string CourseBookLocation = _iConfig.GetValue<string>("AppSettings:CourseBookLocation");
-
+            @ViewBag.Type = Type;
             if (EbookPdf)
             {
                 //uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "PdfEbooks\\" + pdfFIle);
@@ -901,19 +1243,21 @@ namespace ReadEdgeCore.Controllers
                 //ViewBag.file = Path.Combine(uploadsFolder, pdfFIle);
 
 
-                if (((BookId >= 942 && BookId <= 949) || BookId == 312) || (BookId >= 921 && BookId <= 923))
-                {
-                    CourseBookPdf = CourseBookLocation + "\\" + "TestDoc.pdf";
-                }
+                //if (((BookId >= 942 && BookId <= 949)))
+                //{
+                //    CourseBookPdf = CourseBookLocation + "\\" + "TestDoc.pdf";
+                //}
                 ViewBag.file = @CourseBookPdf;
-                ViewBag.AllowedPages = AllowedPage;
+                //ViewBag.AllowedPages = AllowedPage;
             }
             else
             {
                 //ViewBag.file = Path.Combine(uploadsFolder, Title + "\\" + pdfFIle);
                 var ContentLocation = booklocation + "\\" + Title + "\\" + pdfFIle;
                 ViewBag.file = @ContentLocation;
+                // ViewBag.AllowedPages = AllowedPage;
             }
+            ViewBag.AllowedPages = AllowedPage;
             ViewBag.EbookPdf = EbookPdf;
             ViewBag.BookId = BookId;
             // ViewBag.file = Path.Combine(uploadsFolder, Title + "\\" + pdfFIle);
@@ -1069,8 +1413,39 @@ namespace ReadEdgeCore.Controllers
             }
         }
 
+        public void  LoginTestHour(string BookId)
+        {
+            var UserName = _httpContextAccessor.HttpContext.Session.GetString("UserName");
+            var Password = _httpContextAccessor.HttpContext.Session.GetString("Password");
+            var FirstName = _httpContextAccessor.HttpContext.Session.GetString("FirstName");
+            var LastName = _httpContextAccessor.HttpContext.Session.GetString("LastName");
+            var Email = _httpContextAccessor.HttpContext.Session.GetString("Email");
+            var PhoneNumber = _httpContextAccessor.HttpContext.Session.GetString("PhoneNumber");
+            var strPostString = new StringBuilder();
 
+            strPostString.Append("<html><head>");
+            strPostString.Append("</head><body onload=\"document.form1.submit();\">");
+            strPostString.Append("<form name=\"form1\" method=\"post\" action=\"" + Url + "\">");
+
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "UserName", UserName));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Password", Password));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "MobNo", PhoneNumber));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Email", Email));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "FirstName", FirstName));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "LastName", LastName));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "MasterBookId", BookId));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Gender", "0"));
+                strPostString.Append(string.Format("<input name=\"{0}\" type=\"hidden\" value=\"{1}\">", "Api_Key", "6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ="));
+
+            strPostString.Append("</form>");
+            strPostString.Append("</body></html>");
+
+            Response.Clear();
+            Response.WriteAsync(strPostString.ToString());
+
+        }
     }
+
 
     public static class Extensions
     {

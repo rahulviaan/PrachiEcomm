@@ -735,6 +735,13 @@ namespace ReadEdgeCore.Models
             return _ILibraryRepository.GetSubjectByClassType(Classtype);
         }
 
+        public List<TeacherSubjectClass> GetTeacherSubjectClasses(string TeacherID) {
+            return _prachiUser.GetTeacherSubjectClasses(TeacherID);
+        }
 
+        public Task LogError(ErrorLog errorLog)
+        {
+              return _ILibraryRepository.LogError(errorLog);
+        }
     }
 }

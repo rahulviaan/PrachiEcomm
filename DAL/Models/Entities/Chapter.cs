@@ -18,5 +18,7 @@ namespace DAL.Models.Entities
         public int ChapterIndex { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdateDate { get; set; }
+        public bool IsAllowed { get; set; }
+        
     }
 }

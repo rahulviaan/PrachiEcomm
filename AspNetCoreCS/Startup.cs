@@ -18,6 +18,8 @@ using ReadEdgeCore.Hubs;
 using GleamTech.DocumentUltimate.AspNet;
 using Microsoft.AspNetCore.Http;
 using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Filters;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
 {
@@ -27,9 +29,13 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //_library = library;
+            //_errorLog = errorLog;
         }
 
         public IConfiguration Configuration { get; }
+        private ILibrary _library { get; }
+        private ErrorLog _errorLog { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -83,7 +89,7 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             services.AddScoped<IPrachiuser, PrachiUser>();
             services.AddScoped<IPrachiUserRepository, PrachiUserLoginRepository>();
             services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReadEdgeCoreContext")));
-            // services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlite("Data Source=ReadedgeCore.db"));
+            services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlite("Data Source=ReadedgeCore.db"));
 
             #region DI Regeistration
             services.AddScoped<IUserRepository, UserRepository>();
@@ -96,6 +102,7 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             services.AddScoped<IReaderBooks, ReaderBooks>();
             services.AddScoped<IEbookReader, EbookReader>();
             services.AddScoped<ReadEdgeUserLoginInfo, ReadEdgeUserLoginInfo>();
+            services.AddScoped<ErrorLog, ErrorLog>();
 
 
             ///===============
@@ -106,7 +113,7 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
+            // app.UseDeveloperExceptionPage();
 
             //if (env.IsDevelopment())
             //{
@@ -117,8 +124,34 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             //    app.UseExceptionHandler("/Home/Error");
             //}
 
-             app.UseExceptionHandler("/Home/Error");
-             app.UseGleamTech();
+            app.UseExceptionHandler("/Home/Error");
+
+
+            //app.UseExceptionHandler(
+            //    options =>
+            //    {
+            //        options.Run(
+            //            async context =>
+            //            {
+            //                //context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            //                //context.Response.ContentType = "text/html";
+            //                var exceptionObject = context.Features.Get<IExceptionHandlerFeature>();
+            //                if (null != exceptionObject)
+            //                {
+            //                    var errorMessage = $"<b>Exception Error: {exceptionObject.Error.Message} </b> {exceptionObject.Error.StackTrace}";
+            //                    _errorLog.ErrorMsg = errorMessage;
+            //                    _errorLog.CreatedDate =DateTime.UtcNow.ToLocalTime();
+            //                     await _library.LogError(_errorLog);
+            //                    await context.Response.WriteAsync("<b>We are sorry, the resource you requested cannot be found.</b><br/><b>The URL may be misspelled or the page you're looking for is no longer available.</b>").ConfigureAwait(false);
+
+
+            //                }
+            //            });
+                 
+            //    }
+            //);
+
+            app.UseGleamTech();
            // DocumentUltimateConfiguration.Current.LicenseKey = "YGHMATRXDZ-HAUWP8LXUZ-BUAB7S1KTG-5JCZ1CUDRH-APE27QXK2F-U3HUSF4MCX-NSFZ64XN7H-F";
             DocumentUltimateConfiguration.Current.LicenseKey = "QUHPE7A8M6-2LXQ79ASGX-88CBL3DQ19-UKYXWZ1CUD-RHAPC27QXK-2FU3HUSF4M-CXNSFZ64XN-7HF";
             //The default CacheLocation value is "~/App_Data/DocumentCache"

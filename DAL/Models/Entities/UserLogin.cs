@@ -116,4 +116,17 @@ namespace DAL.Models.Entities
         public string Email { get; set; }
         public string ContactNo { get; set; }
     }
+    public partial class ErrorLog
+    {
+        public Int64 Id { get; set; }
+        public string ErrorMsg { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+    public partial class TeacherSubjectClass
+    {
+        public Int64 Id { get; set; }
+        public string Teacherid { get; set; }
+        public int ClassId { get; set; }
+        public int SubjectId { get; set; }
+    }
 }

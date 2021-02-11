@@ -33,6 +33,7 @@ namespace DAL.Models.Interfaces
         Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUsers();
         Task AddReadEdgeTrialUsers(ReadEdgeTrialUsers readEdgeTrialUsers);
         List<ClassSubjects> GetSubjectByClassType(int Classtype);
+        List<TeacherSubjectClass> GetTeacherSubjectClasses(string TeacherId = "");
     }
 
 }

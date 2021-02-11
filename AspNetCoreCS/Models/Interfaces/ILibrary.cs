@@ -25,6 +25,7 @@ namespace ReadEdgeCore.Models.Interfaces
         #endregion
         Task AddReadEdgeTrialUser(ReadEdgeTrialUsers readEdgeTrialUsers);
         Task<IEnumerable<ReadEdgeTrialUsers>> GetReadEdgeTrialUser();
-         List<ClassSubjects> GetSubjectByClassType(int ClassType);
+        List<ClassSubjects> GetSubjectByClassType(int ClassType);
+        List<TeacherSubjectClass> GetTeacherSubjectClasses(string TeacherID);
     }
 }

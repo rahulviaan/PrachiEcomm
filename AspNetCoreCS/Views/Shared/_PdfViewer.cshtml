@@ -2,6 +2,7 @@
 @using GleamTech.DocumentUltimate.AspNet.UI
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+@{var type = Convert.ToInt32(ViewBag.Type); }
 <!DOCTYPE html>
 @{
     var documentViewer = new DocumentViewer();
@@ -21,19 +22,35 @@
     }
     else
     {
-        documentViewer = new DocumentViewer
+        if (type == 1 || type == 2 || type == 6)
         {
-            Width = 800,
-            Height = 500,
-            Document = ViewBag.file,
-            SidePaneVisible = false,
-            DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf | DocumentViewerPermissions.ViewThumbnails | DocumentViewerPermissions.SelectText
-        };
+            documentViewer = new DocumentViewer
+            {
+                Width = 800,
+                Height = 500,
+                Document = ViewBag.file,
+                SidePaneVisible = false,
+                DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.DownloadAsPdf | DocumentViewerPermissions.SelectText
+            };
+        }
+        else
+        {
+            documentViewer = new DocumentViewer
+            {
+                Width = 800,
+                Height = 500,
+                Document = ViewBag.file,
+                SidePaneVisible = false,
+                DeniedPermissions = DocumentViewerPermissions.Print | DocumentViewerPermissions.Download | DocumentViewerPermissions.DownloadAsPdf | DocumentViewerPermissions.SelectText
+            };
+        }
+
     }
 
 }
 <html>
 <head>
+    <link rel="icon" type="image/png" href="~/images/favicon.png" sizes="32x32" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @this.RenderHead(documentViewer)
 </head>
@@ -81,7 +98,4 @@
         }
         //alert("Viewing page " + e.pageNumber);
     }
-     $("#btnSave").click(function () {
-           location.href ="http://readedgetrial.mielib.com/home/BookDetail?bookid="+@ViewBag.BookId
-        })
 </script>

@@ -80,6 +80,12 @@ namespace ReadEdgeCore.Controllers
                         _HttpContextAccessor.HttpContext.Session.Remove("UserId");
                         _HttpContextAccessor.HttpContext.Session.SetString("UserId", result.Result.Id);
 
+                        _HttpContextAccessor.HttpContext.Session.SetString("UserName", UserName);
+                        _HttpContextAccessor.HttpContext.Session.SetString("Password", Password);
+                        _HttpContextAccessor.HttpContext.Session.SetString("FirstName", result.Result.FirstName??"");
+                        _HttpContextAccessor.HttpContext.Session.SetString("LastName", result.Result.LastName??"");
+                        _HttpContextAccessor.HttpContext.Session.SetString("Email", result.Result.Email??"");
+                        _HttpContextAccessor.HttpContext.Session.SetString("PhoneNumber", result.Result.PhoneNumber??"");
                         #endregion
 
                         readEdgeLogin.CurrentLogins = readEdgeLogin.CurrentLogins + 1;
@@ -123,33 +129,44 @@ namespace ReadEdgeCore.Controllers
         
         public IActionResult logoff()
         {
-            var userid = _HttpContextAccessor.HttpContext.Session.GetString("UserId");
-            var id = _HttpContextAccessor.HttpContext.Session.GetString("Id");
-            var readEdgeLogin = _prachiUser.GetReadEdgeLoginByIds(userid);
-            var readEdgeUserLoginInfo = _prachiUser.GetReadEdgeUserLoginInfoByIds(Convert.ToInt32(id));
+            try
+            {
+                var userid = _HttpContextAccessor.HttpContext.Session.GetString("UserId");
+                var id = _HttpContextAccessor.HttpContext.Session.GetString("Id");
+                var readEdgeLogin = _prachiUser.GetReadEdgeLoginByIds(userid);
+                var readEdgeUserLoginInfo = _prachiUser.GetReadEdgeUserLoginInfoByIds(Convert.ToInt32(id));
 
-             //_HttpContextAccessor.HttpContext.Session.SetString("IsVerified","NO");
-             //_HttpContextAccessor.HttpContext.Session.SetString("OTP",null);
+                //_HttpContextAccessor.HttpContext.Session.SetString("IsVerified","NO");
+                //_HttpContextAccessor.HttpContext.Session.SetString("OTP",null);
 
-            //if (readEdgeLogin.CurrentLogins != readEdgeLogin.AllowedSystems)
-            //{
-            //    readEdgeLogin.LoginAllowed = true;
-            //    readEdgeLogin.CurrentLogins = readEdgeLogin.CurrentLogins - 1;
-            //}
-            readEdgeLogin.LoginAllowed = true;
-            readEdgeLogin.CurrentLogins = readEdgeLogin.CurrentLogins - 1;
-            _prachiUser.UpdateReadEdgeLogin(readEdgeLogin);
-            readEdgeUserLoginInfo.LogedOut = true;
-            readEdgeUserLoginInfo.LogoutTime = DateTime.UtcNow.ToLocalTime();
-            _prachiUser.UpdtaeReadEdgeUserLoginInfo(readEdgeUserLoginInfo);
-         
-          
-     
-        
-            _HttpContextAccessor.HttpContext.Session.SetString("UserId", "");
-            _HttpContextAccessor.HttpContext.Session.SetString("IsVerified","");
-            _HttpContextAccessor.HttpContext.Session.SetString("OTP", "");
-            return RedirectToAction("Login");
+                //if (readEdgeLogin.CurrentLogins != readEdgeLogin.AllowedSystems)
+                //{
+                //    readEdgeLogin.LoginAllowed = true;
+                //    readEdgeLogin.CurrentLogins = readEdgeLogin.CurrentLogins - 1;
+                //}
+                readEdgeLogin.LoginAllowed = true;
+                readEdgeLogin.CurrentLogins = readEdgeLogin.CurrentLogins - 1;
+                _prachiUser.UpdateReadEdgeLogin(readEdgeLogin);
+                readEdgeUserLoginInfo.LogedOut = true;
+                readEdgeUserLoginInfo.LogoutTime = DateTime.UtcNow.ToLocalTime();
+                _prachiUser.UpdtaeReadEdgeUserLoginInfo(readEdgeUserLoginInfo);
+
+
+
+
+                _HttpContextAccessor.HttpContext.Session.SetString("UserId", "");
+                _HttpContextAccessor.HttpContext.Session.SetString("IsVerified", "");
+                _HttpContextAccessor.HttpContext.Session.SetString("OTP", "");
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+
+                _HttpContextAccessor.HttpContext.Session.SetString("UserId", "");
+                _HttpContextAccessor.HttpContext.Session.SetString("IsVerified", "");
+                _HttpContextAccessor.HttpContext.Session.SetString("OTP", "");
+                return RedirectToAction("Login"); 
+            }
 
         }
     }

@@ -61,5 +61,6 @@ namespace DAL.Models.Interfaces
 
         List<ClassSubjects> GetSubjectByClassType(int Classtype);
 
+        Task LogError(ErrorLog errorLog);
     }
 }

@@ -27,5 +27,6 @@ namespace DAL.Models.Entities
         public virtual DbSet<ReadEdgeLogins> ReadEdgeLogins { get; set; }
         public virtual DbSet<ReadEdgeUserLoginInfo> ReadEdgeUserLoginInfo { get; set; }
         public virtual DbSet<ReadEdgeTrialUsers> ReadEdgeTrialUsers { get; set; }
+        public virtual DbSet<TeacherSubjectClass> TeacherSubjectClass { get; set; }
     }
 }

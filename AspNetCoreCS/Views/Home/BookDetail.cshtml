@@ -3,6 +3,8 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     var book = ViewBag.Book;
+    var thbid = Convert.ToInt32(ViewBag.THBid);
+    var userid = HttpContextAccessor.HttpContext.Session.GetString("UserId");
 }
 <style>
     #otpLoader {
@@ -42,80 +44,118 @@
 
                     <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="https://www.prachiindia.com/ModuleFiles/Items/@book.ImageName" /></p>
                 </div>
-                @if (((book.Id >= 942 && book.Id <= 949) || book.Id == 312) ||(book.Id>=921 && book.Id<=923))
+                @if ((book.Id >= 942 && book.Id <= 949))
                 {
-                    <div class="col-md-8">
-                        <h3>@book.Title</h3>
-                        <hr />
-                        <p>@book.Author</p>
-                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
+                <div class="col-md-8">
+                    <h3>@book.Title</h3>
+                    <hr />
+                    <p>@book.Author</p>
+                    @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
 
-                        @if (book.CBSE)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Chapter <span>Based Self Evaluation</span></a></p>
+                    @if (book.CBSE)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="8" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Chapter <span>Based Self Evaluation</span></a></p>
+                    }
+
+                    @if (book.MTP)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="9" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Model <span>Test Papers</span></a></p>
+                    }
+
+                    @if (book.BEP)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="6" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solved CBSE Board <span>Examination Papers (5*3 Sets)</span></a></p>
+                    }
+
+                    @if (book.ConceptMap)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="7" class="btn btn-default btn-2 subjectBtn" style="height:54px">Concept Chart <span>Chapter at a Glance</span></a></p>
+                    }
+                    @if (thbid > 0)
+                    {
+                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="10" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>*@
+                        @*<p><a asp-controller="home" asp-action="LoginTestHour" id="TPG" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>*@
+                        @*<form method='post' action='http://testhour.mielib.com/Account/GoToTestEdge' name='testedge_form'>
+                <input type="hidden" id="UserName" name="UserName" value="@ViewBag.UserName" />
+                <input type="hidden" id="Password" name="Password" value="@ViewBag.UserName" />
+                <input type="hidden" id="MobNo" name="MobNo" value="9811778611" />
+                <input type="hidden" id="Email" name="Email" value="errahulraj17@gmail.com" />
+                <input type="hidden" id="FirstName" name="FirstName" value="Rahul" />
+                <input type="hidden" id="LastName" name="LastName" value="Srivastava" />
+                <input type="hidden" id="MasterBookId" name="MasterBookId" value="@book.Id" />
+                <input type="hidden" id="Gender" name="Gender" value="0" />
+                <input type="hidden" id="Api_Key" name="Api_Key" value="6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=" />
+                <button type="submit" class="btn btn-default btn-2 subjectBtn">Test Paper Generator</button>
+            </form>*@
+
+                    if (string.IsNullOrEmpty(userid))
+                    {
+                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+                    }
+                    else
+                    {
+                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+
                         }
-
-                        @if (book.MTP)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Model <span>Test Papers</span></a></p>
-                        }
-
-                        @if (book.BEP)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solved CBSE Board <span>Examination Papers (5*3 Sets)</span></a></p>
-                        }
-
-                        @if (book.ConceptMap)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="5" class="btn btn-default btn-2 subjectBtn">Concept Map</a></p>
-                        }
-
+                    }
                     </div>
                 }
                 else
                 {
-                    <div class="col-md-8">
-                        <h3>@book.Title</h3>
-                        <hr />
-                        <p>@book.Author</p>
-                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
-                        @if (book.IsEbook)
+                <div class="col-md-8">
+                    <h3>@book.Title</h3>
+                    <hr />
+                    <p>@book.Author</p>
+                    @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
+                    @if (book.IsEbook)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-AllowedCBPages="@book.AllowedCBPages" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+                    }
+
+                    @if (book.IsLessonPlan)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
+                    }
+
+                    @if (book.IsWorkbook)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
+                    }
+
+                    @if (book.IsSolutions)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
+                    }
+
+                    @if (book.IsMultiMedia)
+                    {
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
+                    }
+                    @if (thbid > 0)
+                    {
+                        if (string.IsNullOrEmpty(userid))
                         {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-AllowedCBPages="@book.AllowedCBPages" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
                         }
-                       
-                        @if (book.IsLessonPlan)
+                        else
                         {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
+                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+
                         }
-                        
-                        @if (book.IsWorkbook)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
-                        }
-                      
-                        @if (book.IsSolutions)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
-                        }
-                      
-                        @if (book.IsMultiMedia)
-                        {
-                            <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
-                        }
-                       
-                    </div>
+                    }
+
+                </div>
                 }
 
             </div>
         </div>
     </div>
 
-
 </div>
 @section scripts{
     <script src="~/js/toastr.min.js"></script>
     <link href="~/css/toastr.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script>
         $(document).ready(function () {
             $('#exampleModalCenter').modal('hide');
@@ -127,6 +167,8 @@
 
                 $('#OtpCenter').modal('show');
             }
+
+           
         })
 
         $("#btnGetOtp").click(function () {
@@ -145,13 +187,13 @@
             //    isValid = false;
             //    return false;
             //}
-           
+
             var Contactnumber = "@HttpContextAccessor.HttpContext.Session.GetString("ContactNo")";
-         
+
             if (Contactnumber != "") {
                 MobileNo= Contactnumber
             }
- 
+
             if (MobileNo == "") {
                 toastr.error('MOBILENO REQUIRED');
                 isValid = false;
@@ -258,6 +300,10 @@
         $("#test").click(function () {
 
         })
+
+        function OpenAlert() {
+            $('#TPGModaL').modal('show');
+        }
     </script>
 
 }
@@ -314,6 +360,26 @@
                     <img src="~/images/loader.gif" height="60" /> Please wait...
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="TPGModaL" tabindex="-1" role="dialog" aria-labelledby="OtpDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="OtpDetail"><i class="material-icons" style="font-size:36px;color:red">warning</i></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <label>You can not access this feature contact to admin</label>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

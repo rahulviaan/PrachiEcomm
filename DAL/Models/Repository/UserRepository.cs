@@ -92,7 +92,7 @@ namespace DAL.Models.Repository
             try
             {
                 //Task<AspNetUsers> user =  context.AspNetUsers.FirstOrDefaultAsync(x => x.UserName == UserName && x.PasswordHash == Password);
-                AspNetUsers user =  context.AspNetUsers.Select(x=> new AspNetUsers{Id=x.Id,Email=x.Email,UserName=x.UserName,PasswordHash=x.PasswordHash}).FirstOrDefault(x => x.UserName == UserName && x.PasswordHash == Password);
+                AspNetUsers user =  context.AspNetUsers.Select(x=> new AspNetUsers{Id=x.Id,Email=x.Email,UserName=x.UserName,PasswordHash=x.PasswordHash,FirstName=x.FirstName,LastName=x.LastName,PhoneNumber=x.PhoneNumber}).FirstOrDefault(x => x.UserName == UserName && x.PasswordHash == Password);
                 var res =   user;
                // var res = await context.AspNetUsers.FirstOrDefaultAsync(x => x.UserName == UserName && x.PasswordHash == Password);
                 return res;
@@ -208,6 +208,13 @@ namespace DAL.Models.Repository
             {
             }
             //return userLogin;
+        }
+
+        public List<TeacherSubjectClass> GetTeacherSubjectClasses(string TeacherId = "")
+        {
+
+            var result = context.TeacherSubjectClass.Where(x => x.Teacherid == TeacherId || TeacherId == "").ToList();
+            return result;
         }
     }
 }

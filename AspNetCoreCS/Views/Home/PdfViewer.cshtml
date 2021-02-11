@@ -2,12 +2,14 @@
 @{
     Layout = null;
     var book = ViewBag.Book; // READEDGE_30012020A001 SiddharthSingh
+
 }
 <link href="~/css/bootstrap.css" rel="stylesheet" />
 <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 <link href="~/css/style.css" rel="stylesheet" />
 <link href="~/css/style.min.css" rel="stylesheet" />
 <link href="/css/viewer.css" rel="stylesheet" />
+<link rel="icon" type="image/png" href="~/images/favicon.png" sizes="32x32" />
 <style>
     .btn {
         width: auto !important;
@@ -33,26 +35,30 @@
 <div class="container">
     <div class="panel-body subjectDetails" style="padding-top: 0px;">
         <div class="row">
-            <div class="col-md-6" style="width:50%;float:left;height:auto;">
+            <div class="col-md-12 form-group">
                 @*<button type="button" class="btn btn-secondary" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></button>*@
                 <div class="fonticon-wrap icon-shadow icon-shadow-primary mt-3">
                     <a href="#" onclick="history.go(-1)"><i class="ft-corner-up-left"></i></a>
                 </div>
             </div>
-           
-          
+            <div class="clearfix"></div>
+
+
             <div class="form-group col-md-6">
-                <label asp-for="Chapter" class="col-form-label">Chapters</label>
-                <select asp-for="Chapter" class="form-control" asp-items="@(new SelectList(ViewBag.Chapters," Id","Title"))"></select>
+                <label asp-for="Chapter" class="col-form-label">@ViewBag.LblChapter</label>
+                @*<select asp-for="Chapter" class="form-control" asp-items="@(new SelectList(ViewBag.Chapters," Id","Title"))"></select>*@
+                @Html.DropDownList("Chapter", (IEnumerable<SelectListItem>)ViewBag.Chapters, null, new { @class = "select-css form-control" })
             </div>
             <div class="form-group col-md-6">
-                <label asp-for="ChapterContent" class="col-form-label">Title</label>
-                <select asp-for="ChapterContent" class="form-control" asp-items="@(new SelectList(ViewBag.ChapterContents," Name","Title"))"></select>
+                <label asp-for="ChapterContent" class="col-form-label">@ViewBag.LblContent</label>
+                @*<select asp-for="ChapterContent" class="form-control" asp-items="@(new SelectList(ViewBag.ChapterContents," Name","Title"))"></select>*@
+
+                @Html.DropDownList("ChapterContents", (IEnumerable<SelectListItem>)ViewBag.ChapterContents, null, new { @class = "select-css form-control" })
             </div>
 
             <div id="result" class="form-group col-md-12">
                 @{
-                Html.RenderPartial("_PdfViewer");
+                    Html.RenderPartial("_PdfViewer");
                 }
             </div>
         </div>
@@ -70,8 +76,10 @@
         var Title = '@ViewBag.BooName'
         loaddocument(Title, filename);
         loadtitle();
+
+       
     });
-    $("#ChapterContent").change(function () {
+    $("#ChapterContents").change(function () {
         var Title = '@ViewBag.BooName'
         var pdfFIle = $(this).val();
         loaddocument(Title, pdfFIle);
@@ -86,7 +94,7 @@
             type: 'Get',
             data: { Chapter: Chapter, BookID: BookID, Type: Type },
             success: function (data) {
-                var $el = $("#ChapterContent");
+                var $el = $("#ChapterContents");
                 $el.empty();
                 $.each(data, function (value, key) {
                     $el.append($("<option></option>").attr("value", key.name).text(key.title));
@@ -116,13 +124,13 @@
 
 
     function loaddocument(Title, FIle) {
-
+        var Type = "@ViewBag.Type";
         $.ajax({
             url: '@Url.Action("TestPartial", "Home")',
-            data: { Title: Title, pdfFIle: FIle, EbookPdf: false },
+            data: { Title: Title, pdfFIle: FIle, Type: Type, EbookPdf: false},
             type: 'Get',
             success: function (data) {
-                $("#result").html(data);
+                $("#result").html(data);   
             },
         });
     }
