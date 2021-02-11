@@ -1,0 +1,682 @@
+﻿@model IEnumerable<PrachiIndia.Sql.tblCompanyAddress>
+@{
+    ViewBag.Title = "Contact";
+}
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>Contact Us</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="padding:3px 0;">
+
+    <div class="md-box">
+        @*  <h3 class="">Headquarter Coordinates</h3>
+            <p>Our Google coordinates to reach us are  :  28.6693318,77.1679463</p>*@
+        <script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:300px;width:100%;'>
+            <div id='gmap_canvas' style='height:300px;width:100%;'></div><div></div>
+            <style>
+                #gmap_canvas img {
+                    max-width: none !important;
+                    background: none !important;
+                }
+            </style>
+        </div>
+        <script type='text/javascript'>function init_map() { var myOptions = { zoom: 13, center: new google.maps.LatLng(28.6694129, 77.16786950000005), mapTypeId: google.maps.MapTypeId.ROADMAP }; map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions); marker = new google.maps.Marker({ map: map, position: new google.maps.LatLng(28.6694129, 77.16786950000005) }); infowindow = new google.maps.InfoWindow({ content: '<strong>Prachi India Pvt Ltd</strong><br>309/10, ALLIED HOUSE, INDER LOK, DELHI-110035<br>' }); google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); }); infowindow.open(map, marker); } google.maps.event.addDomListener(window, 'load', init_map);</script>
+
+
+    </div>
+</section>
+<section style="padding:10px 0; background-color:#caf5dc;">
+    <div class="col-md-12 locbtn" style="margin:3% 0;text-align: center;">
+        <a href="#" class="locationbtn" data-toggle="modal" data-target="#MapLoc"><span>✓</span>Map Location </a>
+        <a href="#" class="locationbtn red" data-toggle="modal" data-target="#addressLoc"><span>✓</span>Address Location</a>
+    </div>
+
+</section>
+<section id="about" class="maincontact" style="padding:5px 0">
+    <div class="container">
+        <div class="panel-body">
+            <div class="col-md-12 serviceshead">
+                <h2>Get in touch with us</h2>
+            </div>
+            <div class="col-md-5">
+                <div class="panel-body" style="box-shadow: 0px 0px 2px rgba(107, 98, 98, 0.3); padding-bottom: 11%;">
+                    <div class="col-md-2" style="margin-top:4%;">
+                        <div class="icon">
+                            <i class="fa fa-map-marker"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <h3>Admin office</h3>
+                        <p><b>Prachi [India] Pvt. Ltd.</b></p>
+                        <p><i class="fa fa-home"></i> 309/10, ALLIED HOUSE, INDER LOK, DELHI-110035</p>
+                        <p><i class="fa fa-phone"></i> 011-47320666 (8 Lines)</p>
+                        <p><i class="fa fa-fax"></i> 011-43852438, 47320680</p>
+                        <p><i class="fa fa-globe"></i> <a href="http://prachiindia.com/" target="_blank">www.prachiindia.com</a></p>
+                        <p><i class="fa fa-envelope-o"></i> <a href="mailto:info@prachiindia.com">info@prachiindia.com</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7" style="box-shadow: 0px 0px 2px rgba(107, 98, 98, 0.3); padding-bottom: 10px">
+
+
+                <div class="panel-body">
+                    <div class="heading">
+                        <h3>Contact form</h3><p id="mailStatus"></p>
+                    </div>
+
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "Form_Get_In_Touch" }))
+                    {
+                        <div class="row formsubmit">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="firstname">Name<span style="color:red">*</span></label>
+                                    <input class="form-control" name="Name" id="Name" required="required" type="text">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="lastname">Contact No<span style="color:red">*</span>.</label>
+                                    <input name="ContactNo" id="ContactNo" class="input-medium bfh-phone form-control" data-format="+91- ddd - ddd-dddd" required="required" type="text">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="email">Email<span style="color:red">*</span></label>
+                                    <input class="form-control" name="Email" id="Email" required="required" type="email">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="message">Message<span style="color:red">*</span></label>
+                                    <textarea class="form-control" name="Message" id="Message" required="required"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 text-center">
+                                <input type="button" id="btnGetInTouchWith" value="Submit" class="btn perfectbtn" onclick="ValidCaptcha();">
+                                <!--<button type="submit" name="submit" class="btn btn-adroit-main" onclick="ValidCaptcha();"><i class="fa fa-envelope-o"></i>Send message</button>-->
+
+                            </div>
+                        </div>
+                    <!-- /.row -->
+                    }
+                </div>
+
+                <div id="validation"></div>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    <!-- <div class="col-md-12 serviceshead">
+         <h2>Our Locations</h2>
+     </div>
+
+     <div class="panel-body" style="width: 100%; overflow-y: scroll; height: 393px; border: 1px solid rgb(228, 228, 228);float: left;">
+         <div class="col-md-12 addlocation">
+
+
+             @foreach (var item in Model)
+             {
+                 <div class="col-sm-3 col-md-3">
+                     <div class="thumbnail @item.Color">
+                         <div class="caption">
+                             @*<h4>Madhya Pradesh </h4>*@
+                             <h4>@item.StateName </h4>
+                             @item.H_No, @item.Address,
+                             <br>
+                             @item.NearBy,
+                             <br>
+                             <strong>@item.City</strong>
+                             <br>
+                             Pincode - @item.Pincode<br>
+                             Contact No. - @item.mobileno<br>
+                             @item.Email
+                         </div>
+                     </div>
+                 </div>
+
+             }
+
+
+         </div>
+
+     </div>-->
+
+</section>
+
+<!-- Modal -->
+<!--map Location area start-->
+<div class="modal fade" id="MapLoc" role="dialog">
+    <div class="modal-content modal-content-one">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="top:-10px;">&times;</button>
+                <h4 class="modal-title text-center">Our Map Location</h4>
+            </div>
+            <div class="modal-body" style="padding:0">
+                <div id="googleMap" style="max-height:100%; height:900px;width:100%;"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!--map Location area end-->
+<div class="modal fade" id="addressLoc" role="dialog">
+    <div class="modal-content modal-content-one">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="top:-10px;">&times;</button>
+                <h4 class="modal-title text-center">Our Location</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">Uttar Pradesh</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading citytab5">
+                                            <h1 class="panel-title">Lucknow</h1>
+                                        </div>
+                                        <div class="panel-body"><b>Naseem Hashmi</b><br />H. No. - 4/136, Virat Khand, Gomti Nagar,<br /> Lucknow<br /> Pincode - 226010<br /> Contact No. - +91 9303290131<br /> <a href="mailto:naseem.hashmi@prachiindia.net">naseem.hashmi@prachiindia.net</a> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading citytab6">
+                                            <h1 class="panel-title">Varanasi</h1>
+                                        </div>
+                                        <div class="panel-body"><b>Santosh Sharma</b><br />H. No. - S-21/128, B-1-A, Neel Cottage Colony, Maldahiya, Varanasi<br /> Pincode - 221202<br /> Contact No. - +91 8181958071<br /> <a href="mailto:santosh.sharma@prachiindia.net">santosh.sharma@prachiindia.net</a> </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Haryana</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading citytab4">
+                                            <h1 class="panel-title">Chandigarh</h1>
+                                        </div>
+                                        <div class="panel-body"><b>Subhash Lakhanpal</b><br />H.No - 1254, First Floor, Sector- 21 B, Chandigarh <br /> Pincode - 160022<br /> Contact No. - +91 9997744565<br /> <a href="mailto:subhash.lakhanpal@prachiindia.com">subhash.lakhanpal@prachiindia.com</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Madhya Pradesh</h1>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab4">
+                                        <h1 class="panel-title">Bhopal</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Anil Nair</b><br />H. No. HC-6, Abhiruchi Parisar, Old Subhash Nagar, Bhopal<br /> Pincode - 462023<br /> Contact No. - +91 9575363810<br /> <a href="mailto:anil.nair@prachiindia.net">anil.nair@prachiindia.net</a> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">Maharashtra</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab5">
+                                        <h1 class="panel-title">Mumbai</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Virendra Singh</b><br />Ground Floor-7, Sai Kripa Society, Gundawali Hill, Old Nagar Das Road, Andheri East, Mumbai<br /> Pincode - 400069 <br />Contact No. - +91 9022566990 <br /><a href="mailto:virendra.singh@prachiindia.net">virendra.singh@prachiindia.net</a> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Tamil Nadu</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab6">
+                                        <h1 class="panel-title">Chennai</h1>
+                                    </div>
+                                    <div class="panel-body"><b>S. Naveenthra Kumar</b><br />House No. 23/6, Perumal Kovil Garden Street, Arumbakkam, Chennai<br /> Pincode - 600106<br /> Contact No. - +91 9444142106<br /> <a href="mailto:naveenthra.kumar@prachiindia.com">naveenthra.kumar@prachiindia.com</a> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">Assam</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab5">
+                                        <h1 class="panel-title">Guwahati</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Subhendu Roy</b><br />H.No.-14, 1st Floor, Laxmi Nagar, 3rd Byelane (Nayanpur Road), Ganesguri, Guwahati<br /> Pincode - 781005 <br />Contact No. - 9433887857 <br /><a href="mailto:subhendu.roy@prachiindia.com">subhendu.roy@prachiindia.com</a> </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Telangana</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab4">
+                                        <h1 class="panel-title">Hyderabad</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Ravi</b><br />D. No. 8-8-158, Road. No. 14, Green park colony, Karmanghat, Hyderabad <br />Pincode - 500035 <br />Contact No. - +91 9885033701<br /> <a href="mailto:ravi.andhra@prachiindia.com">ravi.andhra@prachiindia.com</a> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">West Bengal</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab6">
+                                        <h1 class="panel-title">Kolkata</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Subhendu Roy</b><br />H. No. - 18, Motilal Nehru Road, Near Peshprio Park, Kolkata <br />Pincode - 700029 <br />Contact No. - 9433887857<br /> <a href="mailto:subhendu.roy@prachiindia.com">subhendu.roy@prachiindia.com</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Punjab</h1>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab4">
+                                        <h1 class="panel-title">Ludhiana</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Dheeraj Kumar Malhotra</b><br />H.No.424-I, Ground floor, B.R.S. Nagar, Ludhiana <br />Pincode - 141001 <br />Contact No. - +91 9914149888 <a href="mailto:dheeraj.malhotra@prachiindia.net">dheeraj.malhotra@prachiindia.net</a> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">Bihar</h1>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab5">
+                                        <h1 class="panel-title">Patna</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Satish Ranjan</b><br />H. No. - C/A-1, P. C. Colony, Kankar Bagh, Patna <br />Pincode - 800020 <br />Contact No. - +91 9430475938 <br /><a href="mailto:satish.ranjan@prachiindia.net">satish.ranjan@prachiindia.net</a> </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Chhattisgarh</h1>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab6">
+                                        <h1 class="panel-title">Raipur</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Ajeet Singh</b><br />HIG - 26, Janiam Bihar, Behind NH- MMI Hospital Lalpur, Raipur <br />Pincode - 492001 <br />Contact No. - +91 9303469301 <br /><a href="mailto:ajit.singh@prachiindia.net">ajit.singh@prachiindia.net</a></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab1">
+                                <h1 class="panel-title">Jharkhand</h1>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab6">
+                                        <h1 class="panel-title">Ranchi</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Sunil Kumar</b><br />H. No. - 122, New A. G. Co-Operative Colony, Kadru, Ranchi <br />Pincode - 834002 <br />Contact No. - 8986833231 <br /><a href="mailto:sunil.kumar@prachiindia.com">sunil.kumar@prachiindia.com</a> </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading citytab2">
+                                <h1 class="panel-title">Karnataka</h1>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading citytab4">
+                                        <h1 class="panel-title">Bangalore</h1>
+                                    </div>
+                                    <div class="panel-body"><b>Muralidhara Rao</b><br />H. No - 180 Ground Floor, 9C Main Road, Pipeline Main Road, Vijayanagar , Bangalore <br />Pincode - 560040 <br />Contact No. - 9342211337 <br /><a href="mailto:muralidhara.rao@prachiindia.net">muralidhara.rao@prachiindia.net</a> </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSubmit').on('click', function () {
+                var msg = $('#txtFeedback').val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ContactUs","Home")',
+                    data: { message: msg },
+                    success: successFunc,
+                    error: errorFunc
+                });
+            });
+            function successFunc(data, status) {
+                if (data == 'success') {
+                    $('#txtFeedback').val('');
+                    $('#opFeedback1').html('Thank You');
+                }
+            }
+
+            function errorFunc() {
+
+            }
+        });
+    </script>
+
+
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCrLxdChiOqVj78RdsqpSyhQztvWDsL028"></script>
+    <script type="text/javascript">
+        var markers = [
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '28.6693318',
+            "lng": '77.1679463',
+            "description": '309/10, ALLIED HOUSE, INDER LOK, DELHI-110035.'
+        },
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '23.250348',
+            "lng": '77.433264',
+            "description": ' H. No. HC-6, Abhiruchi Parisar, Old Subhash Nagar, Bhopal, Pincode - 462023.'
+        },
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '30.734156',
+            "lng": '76.736690',
+            "description": 'H.No - 1254, First Floor, Sector- 21 B, Chandigarh, Pincode - 160022 '
+        },
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '13.075610',
+            "lng": '80.208741',
+            "description": 'House No. 23/6,  Perumal Kovil Garden Street,  Arumbakkam,  Chennai  Tamil Nadu - 600106 .'
+        },
+
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '26.155997',
+            "lng": '91.785848',
+            "description": 'House No. 14, Bye Lane 4,  Laxmi Nagar Path,  R. G. Baruah Road,  Guwahati, Kamrup,  Guwahati, Assam - 781005 .'
+        },
+        {
+            "title": 'Prachi [Indai] Pvt. Ltd.',
+            "lat": '17.352266',
+            "lng": '78.525549',
+            "description": 'Road. No. 14,  Green park colony, Karmanghat, Hyderabad Telangana - 500035.'
+        },
+
+          {
+              "title": 'Prachi [Indai] Pvt. Ltd.',
+              "lat": '22.521104',
+              "lng": '88.354729',
+              "description": 'H. No. - 18,  Motilal Nehru Road,  Kolkata West Bengal - 700029.'
+          },
+{
+    "title": 'Prachi [Indai] Pvt. Ltd.',
+    "lat": '26.851724',
+    "lng": '81.017319',
+    "description": 'H. No. - 4/136,  Virat Khand, Gomti Nagar,  Lucknow - 226010 Uttar Pradesh.'
+},
+            {
+                "title": 'Prachi [Indai] Pvt. Ltd.',
+                "lat": '25.335657',
+                "lng": '82.984022',
+                "description": 'H. No. - S-21/128, B-1-A,  Neel Cottage Colony,  Near Rita Ice Cream,  Varanasi  Uttar Pradesh - 220012.'
+            },
+
+              {
+                  "title": 'Prachi [Indai] Pvt. Ltd.',
+                  "lat": '30.880478',
+                  "lng": '75.794727',
+                  "description": 'H.No.424-I, Ground floor, B.R.S. Nagar, Ludhiana, Pincode - 141001.'
+              },
+               {
+                   "title": 'Prachi [Indai] Pvt. Ltd.',
+                   "lat": '19.121391',
+                   "lng": '72.854087',
+                   "description": 'Ground Floor-7, Sai Kripa Society, Gundawali Hill, Old Nagar Das Road, Andheri East, Mumbai, Pincode - 400069.'
+               },
+                {
+                    "title": 'Prachi [Indai] Pvt. Ltd.',
+                    "lat": '25.600213',
+                    "lng": '85.153604',
+                    "description": 'H. No. - C/A-1,  P. C. Colony, Kankar Bagh,  Patna,  Bihar- 800020 .'
+                },
+                 {
+                     "title": 'Prachi [Indai] Pvt. Ltd.',
+                     "lat": '21.213199',
+                     "lng": '81.657927',
+                     "description": 'HIG - 26, Janiam Bihar, Behind NH- MMI Hospital Lalpur, Raipur, Pincode - 492001.'
+                 },
+                  {
+                      "title": 'Prachi [Indai] Pvt. Ltd.',
+                      "lat": '23.356369',
+                      "lng": '85.314268',
+                      "description": 'H. No. - 122, New A. G. Co-Operative Colony, Kadru, Ranchi, Pincode -  834002.'
+                  },
+                  {
+                      "title": 'Prachi [Indai] Pvt. Ltd.',
+                      "lat": '12.947375',
+                      "lng": '77.554850',
+                      "description": 'H. No - 180 Ground Floor, 9C Main Road, Pipeline Main Road, Vijayanagar , Bangalore, Pincode -  560040.'
+                  },
+        ];
+        window.onload = function () {
+            LoadMap();
+        }
+        function LoadMap() {
+            console.log(markers);
+            var mapOptions = {
+                center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+
+            //Create and open InfoWindow.
+            var infoWindow = new google.maps.InfoWindow();
+
+            for (var i = 0; i < markers.length; i++) {
+                var data = markers[i];
+                var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title: data.title
+                });
+
+                //Attach click event to the marker.
+                (function (marker, data) {
+                    google.maps.event.addListener(marker, "click", function (e) {
+                        //Wrap the content inside an HTML DIV in order to set height and width of InfoWindow.
+                        infoWindow.setContent("<div style = 'width:200px;min-height:40px'>" + data.description + "</div>");
+                        infoWindow.open(map, marker);
+                    });
+                })(marker, data);
+            }
+        }
+        $(document).ready(function () {
+
+            $("#btnGetInTouchWith").on("click", function () {
+                var Name = $("#Name").val();
+                var ContactNo = $("#ContactNo").val();
+                var Email = $("#Email").val();
+                var Message = $("#Message").val();
+                var validationStatus = true;
+                $("#validation").empty();
+                if (Name == "") {
+                    $("#validation").append("<br />Please Enter Name").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (ContactNo == "") {
+                    $("#validation").append("<br />Please Enter ContactNo").css("color", "Red");
+                    validationStatus = false;
+                }
+
+                if (Email == "") {
+                    $("#validation").append("<br />Please Enter Email").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (Message == "") {
+                    $("#validation").append("<br />Please Enter Message").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (validationStatus) {
+                    $("#btnGetInTouchWith").attr("disabled", "disabled");
+                    $("#validation").append("<b>Please wait<b>.....").css("color", "green");
+                    var datastring = $("#Form_Get_In_Touch").serialize();
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ContactUs", "Home")',
+                        data: datastring,
+                        success: function (data) {
+                            if (data == "Message sent") {
+                                $("#validation").empty();
+                                $("#mailStatus").css("color", "green").html(data);
+                                $("#Name").val("");
+                                $("#ContactNo").val("");
+                                $("#Email").val("");
+                                $("#Message").val("");
+                                $("#btnGetInTouchWith").removeAttr("disabled");
+                            }
+                            else {
+                                $("#mailStatus").css("color", "red").html(data);
+                            }
+                            $("#mailStatus").fadeOut(10000);
+                        }
+                    });
+                }
+                else {
+                    return false;
+
+                }
+
+            })
+        })
+    </script>
+
+}

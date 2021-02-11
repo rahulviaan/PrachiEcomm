@@ -1,0 +1,260 @@
+﻿
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+<div class="col-md-3" style="margin-top:2%;">
+    @Html.Partial("_Settings")</div>
+<div class="col-md-9">
+    <div class="accountset" style="margin-top:2%;">
+        @*@using (Html.BeginForm("_EditUserProfile", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {*@
+        @Html.AntiForgeryToken()
+        @if (@ViewData["Shipping"] != null)
+            {
+                foreach (var items in @ViewData["Shipping"] as IEnumerable<PrachiIndia.Sql.AspNetUser>)
+                {
+                @Html.Partial("_EditUserShipping", items)
+            }
+        }
+        @foreach (var item in @ViewData["Profile"] as IEnumerable<PrachiIndia.Sql.AspNetUser>)
+            {
+            <div id="profiles">
+                <div class="col-md-12 text-right">
+                    <div class="col-md-12">
+                        <p class="text-info" style="margin-top:5px;margin-top: 10px;"> @DateTime.Now.ToString("dddd, dd MMMM yyyy hh:mm tt")</p>
+                        @Html.Partial("_EditUserProfile", item)
+                        @Html.Partial("_EditUserBilling", item)
+                        @*@Html.Partial("_EditUserShipping", item)*@
+                        @if (@ViewData["Shipping"] == null)
+                        {
+                            @Html.Partial("_EditUserShipping", item)
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin-bottom:1%;">
+                    <div class="panel-body inprdservice">
+                        <div class="col-md-12 inprdservicehead">
+                            <p><b><label for="PlanName">@item.FirstName</label></b></p>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3 col-lg-3" align="center">
+                                <p><img alt="User Pic" src="@item.ProfileImage" class="img-responsive img-thumbnail"></p>
+                                <p><span id="EditProfile" style="cursor:pointer;">Edit Profile</span></p>
+                            </div>
+                            <div class="col-md-9 col-lg-9">
+                                <div class="row">
+                                    <div class="col-md-3 form-group"><b>UserName:</b></div>
+                                    <div class="col-md-9 form-group">@item.UserName</div>
+                                    <div class="col-md-3 form-group"><b>Email:</b></div>
+                                    <div class="col-md-9 form-group">@item.Email</div>
+                                    <div class="col-md-3 form-group"><b>Address</b></div>
+                                    <div class="col-md-9 form-group">@item.Address</div>
+                                    <div class="col-md-3 form-group"><b>Country</b></div>
+                                    <div class="col-md-9 form-group">@item.Country</div>
+                                    <div class="col-md-3 form-group"><b>State</b></div>
+                                    <div class="col-md-9 form-group">@item.State</div>
+                                    <div class="col-md-3 form-group"><b>City</b></div>
+                                    <div class="col-md-9 form-group">@item.City</div>
+                                    <div class="col-md-3 form-group"><b>Phone Number</b></div>
+                                    <div class="col-md-9 form-group">@item.PhoneNumber</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin-bottom:1%;">
+                    <div class="panel-body inprdservice">
+                        <div class="col-md-12 inprdservicehead">
+                            <p><b><label for="PlanName">Billing Address</label></b></p>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3 col-lg-3" align="center">
+                                @*<p><img alt="User Pic" src="~/img/no-profile-img.png" class="img-responsive img-thumbnail"></p>*@
+                                <p><span style="cursor:pointer;" id="EditBilling">Edit Billing Address</span></p>
+                            </div>
+                            <div class="col-md-9 col-lg-9">
+                                <div class="row">
+                                    <div class="col-md-3 form-group"><b>UserName:</b></div>
+                                    <div class="col-md-9 form-group">@item.UserName</div>
+                                    <div class="col-md-3 form-group"><b>Email:</b></div>
+                                    <div class="col-md-9 form-group">@item.Email</div>
+                                    <div class="col-md-3 form-group"><b>Address</b></div>
+                                    <div class="col-md-9 form-group">@item.Address</div>
+                                    <div class="col-md-3 form-group"><b>Country</b></div>
+                                    <div class="col-md-9 form-group">@item.Country</div>
+                                    <div class="col-md-3 form-group"><b>State</b></div>
+                                    <div class="col-md-9 form-group">@item.State</div>
+                                    <div class="col-md-3 form-group"><b>City</b></div>
+                                    <div class="col-md-9 form-group">@item.City</div>
+                                    <div class="col-md-3 form-group"><b>Phone Number</b></div>
+                                    <div class="col-md-9 form-group">@item.PhoneNumber</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (@ViewData["Shipping"] != null)
+                {
+                    foreach (var items in @ViewData["Shipping"] as IEnumerable<PrachiIndia.Sql.AspNetUser>)
+                    {
+                        <div class="col-md-12" style="margin-bottom:1%;">
+                            <div class="panel-body inprdservice">
+                                <div class="col-md-12 inprdservicehead">
+                                    <p><b><label for="PlanName">Shipping Address</label></b></p>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="col-md-3 col-lg-3" align="center">
+                                        @*<p><img alt="User Pic" src="~/img/no-profile-img.png" class="img-responsive img-thumbnail"></p>*@
+                                        <p><span style="cursor:pointer;" id="EditShipping">Edit Shipping Address</span></p>
+                                    </div>
+                                    <div class="col-md-9 col-lg-9">
+                                        <div class="row">
+                                            <div class="col-md-3 form-group"><b>UserName:</b></div>
+                                            <div class="col-md-9 form-group">@items.UserName</div>
+                                            <div class="col-md-3 form-group"><b>Email:</b></div>
+                                            <div class="col-md-9 form-group">@items.Email</div>
+                                            <div class="col-md-3 form-group"><b>Address</b></div>
+                                            <div class="col-md-9 form-group">@items.Address</div>
+                                            <div class="col-md-3 form-group"><b>Country</b></div>
+                                            <div class="col-md-9 form-group">@items.Country</div>
+                                            <div class="col-md-3 form-group"><b>State</b></div>
+                                            <div class="col-md-9 form-group">@items.State</div>
+                                            <div class="col-md-3 form-group"><b>City</b></div>
+                                            <div class="col-md-9 form-group">@items.City</div>
+                                            <div class="col-md-3 form-group"><b>Phone Number</b></div>
+                                            <div class="col-md-9 form-group">@items.PhoneNumber</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+                else
+                {
+
+                    <div class="col-md-12" style="margin-bottom:1%;">
+                        <div class="panel-body inprdservice">
+                            <div class="col-md-12 inprdservicehead">
+                                <p><b><label for="PlanName">Shipping Address</label></b></p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-3 col-lg-3" align="center">
+                                    @*<p><img alt="User Pic" src="~/img/no-profile-img.png" class="img-responsive img-thumbnail"></p>*@
+                                    <p><span style="cursor:pointer;" id="EditShipping">Edit Shipping Address</span></p>
+                                </div>
+                                <div class="col-md-9 col-lg-9">
+                                    <div class="row">
+                                        <div class="col-md-3 form-group"><b>UserName:</b></div>
+                                        <div class="col-md-9 form-group">@item.UserName</div>
+                                        <div class="col-md-3 form-group"><b>Email:</b></div>
+                                        <div class="col-md-9 form-group">@item.Email</div>
+                                        <div class="col-md-3 form-group"><b>Address</b></div>
+                                        <div class="col-md-9 form-group">@item.Address</div>
+                                        <div class="col-md-3 form-group"><b>Country</b></div>
+                                        <div class="col-md-9 form-group">@item.Country</div>
+                                        <div class="col-md-3 form-group"><b>State</b></div>
+                                        <div class="col-md-9 form-group">@item.State</div>
+                                        <div class="col-md-3 form-group"><b>City</b></div>
+                                        <div class="col-md-9 form-group">@item.City</div>
+                                        <div class="col-md-3 form-group"><b>Phone Number</b></div>
+                                        <div class="col-md-9 form-group">@item.PhoneNumber</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                }
+
+            </div>
+        }
+        @*}*@
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/js/notify.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script>
+        //change here for remove validation start here by deepak:19/10/2016
+        $(document).ready(function () {
+            $(".mycart").hide();
+        });
+
+        function clearvalidation() {
+            $('.field-validation-error').each(function () {
+                $(this).html("");
+            })
+        }
+        $("#EditProfile").click(function () {
+            $('#EditAddress').modal('show');
+        });
+        $("#EditBilling").click(function () {
+            $('#EditBillings').modal('show');
+        });
+        $("#EditShipping").click(function () {
+            $("#EditShippings").modal('show');
+        });
+        //change here for remove validation End here by deepak:19/10/2016
+    </script>
+    @*added for address edit pop up for country state and city start here by deepak:19/10/2016*@
+    <script>
+        $(function () {
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#StateId").empty();
+                    $('#StateId').html(items);
+                });
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+        function Mainpage() {
+            var url = "/Catalogue";
+            window.location.href = url;
+        }
+
+    </script>
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    @*added for address edit pop up for country state and city end here by deepak:19/10/2016*@
+
+
+}
+
+

@@ -1,0 +1,65 @@
+
+
+
+.jobprofile a {
+  background: url("/img/slider/sprite.png") 15px 13px no-repeat;
+  display: block;
+  padding: 15px 10px 10px 32px;
+  float:left;
+  width:100%;
+  margin: 0;
+  color: #000000;
+  text-decoration: none;
+  font-weight: normal;
+
+ 
+}
+.jobprofile:hover { }
+.jobprofile.open  {  }
+.jobprofile.open a { background-position: 13px -25px; }
+.jobprofile + div { padding: 10px; }
+
+
+.close {
+    opacity:1!important;
+    font-size:12px!important;
+}
+/* Pre hide sections with JavaScript on
+--- */
+.jobprofile+div {
+  display: none;
+}
+
+/* CSS3 Animation example
+--- */
+#css3-animated-example .jobprofile + div {
+  height: 0px;
+  padding: 0px;
+  overflow: hidden;
+  background: #ffffff;
+  display: block!important;
+  -webkit-transform: translateZ(0);
+  -webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition:all 0.3s ease;
+	transition: all 0.3s ease;
+}
+#css3-animated-example .content {
+  padding: 10px;
+}
+
+#css3-animated-example .jobprofile .open + div {
+  height: auto;
+ 
+}
+
+/* Event example
+--- */
+pre#event-log {
+ 
+  padding: 10px;
+  display: block;
+}
+
+

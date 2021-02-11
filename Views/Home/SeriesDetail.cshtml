@@ -1,0 +1,248 @@
+﻿@model PrachiIndia.Portal.Models.SeriesVModel
+@{
+    ViewBag.Title = "Series";
+    var Other = ViewBag.Other;
+
+}
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+<style type="text/css">
+    .pricetable tr td {
+        vertical-align: middle !important;
+    }
+</style>
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>Series</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li><a href="@Url.Action("Series","Home",new {Id= Model.SubjectId})">Series</a></li>
+                        <li>
+                            @if (Model != null)
+                            {
+                                <span>@Model.Title</span>
+                            }
+                            else
+                            {
+                                <span>
+                                    Series
+                                </span>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="about" class="" style="padding-bottom:10px">
+    <div id="" class="container">
+        <div class="clearfix"></div>
+        <div class="panel-body">
+            <div class="col-md-12">
+                <div class="panel-body inprdservice" style="padding:10px;">
+                    @if (Model != null)
+                    {
+                        <div class="col-md-3">
+                            @if (!string.IsNullOrWhiteSpace(Model.Image))
+                            {
+                                <img src="~/ModuleFiles/Series/@Model.Image" class="img-responsive" style="float:left; margin:0 5px 5px 0;">
+
+                            }
+                        </div>
+                        <div class="col-md-9">
+                            <div class="bs-example">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span>@Model.Title</span>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p style="margin-bottom:10px;"><i><b>@Model.Items.First().Author</b></i><a href="@Url.Action("Ebookorder","PO",new { area="PO"})" class="pull-right btn btn-primary btn-sm">Request Specimen <i class="fa fa-angle-right" aria-hidden="true"></i></a></p>
+                                        <p style="margin-top:10px;">@Html.Raw(Model.Description)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="width: 100%; height: auto; float: left; margin: 10px 0;"><hr></div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table pricetable">
+                                    <thead>
+                                        <tr class="pricetablehead">
+                                            <th>Books</th>
+                                            <th>Title</th>
+                                            <th>Class</th>
+                                            @if (!Other)
+                                            {
+                                                <th>P-Book Price</th>
+                                            }
+                                            <th>e-Book Price</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.Items != null && Model.Items.Any())
+                                        {
+                                            foreach (var item in Model.Items.Where(t => t.Status == 1).ToList())
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a href="@Url.Action("detail","Catalogue",new { Id=item.Id.ToString()})">
+                                                            <img src="~/ModuleFiles/Items/@item.Image" width="40" height="50" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("detail","Catalogue",new { Id=item.Id.ToString()})">
+                                                            @item.Title
+                                                        </a><br />
+                                                        <small>Board: @item.BoardId</small>
+                                                    </td>
+                                                    <td>@item.ClassId</td>
+                                                    @if (!Other)
+                                                    {
+                                                        <td>
+                                                            <input type="checkbox" name="Pbook_@item.Id" id="Pbook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()" style="position:relative !important; left: 0 !important;" />&nbsp;
+                                                            @string.Format("{0:0.00}", item.PrintPrice)
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @if (item.Ebook == 1)
+                                                        {
+                                                            <input type="checkbox" name="Ebook_@item.Id" id="Ebook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" style="position:relative !important; left: 0 !important;" /><span>
+                                                                &nbsp;
+                                                                @string.Format("{0:0.00}", item.EbookPrice)
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span> N/A </span>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+
+                                                        <button type="submit" class="btn btn-primary btn-sm" onclick="addcart(@item.Id);" data-id="@item.Id" data-toggle="modal" data-target="#dialog">Buy Now</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="col-md-12 inprdservicehead">
+                            <h4>Series Not Available</h4>
+
+                        </div>
+
+                    }
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Partial("_productlogin", new PrachiIndia.Portal.Models.LoginViewModel())
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+
+
+    <style>
+        .pricetablehead th {
+            color: #ffffff !important;
+        }
+
+        .panel-default > .panel-heading {
+            background-color: #ffffff !important;
+            border-color: #f2f2f2 !important;
+        }
+
+        .panel-default {
+            border-color: #f6f1f1 !important;
+        }
+
+        .toast-top-right {
+            padding-top: 10%;
+            padding-right: 10%;
+            font-size: 12px !important;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+        });
+        function addcart(id) {
+
+            var BId = "";
+            BId = id;
+            var IsAutheticated = '@Request.IsAuthenticated';
+
+            if (IsAutheticated == 'False') {
+                $('#Login').modal('show');
+                $("#sign-up").css("display", "none");
+                $("#sign-in").css("display", "block");
+                $("#loginidfail").css("display", "none");
+            } else {
+                var Ebook = 0;
+                var Pbook = 0;
+                $('input[name=Ebook_' + id + ']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Ebook:';
+                    }
+                    Ebook = $(this).val();
+                });
+                $('input[name=Pbook_' + id + ']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Pbook:';
+                    }
+                    Pbook = $(this).val();
+
+                });
+
+
+                if (Ebook == 0 && Pbook == 0) {
+                    toastr.error("Please select the Print Book or E-Book", '', { timeOut: 2000 })
+                    return;
+                }
+                $.post('@Url.Action("AddToCart", "Catalogue")', { BookId: BId, Ebook: Ebook, Pbook: Pbook },
+                  function (returnedData) {
+
+                      toastr.success("Book add to cart list.", '', { timeOut: 2000 })
+                      $('input:checkbox').removeAttr('checked');
+                  });
+            }
+        }
+    </script>
+}
+
+

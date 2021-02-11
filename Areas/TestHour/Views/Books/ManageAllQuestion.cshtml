@@ -1,0 +1,1066 @@
+﻿@using PrachiIndia.Portal.BAL;
+@using PrachiIndia.Web.Areas.Model;
+@using PrachiIndia.Portal.Models
+@model objQuestions
+@{
+    ViewBag.Title = "Manage Questions";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+    int id = 0;
+    if (Model != null)
+    {
+        id = Model.ID;
+    }
+
+    QuestionsBAL bl = new QuestionsBAL();
+    var lst = bl.GetAll(Model.idChapter, IsValid.All);
+
+    QuestionCategoryBAL qcb = new QuestionCategoryBAL();
+    IEnumerable<SelectListItem> qcblst = (from mm in qcb.GetAll(IsValid.Active) select mm).AsEnumerable().Select(mm => new SelectListItem() { Text = mm.isTitle, Value = mm.ID.ToString() });
+    IEnumerable<SelectListItem> qstCat = (from mm in qcb.GetAllCategory() select mm).AsEnumerable().Select(mm => new SelectListItem() { Text = mm.isTitle, Value = mm.ID.ToString() });
+    IEnumerable<SelectListItem> qstTopic = (from mm in qcb.GetTopic(Model.idChapter) select mm).AsEnumerable().Select(mm => new SelectListItem() { Text = mm.isTitle, Value = mm.ID.ToString() });
+    SelectList lstqcb = new SelectList(qcblst, "Value", "Text", Model.idQuestionType);
+    SelectList lstqtype = new SelectList(qstCat, "Value", "Text", Model.Category);
+    SelectList lstqTopic = new SelectList(qstTopic, "Value", "Text", Model.Category);
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link href="~/Content/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<script src="~/Areas/CPanel/Containt/Dashboard/js/jquery-ui-1.10.4.min.js"></script>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "frmQuestions" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.ID, new { @_id = id })
+    @Html.HiddenFor(model => model.idSubject)
+    @Html.HiddenFor(model => model.idSeries)
+    @Html.HiddenFor(model => model.idBook)
+    @Html.HiddenFor(model => model.idChapter)
+
+
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>
+                    <a style="vertical-align:text-bottom" href="~/Authenticate/Admin/ManageChapters?id=@Model.idBook" class="icon32 icon-black icon-arrowthick-w" title="Back"></a>
+                    <span style="vertical-align: top">Manage Questions @Model.Subject/  @Model.Series/ @Model.Book/ @Model.Chapter   </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <h2>@Model.Chapter</h2>
+
+
+                <table class="table table-bordered" cellpadding="5">
+
+
+                    <tr>
+                        <td width="10%">Category</td>
+                        <td width="20%">
+                            @Html.DropDownListFor(model => model.idQuestionType, lstqcb, "--Choose Question Category--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.idQuestionType, "", new { @style = "color:red" })
+
+                        </td>
+                        <td width="10%"><label>Topics</label></td>
+                        <td width="20%">
+                            @Html.DropDownListFor(model => model.Topic, lstqTopic, "--Choose Topic--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Topic, "", new { @style = "color:red" })
+
+                        </td>
+                        <td width="10%">Type</td>
+                        <td width="20%">
+                            @Html.DropDownListFor(model => model.Category, lstqtype, "--Choose Question Type--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @style = "color:red" })
+                        </td>
+                        <td width="5%" align="right">
+                            @Html.LabelFor(model => model.isHot)
+
+                        </td>
+                        <td width="5%">
+                            @Html.CheckBoxFor(model => model.isHot)
+
+                        </td>
+
+                    </tr>
+                </table>
+
+                <table class="table table-bordered" id="tblQuestion">
+                    <tr>
+                        <td valign="top" width="10%">
+                            @Html.LabelFor(model => model.isQuestion)
+                            <div style="width: 100%; float: left;">
+                                <input type="checkbox" id="chkQuestion" _id="file_Question" _td="td_Question" class="jsChecked" style="float: left; margin-left: 10px;">
+                                <label for="chkQuestion" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Q Image</label>
+                            </div>
+
+                            <div style="width: 100%; float: left;">
+                                <input type="checkbox" id="QImgPriority" name="QImgPriority" style="float: left; margin-left: 10px;">
+                                <label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label>
+                            </div>
+                            <div style="width: 100%; float: left;">
+                                <input type="checkbox" id="chkAnsImg" _id="file_Ans" _td="td_Ans"  class="jsChecked" style="float: left; margin-left: 10px;">
+                                <label for="chkAnsImg" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Ans Image</label>
+                            </div>
+                            <div style="width: 100%; float: left;">
+                                <input type="checkbox" id="AnsImgPriority" name="AnsImgPriority" style="float: left; margin-left: 10px;">
+                                <label for="AnsImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label>
+                            </div>
+                            <div style="width: 100%; float: left;">
+                                <input type="checkbox" id="chkAns" _id="txtAns" _td="td_Question" class="jsAns" style="float: left; margin-left: 10px;">
+                                <label for="chkAns" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Ans</label>
+                            </div>
+                        </td>
+                        <td valign="top" id="td_Question" width="80%">
+                            <div class="form-group col-md-12">
+                                @Html.TextAreaFor(model => model.isQuestion, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.isQuestion, "", new { @style = "color:red" })
+                            </div>
+                            <div class="form-group col-md-12" id="td_Ans">
+
+                            </div>
+                        </td>
+                        <td valign="top" align="right" width="10%">
+                            <a data-original-title="Add Question Header" title="Add Question Header" data-rel="tooltip" href="#" class="cssAddheader btn"><i class="fa fa-plus"></i></a>
+                            <a data-original-title="Add Question Options" title="Add Question Options" data-rel="tooltip" href="#" class="cssAddOption btn"><i class="fa fa-th-large"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="border-top: 1px solid #0094ff">
+                            <table style="background-color: #e2d6d6; color: #e2d6d6; display: none" border="1" width="100%" cellpadding="5" cellspacing="5" id="tblHeadOption">
+                                <tr>
+                                    <th width="47%">Coloumn A</th>
+                                    <th width="53%">Coloumn B</th>
+                                </tr>
+                            </table>
+                            <div id="dvRight" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px">
+                                <table width="100%" cellpadding="5" cellspacing="0">
+
+                                    <tbody id="tblOption"></tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input class="btn btn-danger pull-right" type="button" id="btnCancel" value="Cancel" /></td>
+                        <td>
+
+                            <input class="btn btn-primary" type="submit" id="btnSubmit" value="Add" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="border:none;padding:0;">
+                    <tr>
+                        <td>
+                            <div class="panel">
+                                <div class="panel-heading">List Of Questions Edit</div>
+                                <div class="panel-body" style="padding:0">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td colspan="2">
+                                                @if (lst != null && lst.Count() > 0)
+                                                {
+                                                    <table style="border-collapse: collapse;" border="1" class="tablepagination" width="100%">
+
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th width="50%" style="text-align: left">
+                                                                    Questions
+                                                                </th>
+                                                                <th width="20%">Type </th>
+                                                                <th width="20%">Topic </th>
+
+                                                                <th width="10%">Action</th>
+                                                            </tr>
+
+                                                        </thead>
+                                                        <tbody>
+
+                                                            @foreach (var v in lst)
+                                                            {
+
+                                                                var obj = (objQuestions)v;
+                                                                string act = obj.isStatus == IsValid.Active ? "Inactive" : "Active";
+                                                                string tact = "";
+
+                                                                if (act == "Active")
+                                                                {
+                                                                    tact = "<span  class='fa fa-times' style='color:red'></span>";
+                                                                }
+                                                                else
+                                                                {
+                                                                    tact = "<span  class='fa fa-check' style='color:red'></span>";
+                                                                }
+                                                                tact = "<span  class='fa fa-times' style='color:red'></span>";
+                                                                <tr id="tbRow_@obj.ID">
+
+                                                                    <td valign="middle">
+
+                                                                        @if (obj.idSubject == 11)
+                                                                        {
+                                                                            <span class="ChanakyaUniN">@Html.Raw(obj.isQuestion)</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Html.Raw(obj.isQuestion)
+                                                                        }
+
+                                                                        @*@if (obj.isImage.LongLength > 0)
+                                                                            {
+                                                                                <img style="width:20px;height:20px" src="data:image/jpeg;base64,@System.Convert.ToBase64String(obj.isImage)" />
+                                                                            }*@
+
+                                                                    </td>
+                                                                    <td valign="top" align="center">
+                                                                        @*   @obj.idQuestionType*@
+                                                                        @{
+                                                                            var OldComment = lstqcb.Where(c => c.Value == obj.idQuestionType.ToString()).SingleOrDefault();
+                                                                        }
+
+                                                                        <div style="width:90% ;height:15px;overflow:hidden" data-toggle="tooltip" data-original-title="@OldComment.Text" data-rel="tooltip">@OldComment.Text</div>
+
+                                                                    </td>
+                                                                    <td>@obj.TopicDesc</td>
+                                                                    <td valign="top" align="center">
+
+                                                                        <a title="Edit" class="jsedit btn" _isQuestion="@obj.isQuestion" _isValid="@obj.isStatus" _id="@obj.ID.ToString()" href="javascript:void(0);"><span class='fa fa-edit'></span></a>
+
+                                                                        <a _tr="tbRow_@obj.ID" title="Click For Delete" _url='@Url.Action("DeleteQuestion", "Books")' class="jsActiveInactive btn" _id="@obj.ID.ToString()" _bid="@obj.idBook" href='javascript:void(0);' data-toggle="tooltip">@Html.Raw(tact)</a>
+
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <text><div class="ndata">No Data found................</div>
+                                                    </text>
+                                                }
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" id="dialog-form" title="">
+        <img src="~/img/ajax-loaders/ajax-loader-5.gif" />
+    </div>
+}
+<link href="~/Content/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<link href="~/Content/themes/flick/base.css" rel="stylesheet" />
+@*@Scripts.Render("~/bundles/jquery")*@
+@Scripts.Render("~/bundles/jqueryval")
+@*<link href="~/Content/Font/ChanakyaUniN.css" rel="stylesheet" />*@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+<script>
+
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script type="text/javascript">
+    var len = 1;
+    function ValidateFile() {
+        var validFilesTypes = ["png", "jpg", "jpeg"];
+        var file = document.getElementById("isImage");
+        //var label = document.getElementById("spnValidationError");
+
+        var path = file.value;
+
+        if (path == "") {
+            label.innerHTML = "File name is required."
+            $("#spnValidationError").fadeIn();
+            return false;
+        }
+        var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+
+        var isValidFile = false;
+
+        for (var i = 0; i < validFilesTypes.length; i++) {
+
+            if (ext == validFilesTypes[i]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            //label.style.color = "red";
+            alert("Invalid File. Please upload a File with" + " extension:\n\n" + validFilesTypes.join(", "));
+
+        }
+        return isValidFile;
+    }
+    function Addheader(headerValue) {
+        $(".cssAddheader").fadeOut();
+        var len = $("#tblQuestion tr").length;
+        $("#tblQuestion").prepend('<tr id="tr_' + len + '"><td>Heading</td> <td><div class="form-group col-md-12"><textarea  id="txtHead' + len + '" name="txtHead' + len + '" class="form-control">' + headerValue + '</textarea></div></td><td></a> <a data-original-title="Delete Header" data-rel="tooltip"   _tr="tr_' + len + '"" href="#" class="cssRemoveheader btn"><span class="fa fa-times" style="color:red;"></span></a></td></tr>');
+        $('[rel="tooltip"],[data-rel="tooltip"]').tooltip({ "placement": "top", delay: { show: 400, hide: 200 } });
+    }
+    function Removeheader(ctrl) {
+        var _tr = $(ctrl).attr("_tr");
+        $("#" + _tr + "").remove();
+        $(".cssAddheader").fadeIn();
+
+        $(".tooltip").remove();
+    }
+    function AddFile(ctrl) {
+        var _td = $(ctrl).attr('_td');
+        var _id = $(ctrl).attr('_id');
+        var splited = _id.split("_");
+        /*alert(_td)*/;
+        var label = "Ans Img";
+        if ($(ctrl).is(':checked')) {
+            var str = _td;
+            var res = str.split("_");
+            var id = res[1];
+
+           
+            if (splited[0] == "fileOptChild") {
+                label = "Q Img"
+            }
+           
+            if (_td == "td_Question") {
+                $("#instrumentImage_file_Question").remove();
+                label="Q Img"
+            }
+            if (_td == "td_Ans")
+            {
+                $("#instrumentImage_file_Ans").remove();
+            }
+            if (_td =="td_") {
+               
+                $("#instrumentImage_file_Question_" + id).remove();
+            }
+            $("#" + _td + "").append('<div id="filediv' + _id + '" class="form-group col-md-12"><label >' + label+'</label><input type="file"  onchange="previewImage(event)"  accept="image/*" class="form-control" id="' + _id + '" name="' + _id + '"/></div>');
+            $("#" + _td + "").append('<div id="imgdiv' + _id + '" c class="form-group col-md-12 hoverImg"><img src="" alt="" id="instrumentImage_' + _id + '" class="img-responsive"></div>');
+
+        }
+        else {
+            var count = splited[1];
+            if (_id == "file_Ans") {
+                $("#filedivfile_Ans_1").remove();
+                $("#filedivfile_Ans_2").remove();
+                $("#file_Ans").remove();
+            }
+            if (_id == "file_Question") {
+                $("#filedivfile_Question_1").remove();
+                $("#filedivfile_Question_2").remove();
+            }
+        
+            if (splited[0] == "fileOptChild") {
+                $("#instrumentImage_file_Question_" + count).remove();
+                $("#QImg1_" + count).remove();
+                $("#QImg2_" + count).remove();
+            }
+
+            if (splited[0] == "fileOptChildAns") {
+         
+                $("#instrumentImage_file_Ans_" + count);
+                $("#AnsImg1_" + count).remove();
+                $("#AnsImg2_" + count).remove();
+            }
+
+           $("#filediv" + _id + "").remove();
+            $("#imgdiv" + _id + "").remove();
+            $("#" + _id + "").remove();
+            $(".tooltip").remove();
+        }
+    }
+
+    function AddFileChild(ctrl)
+    {
+        var _td = $(ctrl).attr('_td');
+        var _id = $(ctrl).attr('_id');
+
+        //alert("_td   = " + _td);
+        //alert("_id   = " + _id);
+        if ($(ctrl).is(':checked')) {
+
+            $("#" + _td + "").append('<div class="form-group col-md-12"><input type="file"  onchange="previewImage(event)"  accept="image/*" class="form-control" id="' + _id + '" name="' + _id + '"/></div>');
+            $("#" + _td + "").append('<div class="form-group col-md-12 hoverImg"><img src="" alt="" id="instrumentImage_' + _id + '" class="img-responsive"></div>');
+        }
+
+        else {
+            $("#" + _id + "").remove();
+            $(".tooltip").remove();
+        }
+    }
+    function AddAns(ctrl, v) {
+        var _td = $(ctrl).attr('_td');
+        var _id = $(ctrl).attr('_id');
+        if ($(ctrl).is(':checked')) {
+            $("#" + _td + "").append('<div class="form-group col-md-12"><textarea title="Add Answer"    id="' + _id + '"  placeholder="Answer"  name="' + _id + '" class="form-control">' + v + '</textarea></div>');
+
+        }
+        else {
+            $("#" + _id + "").remove();
+            $(".tooltip").remove();
+        }
+
+    }
+    function AddChild(ctrl, ovlaue) {
+
+        var _td = $(ctrl).attr('_td');
+        var _id = $(ctrl).attr('_id');
+        if ($(ctrl).is(':checked')) {
+
+            $("#" + _td + "").append('<div class="form-group col-md-12"><textarea data-original-title="Add Child Option" data-rel="tooltip"  id="' + _id + '"  placeholder="Option"  name="' + _id + '" class="form-control">' + ovlaue + '</textarea></div>');
+
+        }
+        else {
+            $("#" + _id + "").remove();
+            $(".tooltip").remove();
+        }
+        $('[rel="tooltip"],[data-rel="tooltip"]').tooltip({ "placement": "top", delay: { show: 400, hide: 200 } });
+    }
+    function CheckedAddAns(ctrl, ans) {
+    
+        var _td = $(ctrl).attr('_td');
+        var _id = $(ctrl).attr('_id');
+      
+        if ($(ctrl).is(':checked')) {
+          
+            //if ($("#idQuestionType").val() == '8' || $("#idQuestionType").val() == '12' || $("#idQuestionType").val() == '13') {
+
+            //    if (ans != "" && ans == "True") {
+            //        $("#" + _td + "").append(' <select data-original-title="Select Answer" data-rel="tooltip" id="' + _id + '" name="' + _id + '"> <option>False</option> <option selected="true">True</option></select> ');
+            //    }
+            //    else
+            //        $("#" + _td + "").append(' <select data-original-title="Select Answer" data-rel="tooltip" id="' + _id + '" name="' + _id + '"> <option>False</option> <option>True</option></select> ');
+
+            //}
+            //else
+                $("#" + _td + "").append(' <div class="form-group col-md-12"><textarea data-original-title="Add Answer" data-rel="tooltip"  id="' + _id + '" placeholder="Answer" name="' + _id + '" class="form-control">' + ans + '</textarea></div>');
+
+        }
+        else {
+            $("#" + _id + "").remove();
+            $(".tooltip").remove();
+        }
+
+        $('[rel="tooltip"],[data-rel="tooltip"]').tooltip({ "placement": "top", delay: { show: 400, hide: 200 } });
+    }
+    function AddOption(o1, o2, i1, i2, e1, e2, id1, id2, ansImg1, ansImg2, ansExt1, ansExt2, Qimgprty1, QImgprty2, AImgPrty1, AImgPrty2) {
+      
+        var src1 = "data:" + e1 + ";base64," + i1;
+        var src2 = "data:" + e2 + ";base64," + i2;
+
+        //alert(ansImg1);
+        var Anssrc1 = "data:" + ansExt1 + ";base64," + ansImg1;
+        var Anssrc2 = "data:" + ansExt2 + ";base64," + ansImg2;
+        if (i1 != null && i1 !="") {           
+            var tdr = '<tr style="border-bottom:1px solid #0094ff" id="tro_' + len + '"><td valign="top" width="10%"><label>Option' + len + '</label>  <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" checked="checked" class="jsChecked" _td="td_' + len + '"   _id="fileOptChild_' + len + '" type="checkbox" id="chkFileChild_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + len + '">Q Image</label></div>';
+        }
+        else {
+          
+            var tdr = '<tr style="border-bottom:1px solid #0094ff" id="tro_' + len + '"><td valign="top" width="10%"><label>Option' + len + '</label>  <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsChecked" _td="td_' + len + '"   _id="fileOptChild_' + len + '" type="checkbox" id="chkFileChild_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + len + '">Q Image</label></div>';
+        }
+
+        if (Qimgprty1) {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" checked="checked" id="QImgPriority_' + len + '" name="QImgPriority_' + len + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" id="QImgPriority_' + len + '" name="QImgPriority_' + len + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+
+        if (ansImg1 != null && ansImg1 !="") {
+            tdr += '<div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" checked="checked" class="jsChecked" _td="td_' + len + '"   _id="fileOptChildAns_' + len + '" type="checkbox" id="chkFileChild_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + len + '">Ans Image</label></div>';
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsChecked" _td="td_' + len + '"   _id="fileOptChildAns_' + len + '" type="checkbox" id="chkFileChild_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + len + '">Ans Image</label></div>';
+
+        }
+        if (AImgPrty1) {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" checked="checked" id="AnsImgPriority_' + len + '"  name="AnsImgPriority_' + len + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" id="AnsImgPriority_' + len + '"  name="AnsImgPriority_' + len + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+        tdr += ' <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsCheckedAddChild" _td="td_' + len + '"   _id="txtOptionChild_' + len + '" type="checkbox" id="chkOptChild_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkOptChild_' + len + '">Opt</label></div>';
+        
+        tdr += ' <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsCheckedAddAns" _td="td_' + len + '"   _id="txtAns_' + len + '" type="checkbox" id="chkAns_' + len + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkAns_' + len + '">Ans</label></div></td>';
+
+        tdr += '<td  valign="top" id="td_' + len + '" width="40%"><div class="form-group col-md-12"> <textarea id="txtOption_' + len + '" name="txtOption_' + len + '"  class="form-control">' + o1 + '</textarea><input type="hidden" id="optImg_' + len + '" name="optImg_' + len + '" value="' + id1 + '"></div><div style="width:100%;float:left;" class="hoverImg"><img src=' + src1 + ' alt="" id="instrumentImage_file_Question_' + len + '"   class="img-responsive"/></div>';
+        if (i1 != null && i1 != "") {
+            tdr += '<div style="width:100%;float:left;" id="QImg1_' + len + '"><label>Q Img</label> <input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Question_' + len + '" name="file_Question_' + len + '"></div>'
+        }
+        tdr += '<div style="width:100%;float:left;"> <input type="hidden" id="optAnsImg_' + len + '" name="optAnsImg_' + len + '" value="' + id1 + '"></div><div style="width:100%;float:left;" class="hoverImg"><img src=' + Anssrc1 + ' alt="" id="instrumentImage_file_Ans_' + len + '"   class="img-responsive"></div>';
+        if(ansImg1 != null && ansImg1 != "") {
+            tdr += '<div style="width:100%;float:left;" id="AnsImg1_' + len + '"><label>Ans Img</label> <input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Ans_' + len + '" name="file_Ans_' + len + '"></div></td>'
+        }
+
+
+        if (i2 != null && i2 !="") {
+            tdr += '<td  valign="top" width="10%"><label>Option' + (len + 1) + '</label><br/><div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" checked="checked" class="jsChecked" _td="td_' + (len + 1) + '"   _id="fileOptChild_' + (len + 1) + '" type="checkbox" id="chkFileChild_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + (len + 1) + '">Q Image</label></div> ';
+
+        }
+        else {
+            tdr += '<td  valign="top" width="10%"><label>Option' + (len + 1) + '</label><br/><div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsChecked" _td="td_' + (len + 1) + '"   _id="fileOptChild_' + (len + 1) + '" type="checkbox" id="chkFileChild_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + (len + 1) + '">Q Image</label></div> ';
+        }
+        if (QImgprty2) {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" checked="checked" id="QImgPriority_' + (len + 1) + '"  name="QImgPriority_' + (len + 1) + '" style="float: left; margin-left: 10px;"><label for="QImgPriority_' + (len + 1) + '" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox"  id="QImgPriority_' + (len + 1) + '"  name="QImgPriority_' + (len + 1) + '" style="float: left; margin-left: 10px;"><label for="QImgPriority_' + (len + 1) + '" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+
+        if (ansImg2 != null && ansImg2 != "") {
+            tdr += '<div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" checked="checked" class="jsChecked" _td="td_' + (len + 1) + '"   _id="fileOptChildAns_' + (len + 1) + '" type="checkbox" id="chkFileChild_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + (len + 1) + '">Ans Image</label></div>';
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsChecked" _td="td_' + (len + 1) + '"   _id="fileOptChildAns_' + (len + 1) + '" type="checkbox" id="chkFileChild_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkFileChild_' + (len + 1) + '">Ans Image</label></div>';
+
+        }
+        if (AImgPrty2) {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" checked="checked" id="AnsImgPriority_' + (len + 1) + '"  name="AnsImgPriority_' + (len + 1) + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+        else {
+            tdr += '<div style="width:100%;float:left;"><input type="checkbox" id="AnsImgPriority_' + (len + 1) + '"  name="AnsImgPriority_' + (len + 1) + '" style="float: left; margin-left: 10px;"><label for="QImgPriority" style="font-size: 80%; margin-left: 40px; line-height: 17px;">Img Priority</label></div>';
+
+        }
+        tdr += ' <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsCheckedAddChild" _td="td_' + (len + 1) + '"   _id="txtOptionChild_' + (len + 1) + '" type="checkbox" id="chkOptChild_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkOptChild_' + (len + 1) + '">Opt</label></div>';
+
+        tdr += ' <div style="width:100%;float:left;"><input style="float:left;margin-left:10px;" class="jsCheckedAddAns" _td="td_' + (len + 1) + '"   _id="txtAns_' + (len + 1) + '" type="checkbox" id="chkAns_' + (len + 1) + '"/> <label style="font-size:80%;margin-left: 40px;line-height:17px;" for="chkAns_' + (len + 1) + '">Ans</label></div></td>';
+        tdr += '<td  valign="top" id="td_' + (len + 1) + '" width="35%"><div style="width:100%;float:left;"><textarea id="txtOption_' + (len + 1) + '" name="txtOption_' + (len + 1) + '" class="form-control">' + o2 + '</textarea><input type="hidden" id="optImg_' + (len + 1) + '" name="optImg_' + (len + 1) + '" value="' + id2 + '"></div><div style="width:100%;float:left;" class="hoverImg"><img src="' + src2 + '" alt="" id="instrumentImage_file_Question_' + (len + 1) + '"  class="img-responsive"/></div>';
+        if (i2 != null && i2 != "") {
+
+            tdr += '<div style="width:100%;float:left;" id="QImg2_' + (len + 1) + '"><label>Q Img</label><input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Question_' + (len + 1) + '" name="file_Question_' + (len + 1) + '"></div>'
+
+        }
+        tdr += '<div style="width:100%;float:left;"><input type="hidden" id="optAnsImg_' + (len + 1) + '" name="optAnsImg_' + (len + 1) + '" value="' + id1 + '"></div><div style="width:100%;float:left;" class="hoverImg"><img src=' + Anssrc2 + ' alt="" id="instrumentImage_file_Ans_' + (len + 1) + '"   class="img-responsive"></div>';
+        if (ansImg2 != null && ansImg2 != "") {
+            tdr += '<div style="width:100%;float:left;" id="AnsImg2_' + (len + 1) + '"><label>Ans Img</label> <input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Ans_' + (len + 1) + '" name="file_Ans_' + (len + 1) + '"></div></td>'
+
+        }
+        tdr += '<td align="left"  valign="top" width="5%"><a _tr="tro_' + len + '"" href="#" class="cssRemoveheader btn"  data-original-title="Delete Option" data-rel="tooltip"><span class="fa fa-times" style="color:red"></span></a></td>';
+        tdr += '</tr>';
+        len = len + 2;
+        $("#tblOption").append(tdr);
+        $('[rel="tooltip"],[data-rel="tooltip"]').tooltip({ "placement": "top", delay: { show: 400, hide: 200 } });
+
+        $('#dvRight').scrollTop($('#dvRight')[0].scrollHeight)
+    }
+
+    function SetChild(oc1, oc2, a1, a2) {
+      
+    
+        var tri = len - 2;
+        var tr = "tro_" + tri;
+        tr = document.getElementById('' + tr + '');
+     
+        var chk = tr.getElementsByTagName("input");
+        var chkOptChild = 0;
+        var chkAns = 0;
+        for (i = 0; i < chk.length; i++) {
+
+            if (chk[i].id.indexOf("chkOptChild") != -1) {
+                if (oc1 != "" && chkOptChild == 0) {
+
+                    $("#" + chk[i].id + "").attr("checked", true);
+
+                    AddChild($("#" + chk[i].id + ""), oc1);
+
+                }
+                else if (oc2 != "" && chkOptChild == 1) {
+                    $("#" + chk[i].id + "").attr("checked", true);
+                    AddChild($("#" + chk[i].id + ""), oc2);
+
+                }
+                chkOptChild = chkOptChild + 1;
+            }
+            if (chk[i].id.indexOf("chkAns") != -1) {
+
+                if (a1 != "" && chkAns == 0) {
+
+                    $("#" + chk[i].id + "").attr("checked", true);
+                    CheckedAddAns($("#" + chk[i].id + ""), a1);
+
+
+                }
+                else if (a2 != "" && chkAns == 1) {
+                    $("#" + chk[i].id + "").attr("checked", true);
+                    CheckedAddAns($("#" + chk[i].id + ""), a2);
+
+                }
+
+                chkAns = chkAns + 1;
+            }
+
+            if (chk[i].id.indexOf("chkFileChild_") != -1) {
+               // AddFileChild($("#" + chk[i].id + ""));
+            }
+        }
+    }
+    $(function () {
+        SetInitialize();
+        $(document).on("click", ".cssAddheader", function () {
+            //ShowLightBox();
+            Addheader("");
+            //HideLightBox();
+
+        });
+        $(document).on("click", ".cssRemoveheader", function () {
+            //ShowLightBox();
+            Removeheader(this);
+            //HideLightBox();
+        });
+
+        $(document).on("click", ".jsChecked", function () {
+            //ShowLightBox();
+            //alert("option clicked");
+            AddFile(this);
+           // HideLightBox();
+        });
+        $(document).on("click", ".jsAns", function () {
+            //ShowLightBox();
+            AddAns(this, "");
+           // HideLightBox();
+        });
+
+        $(document).on("click", ".jsCheckedAddChild", function () {
+            //ShowLightBox();
+            AddChild(this, "");
+            //HideLightBox();
+        });
+
+        $(document).on("click", ".jsCheckedAddAns", function () {
+            //ShowLightBox();
+            CheckedAddAns(this, "");
+           // HideLightBox();
+        });
+
+
+        $(document).on("click", ".cssAddOption", function () {
+            //ShowLightBox();
+            AddOption("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            //HideLightBox();
+        });
+
+        $(document).on("change", "input:file", function (e) {
+            //ShowLightBox();
+            var fileExtension = ['jpeg', 'jpg', 'png'];
+            var v = $(this).val()
+            var v1 = v.split('.');
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(this).css({
+                    border: "1px red solid"
+                });
+                $(this).val('')
+                var err = "Invalid File. Please upload a File with" + " extension: " + fileExtension.join(", ") + "";
+                var options = $.parseJSON('{"text":"' + err + '","layout":"center","type":"error"}');
+                //noty(options);
+            }
+            else {
+                $(this).css({
+                    border: "0px transparent solid"
+                });
+            }
+           // HideLightBox();
+            chkFileChild_
+        });
+        $(document).on("change", "#idQuestionType", function (e) {
+            //ShowLightBox();
+            $("#tblOption").html('');
+            len = 1;
+            if ($(this).val() == "7") {
+                $("#tblHeadOption").fadeIn();
+            }
+            else {
+                $("#tblHeadOption").fadeOut();
+            }
+
+            if ($(this).val() != "5" && $(this).val() != "6" && $(this).val() != "11" && $(this).val() != "14" && $(this).val() != "15") {
+                AddOption("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                AddOption("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            //HideLightBox();
+        });
+
+        $(document).on("submit", "#frmQuestions", function (e) {
+            //ShowLightBox();
+            $("#frmQuestions").unbind('#frmQuestions').submit(
+                function () {
+
+                });
+            if ($(this).valid()) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+
+            }
+        });
+        $(document).on("click", ".openpopup", function () {
+            var isTitle = $(this).attr("isTitle");
+            var _tr = $(this).attr("_tr");
+            var isHot = $(this).attr("_isHot")
+            var url = '@Url.Action("SelectPartialView", "Books", new { id = "_viewQuestion" })';
+            var _id = $(this).attr("_id");
+            var edid = "?edid=" + $(this).attr("_id")
+            url += edid;
+            $("#dialog-form").html('<img src="~/img/ajax-loaders/ajax-loader-5.gif" />');
+            $("#dialog-form").dialog({
+                title: "Question Details",
+                autoOpen: false,
+                position: ['center', 'top'],
+                height: window.innerHeight - 100,
+                width: window.innerWidth - 100,
+                show: { effect: 'drop', direction: "up" },
+                draggable: false,
+                resizable: false,
+                show: { effect: 'drop', direction: "up" },
+                modal: true,
+                buttons: {
+                    Delete: function () {
+
+                        $(this).dialog("close");
+                        DeleteQuestion('' + _tr + '', this, _id);
+                    },
+                    Cancel: function () {
+                        $("#dialog-form").html(' <img src="~/img/ajax-loaders/ajax-loader-5.gif" />');
+                        $(this).dialog("close");
+
+                    }
+                    //Submit: function () {
+
+                    //}
+                },
+
+
+                open: function (event, ui) {
+                    $(this).load(url);
+                }, close: function (event, ui) {
+                    $("#dialog-form").html(' <img src="~/img/ajax-loaders/ajax-loader-5.gif" />');
+                }
+            });
+            $("#dialog-form").dialog("open");
+            return false;
+        });
+
+        //$('.tablepagination').tablePagination({});
+        $(document).on("click", ".jsedit", function () {
+            //ShowLightBox();
+            SetInitialize();
+            $('[id^=chkFileChild]').prop("checked", false);
+            $('[id^=instrumentImage_file_Question]').remove();
+            $("#file_Question").remove()
+            $("#file_Question").remove()
+
+            $("#ID").val($(this).attr('_id'));
+            $("#btnSubmit").val("Update");
+            $("#btnCancel").fadeIn('fast');
+            $("#isQuestion").focus();
+            $(this).parent().parent().parent().parent().addClass('rowedit');
+            $(".jsActiveInactive").css({ "visibility": "hidden" });
+            $(".jsedit").css({ "visibility": "hidden" });
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getQuestion", "Books")',
+                data: { Id: $("#ID").val() },
+                success: function (data) {
+                    debugger;
+                    $("#idQuestionType").val(data.idQuestionType);
+                    $("#Category").val(data.Category);
+                    $("#Topic").val(data.Topic);
+                    if ($("#idQuestionType").val() == "7") {
+                        $("#tblHeadOption").fadeIn();
+                    }
+                    else
+                        $("#tblHeadOption").fadeOut();
+                    var isHot = false;
+                    isHot = data.isHot == "true"
+                    $("#isHot").attr('checked', isHot);
+                    $("#isQuestion").val(data.isQuestion);
+                   
+                    ////
+                    if (data.QimgPriority) {
+                        $("#QImgPriority").attr('checked', true);
+                    }
+                    if (data.AnsimgPriority) {
+                        $("#AnsImgPriority").attr('checked', true);
+                    }
+                  
+                 
+                    //$("QImgPriority")
+                    if ($.trim(data.isAns) != "") {
+
+                        $("#chkAns").attr('checked', true);
+                        var chkAns = $("#chkAns");
+                   
+                        AddAns(chkAns, data.isAns);
+                    }
+                    //Question image..
+                    var extension = data.isExtension;
+                    var src = "data:" + extension + ";base64," + data.ImageBase64String;
+                    //Ans image...
+
+
+                    var Ansextension = data.AnsExtension;
+                    var Anssrc = "data:" + Ansextension + ";base64," + data.AnsImageBase64String;
+
+                    if ($.trim(data.isHeader) != "") {
+                        Addheader($.trim(data.isHeader));
+                    }
+                    if (data.ImageBase64String != null) {
+                        $("#chkQuestion").prop('checked', true);
+                        $("#td_Question").append('<div class="form-group col-md-12" id="filedivfile_Question_1"><div class="hoverImg"><img src="' + src + '" alt="" id="instrumentImage_file_Question" class="img-responsive"/><input type="hidden" id="QImg" name="optImg" value="' + data.ID + '"></div>');
+                        $("#td_Question").append('<div class="form-group col-md-12" id="filedivfile_Question_2"><label>Q Image</label><input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Question" name="file_Question"></div></div>');
+
+                    }
+                    if (data.AnsImageBase64String != null) {
+                        $("#chkAnsImg").prop('checked', true);
+
+                        $("#td_Question").append('<div class="form-group col-md-12 hoverImg" id="filedivfile_Ans_1"><img src="' + Anssrc + '" alt="" id="instrumentImage_file_Ans" class="img-responsive"/><input type="hidden" id="AnsImg" name="AnsImg" value="' + data.ID + '"></div>');
+
+                        $("#td_Question").append('<div class="form-group col-md-12" id="filedivfile_Ans_2"><label>Ans Image</label><input type="file" onchange="previewImage(event)" accept="image/*" class="form-control" id="file_Ans" name="file_Ans"></div>');
+
+                    }
+                  
+                    for (j = 0; j < data.lstQueOptions.length; j++) {
+                        //alert(data.lstQueOptions.length)
+                        var ID = data.lstQueOptions[j].ID;
+                        var idQuestion = data.lstQueOptions[j].idQuestion;
+                        var isOption = data.lstQueOptions[j].isOption;
+                        var isChildOption = data.lstQueOptions[j].isChildOption;
+                        var isAns = data.lstQueOptions[j].isAns;
+                        var isImage = data.lstQueOptions[j].isImage;
+                        var isExtension = data.lstQueOptions[j].isExtension;
+                        var dtmCreate = data.lstQueOptions[j].dtmCreate;
+                        var dtmUpdate = data.lstQueOptions[j].dtmUpdate;
+                        var isStatus = data.lstQueOptions[j].isStatus;
+                        var oc1 = "";
+                        var oc2 = "";
+                        var a1 = "";
+                        var a2 = "";
+                        if (j + 1 >= data.lstQueOptions.length) {
+
+                            var isOption2 = "";
+                            var ImageBase64String = "";
+                            var isExtension2 = "";
+                            var ID2 = "";
+                            var AnsImageBase64String = "";
+                            var AnsExtension = "";
+                            var QimgPriority = "";
+                            var AnsimgPriority = "";
+                            var isChildOption2 = "";
+                            var isAns2 = "";
+                        }
+                        else {
+                            var isOption2 = data.lstQueOptions[j + 1].isOption;
+                            var ImageBase64String = data.lstQueOptions[j + 1].ImageBase64String;
+                            var isExtension2 = data.lstQueOptions[j + 1].isExtension;
+                            var ID2 = data.lstQueOptions[j + 1].ID;
+                            var AnsImageBase64String = data.lstQueOptions[j + 1].AnsImageBase64String;
+                            var AnsExtension = data.lstQueOptions[j + 1].AnsExtension;
+                            var QimgPriority = data.lstQueOptions[j + 1].QimgPriority;
+                            var AnsimgPriority = data.lstQueOptions[j + 1].AnsimgPriority;
+                            var isChildOption2 = $.trim(data.lstQueOptions[j + 1].isChildOption);
+                            var isAns2 = $.trim(data.lstQueOptions[j + 1].isAns);
+                        }
+                        //alert(data.lstQueOptions[j + 1].isOption);
+                        //if (j + 1 >= data.lstQueOptions.length) {
+                        //    //alert("if")
+                        //   AddOption(data.lstQueOptions[j].isOption, "","","","","","","","","","","","","","","");
+
+                        //    if ($.trim(data.lstQueOptions[j].isChildOption) != "") {
+                        //        oc1 = data.lstQueOptions[j].isChildOption;
+                        //        oc2 = "";
+                        //    }
+                        //    if ($.trim(data.lstQueOptions[j].isAns) != "") {
+                        //        a1 = data.lstQueOptions[j].isAns;
+                        //        a2 = "";
+                        //    }
+
+
+                        //}
+                        
+                        //else {
+                            //alert("else");
+                        AddOption(data.lstQueOptions[j].isOption, isOption2, data.lstQueOptions[j].ImageBase64String, ImageBase64String, data.lstQueOptions[j].isExtension, isExtension2, data.lstQueOptions[j].ID, ID2, data.lstQueOptions[j].AnsImageBase64String, AnsImageBase64String, data.lstQueOptions[j].AnsExtension, AnsExtension, data.lstQueOptions[j].QimgPriority, QimgPriority, data.lstQueOptions[j].AnsimgPriority, AnsimgPriority);
+
+                            if ($.trim(data.lstQueOptions[j].isChildOption) != "") {
+                                oc1 = $.trim(data.lstQueOptions[j].isChildOption);
+                            }
+                             if (isChildOption2 != "") {
+
+                                 oc2 = isChildOption2;
+                            }
+                            if ($.trim(data.lstQueOptions[j].isAns) != "") {
+                                a1 = $.trim(data.lstQueOptions[j].isAns);
+                            }
+                            if (isAns2 != "") {
+
+                                a2 = isAns2;
+                            }
+
+                        //}
+
+                        
+                        SetChild(oc1, oc2, a1, a2);
+
+
+                        //if (j + 1 >= data.lstQueOptions.length) {
+                        //    //alert("if")
+                        //    AddOption(data.lstQueOptions[j].isOption, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+
+                        //    if ($.trim(data.lstQueOptions[j].isChildOption) != "") {
+                        //        oc1 = data.lstQueOptions[j].isChildOption;
+                        //        oc2 = "";
+                        //    }
+                        //    if ($.trim(data.lstQueOptions[j].isAns) != "") {
+                        //        a1 = data.lstQueOptions[j].isAns;
+                        //        a2 = "";
+                        //    }
+
+
+                        //}
+                        j++;
+                    }
+                    $.each(data.lstQueOptions, function () {
+                        var ID = this.ID;
+                        var idQuestion = this.idQuestion;
+                        var isOption = this.isOption;
+                        var isChildOption = this.isChildOption;
+                        var isAns = this.isAns;
+                        var isImage = this.isImage;
+                        var isExtension = this.isExtension;
+                        var dtmCreate = this.dtmCreate;
+                        var dtmUpdate = this.dtmUpdate;
+                        var isStatus = this.isStatus;
+
+                        //AddOption(isOption);
+                        //SetChild();
+                    });
+
+                },
+                error: function (error) {
+                    debugger;
+                }
+            });
+            //HideLightBox();
+        });
+        $(document).on("click", "#btnCancel", function () {
+            //ShowLightBox();
+            $(".jsActiveInactive").css({ "visibility": "visible" });
+            $(".jsedit").css({ "visibility": "visible" });
+            $("table tr").removeClass('rowedit');
+            SetInitialize();
+            //HideLightBox();
+        });
+
+        $(document).on("click", ".jsActiveInactive", function () {
+            //ShowLightBox();
+            var ii = window.confirm("Are you sure to delete this quesiton")
+            if (!ii)
+            { return false; }
+            var cid = $(this).attr('_id');
+            var bid = $(this).attr("_bid");
+            var _tr = $(this).attr("_tr");
+            var _url = $.trim($(this).attr('_url'));
+            var v1 = this;
+            ///////////////////////
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: { qid: cid, bid: bid },
+                dataType: "json",
+                success: function (data) {
+
+                    //if (data != null && parseInt(data.data) > 0) {
+                        $("#" + _tr).html('');
+                        $("#" + _tr).remove();
+                        //var options = $.parseJSON('{"text":"Question Deleted successfully.","layout":"center","type":"information"}');
+                        //noty(options);
+                        toastr.success("Question deleted", '', { timeOut: 5000 })
+                        if ($(".tablepagination tr").length == 1) {
+                            $(".tablepagination").html("<tr><td><div class='ndata'>No Data found................</div></td></tr>");
+                        }
+
+                    //}
+                    //else {
+                    //    var opt = $.parseJSON('{"text":" Error occur try again.","layout":"center","type":"error"}')
+                    //    //noty(opt);
+                    //    //window.location.reload();
+                    //}
+                }
+            });
+            //HideLightBox();
+            ////////////////////
+        });
+    });
+    function SetInitialize() {
+        //alert();
+        len = 1;
+        $("#filedivfile_Ans_1").remove();
+        $("#filedivfile_Ans_2").remove();
+        $("#filedivfile_Question_1").remove();
+        $("#filedivfile_Question_2").remove()
+        $("#instrumentImage_file_Question").remove();
+        $("#file_Question").remove();
+        $("#instrumentImage_file_Ans").remove();
+        $("#file_Ans").remove();
+        $("#tblHeadOption").fadeOut();
+        $("#ID").val("0");
+        $("#idQuestionType").val('')
+        $('#isHot').attr('checked', false);
+        $('#chkQuestion').attr('checked', false);
+        $('#chkAns').attr('checked', false);
+        $("#txtAns").remove();
+        $("#isQuestion").val('');
+        $(".tooltip").remove();
+        $("tr[id*='tr']").remove();
+        $(".tooltip").remove();
+        $(".cssAddheader").fadeIn();
+        $("#btnSubmit").val("Add");
+        $("#btnCancel").fadeOut('fast');
+        $("#uniform-isImage").fadeOut();
+    }
+    function previewImage(event) {
+
+        var id = event.target.id;
+        var image = document.querySelector("#instrumentImage_" + id);
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+<style>
+    .hoverImg {
+        transition: transform .2s;
+        width: 100px !important;
+        height: auto;
+        margin: 5px;
+    }
+    .hoverImg:hover {
+        -ms-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5);
+    }
+</style>

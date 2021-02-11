@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PrachiIndia.Sql.EbookOrder>
+@{
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+
+ }
+<style type="text/css">
+    #PrintTable label {
+        width: 95px;
+        margin-right: 5px;
+        text-align: right;
+    }
+
+    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+        padding: 6px 8px;
+        line-height: 20px;
+    }
+</style>
+<div>
+    <button id="btnPrint" class="btn btn-primary no-print" title="Print" onclick="myFunction();" style="margin-left:200px;">
+        <i class="fa fa-print"></i>
+    </button>
+</div>
+<div id="PrintTable">
+    @foreach (var request in Model)
+    {
+        @Html.Raw(request.Message)
+
+    }
+</div>
+
+<script>
+    function myFunction() {
+        $('#btnPrint').css('display', 'none');
+        $('#sidebar').css('display', 'none');
+        $('.header').css('display', 'none');
+
+        window.print();
+        $('#btnPrint').css('display', 'block');
+        $('#sidebar').css('display', 'block');
+        $('.header').css('display', 'block');
+        //var printContents = document.getElementById("PrintTable").innerHTML;
+        //w = window.open();
+        //w.document.write(printContents);
+        //w.print();
+        //w.close();
+    }
+</script>

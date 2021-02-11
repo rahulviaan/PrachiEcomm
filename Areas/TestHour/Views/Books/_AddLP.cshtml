@@ -1,0 +1,160 @@
+﻿@using PrachiIndia.Portal.BAL;
+@using PrachiIndia.Web.Areas.Model;
+@using PrachiIndia.Portal.Models
+@model objBookChapterLP
+@{
+    Layout = null;
+    string id = "";
+    int it = 0;
+    if (Model != null)
+    {
+        id = Model.id.ToString();
+          it = (int)Model.isType;   
+    }
+    int i = (int)TextType.Text;
+    int j = (int)TextType.Image;
+    
+}
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmSubmit" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>objBookChapterLP</legend>
+
+        <input type="hidden" id="_idLP" value="@id" />
+        
+        <div style="display:none">
+
+             <select id="isTypeLP">
+
+                            <option value="@j" >@TextType.Image</option>
+                            <option value="@i" >@TextType.Text</option>
+           </select>
+            @Html.HiddenFor(model => model.idBook)
+        @Html.HiddenFor(model => model.idSubject)
+        @Html.HiddenFor(model => model.idSeries)
+        @Html.HiddenFor(model => model.idChapter)
+        </div>
+        
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#view" data-toggle="tab"><span   class="icon icon-darkgray icon-search"></span>Lesson Plan</a></li>
+            <li><a href="#edit" data-toggle="tab"><span class="icon icon-darkgray icon-edit"></span>Edit Lesson Plan </a></li>
+
+        </ul>
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="view">
+
+                <table border="1" width="100%">
+
+                    <tr>
+                        <td width="19%" valign="top">@Html.LabelFor(model => model.isChName)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td width="80%" valign="top">@Html.DisplayFor(model => model.isChName)
+                            @Html.DisplayFor(model => model.imgChName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isPeriods)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.DisplayFor(model => model.isPeriods)</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isObjective)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.DisplayFor(model => model.isObjective)</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isLearOutcome)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.DisplayFor(model => model.isLearOutcome)</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isTeaMethod)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.DisplayFor(model => model.isTeaMethod)</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isSuggFAAct)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.DisplayFor(model => model.isSuggFAAct)</td>
+                    </tr>
+                </table>
+
+                <div class="editor-label">
+                </div>
+            </div>
+            <div class="tab-pane" id="edit">
+
+
+                <table  width="100%">
+
+                    <tr>
+                        <td width="19%" valign="top">@Html.LabelFor(model => model.isChName)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td width="80%" valign="top">
+                            @Html.TextBoxFor(model => model.isChName,new { @style="width:95%;",@readonly="true"})
+                            @Html.ValidationMessageFor(model => model.isChName)
+                            @Html.HiddenFor(model => model.imgChName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isPeriods)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.EditorFor(model => model.isPeriods)
+                            @Html.ValidationMessageFor(model => model.isPeriods)</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isObjective)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top"> 
+                             @Html.TextAreaFor(model => model.isObjective, new { @style="width:95%;height:30px"})
+                            @Html.ValidationMessageFor(model => model.isObjective) </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isLearOutcome)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top"> 
+                             @Html.TextAreaFor(model => model.isLearOutcome, new { @style="width:95%;height:30px"})
+                            @Html.ValidationMessageFor(model => model.isLearOutcome) </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isTeaMethod)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top"> 
+                            @Html.TextAreaFor(model => model.isTeaMethod, new { @style="width:95%;height:30px"})
+                            @Html.ValidationMessageFor(model => model.isTeaMethod) </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">@Html.LabelFor(model => model.isSuggFAAct)</td>
+                        <td width="1%" valign="top">:</td>
+                        <td valign="top">@Html.TextAreaFor(model => model.isSuggFAAct, new { @style="width:95%;height:30px"})
+                            @Html.ValidationMessageFor(model => model.isSuggFAAct)</td>
+                    </tr>
+                </table> 
+            </div>
+        </div>
+    </fieldset>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+  <script>
+      $("#isTypeLP").val('@it')
+     $(function () {
+         //$('#tabs a:last').tab('show')
+         $('.nav-tabs a').click(function (e) {
+             e.preventDefault();
+             if ($($(this).attr('href')).index() == 1) {
+                 $(".ui-dialog-buttonpane button:contains('Submit')").fadeIn();
+
+             }
+             else {
+                 $(".ui-dialog-buttonpane button:contains('Submit')").fadeOut();
+
+             }
+         });
+     })
+ </script> 

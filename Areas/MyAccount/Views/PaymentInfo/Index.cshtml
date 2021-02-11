@@ -1,0 +1,76 @@
+﻿@model PagedList.IPagedList<PrachiIndia.Sql.Order>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    .wrapper {
+        margin-top: 0px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12" style="margin-bottom:1%;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 style="padding:5px;">Online Orders</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+
+                            <th>Invoice No#</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Information</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+            {
+                        <tr>
+
+                            <td>
+                                <a href="@Url.Action("PaymentDetails","PaymentInfo",new { Id=item.Id})">@item.TransactionId</a>
+                            </td>
+                            <td>
+                                <span>@item.CreatedDate.Value.ToString("dd-MMM-yyyy")</span><br />
+                                <small>@item.CreatedDate.Value.ToString("hh:mm tt")</small>
+                            </td>
+                            <td>
+                                @if (item.Status == 1)
+                                {
+                                    <span class="label label-success">Success</span>
+                                }
+                                else if (item.Status == 2)
+                                {
+                                    <span class="label label-danger">Failed</span>
+                                }
+                                else if (item.Status == 0)
+                                {
+                                    <span class="label label-info">Initiated</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                <small>@item.Name</small><br />
+                                <small>@item.Email</small><br />
+                                <small>@item.Phone</small>
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+
+                <br />
+
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    </div>
+</div>

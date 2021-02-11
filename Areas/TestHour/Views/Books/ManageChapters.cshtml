@@ -1,0 +1,523 @@
+﻿@using PrachiIndia.Portal.BAL;
+@using PrachiIndia.Web.Areas.Model;
+@model PrachiIndia.Portal.Models.objBookChapter
+@{
+    ViewBag.Title = "Manage Chapters";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+    BookChapterBAL bl = new BookChapterBAL();
+    var lst = bl.GetAll(Model.idBook.ToString(), IsValid.All);
+    int i = (int)TextType.Text;
+    int j = (int)TextType.Image;
+    int id = Model.id;
+    int chindex = 0;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link href="~/Content/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<script src="~/Areas/CPanel/Containt/Dashboard/js/jquery-ui-1.10.4.min.js"></script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.id, new { @_id = id })
+    @Html.HiddenFor(model => model.idSubject)
+    @Html.HiddenFor(model => model.idSeries)
+    @Html.HiddenFor(model => model.idBook)
+
+    @*<div class="modal fade" id="myModal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Add Topic</h3>
+                </div>
+                <div class="modal-body" id="myModalBodyDiv1">
+                    gfdgfdgdfgfgfdgdfg gfgfg
+                </div>
+            </div>
+
+        </div>
+
+    </div>*@
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="card-title">
+                    <a style="vertical-align:text-bottom" href="~/Authenticate/Admin/ManageBooks#@Model.idSeries" class="icon32 icon-black icon-arrowthick-w" title="Back"></a>
+
+                    <span style="vertical-align: top">Manage Chapters @Model.book.subject /  @Model.book.series </span>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <h4>@Model.book.title</h4>
+                <table class="table table-bordered">
+                    <tr style="display: none">
+
+                        <td align="right">@Html.LabelFor(model => model.isType)</td>
+                        <td>
+                            <select id="isType">
+
+                                <option value="@j">@TextType.Image</option>
+                                <option value="@i">@TextType.Text</option>
+                            </select>
+                            <input type="file" height='100' name='imgTitle' id='imgTitle' />
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td width="20%" align="right">@Html.LabelFor(model => model.isChapter)</td>
+                        <td width="80%">
+                            @Html.TextBoxFor(model => model.isChapter, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.isChapter, "", new { @style = "color:red" })
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%" align="right">@Html.LabelFor(model => model.isTitle)</td>
+                        <td width="80%">
+                            @Html.TextBoxFor(model => model.isTitle, new { @class = "form-control" })
+
+
+                            @Html.ValidationMessageFor(model => model.isTitle, "", new { @style = "color:red" })
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%" align="right">@Html.LabelFor(model => model.isFromPage)</td>
+                        <td width="80%">
+                            <table class="table table-bordered">
+                                <tr>
+
+
+                                    <td>@Html.TextBoxFor(model => model.isFromPage, new { @class = "form-control" })</td>
+                                    <td>@Html.LabelFor(model => model.isToPage) </td>
+                                    <td>@Html.TextBoxFor(model => model.isToPage, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+
+                                    <td>@Html.ValidationMessageFor(model => model.isFromPage,"", new { @style = "color:red" })</td>
+                                    <td></td>
+                                    <td>@Html.ValidationMessageFor(model => model.isToPage, "", new { @style = "color:red" })</td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+
+                            <input class="btn jsLightBoX" type="button" id="btnCancel" value="Cancel" />
+                            <input class="btn btn-primary jsLightBoX" type="submit" id="btnSubmit" value="Add" />
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+
+
+                            @if (lst != null && lst.Count() > 0)
+                            {
+                                <table style="border-collapse: collapse;" class="table table-bordered">
+                                    <caption>
+                                        <h2>List Of Chapters</h2>
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">
+                                                Chapter
+                                            </th>
+                                            <th width="45%" style="text-align: left">
+                                                Chapter Titles
+                                            </th>
+                                            <th width="10%">Page From </th>
+                                            <th width="10%">Page To </th>
+                                            <th width="25%">Action</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var v in lst)
+                                        {
+                                            chindex = chindex + 1;
+                                            var obj = (PrachiIndia.Portal.Models.objBookChapter)v;
+                                            string act = obj.isStatus == IsValid.Active ? "Inactive" : "Active";
+                                            string tact = "";
+                                            int type = (int)obj.isType;
+                                            if (act == "Active")
+                                            {
+                                                tact = "<span  class='icon icon-color icon-close'></span>";
+                                            }
+                                            else
+                                            {
+                                                tact = "<span  class='icon icon-color icon-check'></span>";
+                                            }
+
+                                            <tr id="tr_@obj.id">
+                                                <td style="text-align: center">
+                                                    <h4>Ch-@v.isChapter.ToString("D2")</h4>
+                                                </td>
+                                                <td>
+                                                    <h4>@Html.Raw(obj.isTitle)</h4>
+
+
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @obj.isFromPage
+
+                                                </td>
+                                                <td style="text-align: center">
+                                                    @obj.isToPage
+
+                                                </td>
+                                                <td>
+
+                                                    <div class="dropdown" id="btnGroup">
+                                                        <div class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding:5px;">Action To Be Performed</div>
+                                                        <ul class="dropdown-menu">
+
+                                                            <li>
+                                                                @{
+                                                                    if (obj.countbp == 0)
+                                                                    {
+
+                                                                        <a title="Delete Chapter" _tr="tr_@obj.id" _url='@Url.Action("DeleteChapter", "Admin")' class="jsDelete" _id="@obj.id.ToString()" _bid="@obj.idBook" href='javascript:void(0);'><span class="icon icon-color icon-close"></span>Delete </a>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a style="opacity: .3" onclick="alert('Chapter can not be deleted beacuse chapter have LP,WS,AV etc.')"><span class="icon icon-color icon-close"></span> Delete</a>
+
+                                                                    }
+                                                                }
+
+
+                                                            </li>
+                                                            <li>
+                                                                <a title="Edit" class="jsedit" _isChapter="@obj.id" _isType="@type" _isFromPage="@obj.isFromPage" _isToPage="@obj.isToPage" _isValid="@obj.isStatus" _id="@obj.id.ToString()" isTitle="@obj.isTitle" href="javascript:void(0);"><span class='icon icon-darkgray icon-edit'></span> Edit</a>
+                                                            </li>
+                                                            @*<li>
+                                                                <a title="Add Topic" class="titledit" _isChapter="@obj.isChapter" _isType="@type" _isFromPage="@obj.isFromPage" _isToPage="@obj.isToPage" _isValid="@obj.isStatus" _id="@obj.id.ToString()" isTitle="@obj.isTitle" href="#" onclick="AddTopic(@v.isChapter)"><span class='icon icon-darkgray icon-edit'></span> Add Topic</a>
+                                                            </li>*@
+                                                            @*  <li>
+
+                                                        <a title="@act"  _url='@Url.Action("UpdateChapterStatus", "Admin")' class="jsActiveInactive"    _id="@obj.id.ToString()" _bid="@obj.idBook"  href='javascript:void(0);'>@Html.Raw(tact)  @act </a>
+
+                                                    </li>*@
+                                                            @*<li class="divider"></li>*@
+                                                            @*<li>
+
+                                                        <a title="Add/Edit Questions" class="jsLightBoX"  href='@Url.Action("ManageQuestions", "Admin")?chid=@obj.id.ToString()'      _id="@obj.id.ToString()" _bid="@obj.idBook"   ><i class="icon-plus-sign"></i> Questions</a>
+
+                                                    </li>*@
+                                                            <li>
+
+                                                                <a title="Add/Edit Questions" class="jsLightBoX" href='@Url.Action("ManageAllQuestion", "Books")?chid=@obj.id.ToString()' _id="@obj.id.ToString()" _bid="@obj.idBook"><i class="icon-plus-sign"></i> Questions All</a>
+
+                                                            </li>
+                                                            <li>
+                                                                <a title="Chapter Topics" class="jsLightBoX" href='@Url.Action("Index", "TopicMasters",new {chapterId= @obj.id})' _id="@obj.id.ToString()" _bid="@obj.idBook"><i class="icon-list"></i> Topics</a>
+                                                            </li>
+                                                            @*<li>
+
+                                                                <a title="Add/Edit Lesson Plan" class="jsLightBoX" href='@Url.Action("ManageBookPlus", "Books")?chid=@obj.id.ToString()&type=@ChapterType.Lesson_Plan' _isTitle="@obj.isTitle" _id="@obj.id.ToString()" _bid="@obj.idBook" _sid="@obj.idSubject" _seid="@obj.idSeries"><i class="icon-plus-sign"></i> Lesson Plans  </a>
+
+                                                            </li>
+
+
+                                                            <li>
+
+                                                                <a title="Add/Edit Worksheet" class="jsLightBoX" href='@Url.Action("ManageBookPlus", "Books")?chid=@obj.id.ToString()&type=@ChapterType.Workheet' _id="@obj.id.ToString()" _bid="@obj.idBook"><i class="icon-plus-sign"></i> Worksheets</a>
+
+                                                            </li>
+                                                            <li>
+
+                                                                <a title="Add/Edit Audio/Video" class="jsLightBoX" href='@Url.Action("ManageBookPlus", "Books")?chid=@obj.id.ToString()&type=@ChapterType.Audio_Video' _id="@obj.id.ToString()" _bid="@obj.idBook"><i class="icon-plus-sign"></i> Video Tutorials </a>
+
+                                                            </li>
+                                                            <li>
+
+                                                                <a title="Add/Edit Soutions" class="jsLightBoX" href='@Url.Action("ManageBookPlus", "Books")?chid=@obj.id.ToString()&type=@ChapterType.Solutions' _id="@obj.id.ToString()" _bid="@obj.idBook"><i class="icon-plus-sign"></i> Solutions</a>
+
+                                                            </li>*@
+                                                        </ul>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                                                    }
+                                    </tbody>
+                                </table>
+
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <text><div class="ndata">No Data found................</div></text>
+                                                                    }
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="display: none;" id="dialog-form" title="">
+            <img src="~/img/ajax-loaders/ajax-loader-5.gif" />
+        </div>
+    </div>
+  
+
+                                                                    }
+
+<link href="~/Content/themes/flick/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<link href="~/Content/themes/flick/base.css" rel="stylesheet" />
+@*@Scripts.Render("~/bundles/jquery")*@
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+
+    function AddRemoveClass() {
+        //btnGroup Action To Be Performed
+
+        if ($("#btnGroup").hasClass("open")) {
+
+        }
+        else {
+
+            $("#btnGroup").addClass("open")
+            //alert($("#btnGroup").hasClass("open"))
+        }
+        $("#btnGroup").addClass("open")
+        // return false;
+    }
+    $(function () {
+        $('.jsedit').click(function () {
+            SetInitial();
+            //ShowLightBox();
+            $("#isTitle").val($.trim($(this).attr('isTitle')));
+            $("#id").val($(this).attr('_id'));
+            $("#isFromPage").val($(this).attr('_isFromPage'));
+            $("#isToPage").val($(this).attr('_isToPage'));
+            $("#btnSubmit").val("Update");
+            $("#btnCancel").fadeIn('fast');
+            $("#title").focus();
+            $("#isType").val($(this).attr('_isType'))
+            $("#isChapter").val($(this).attr('_isChapter'));
+            $("table tr").removeClass('rowedit');
+            $(this).parent().parent().parent().parent().parent().addClass('rowedit');
+            $("#isChapter").focus();
+            HideLightBox();
+
+        })
+        SetInitial();
+        $('#tabs').tab();
+        $('.tablepagination').tablePagination({});
+
+
+        $(document).on("click", ".jsLightBoX", function () {
+            //ShowLightBox();
+        });
+        $(document).on("click", ".jsAddLP", function () {
+            var isTitle = $(this).attr("_isTitle");
+            var _id = $(this).attr("_id");
+            var _bid = $(this).attr("_bid");
+            var _sid = $(this).attr("_sid");
+            var _seid = $(this).attr("_seid");
+            var url = '@Url.Action("SelectPartialView", "Books", new { id = "_AddLP" })';
+            var edid = "?edid=" + $(this).attr("_id") + "&bid=" + _bid
+            url += edid;
+            $("#dialog-form").html('<img src="/Content/img/ajax-loaders/ajax-loader-5.gif" />');
+            $("#dialog-form").dialog({
+                title: 'Add/ Edit Lesson Plan :-' + isTitle,
+                autoOpen: false,
+                position: ['center', 'top'],
+                height: 650,
+                width: 900,
+                show: { effect: 'drop', direction: "up" },
+                draggable: false,
+                resizable: false,
+                show: { effect: 'drop', direction: "up" },
+                modal: true,
+                buttons: {
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    },
+                    Submit: function () {
+                        $("#frmSubmit").validate();
+                        if ($("#frmSubmit").valid()) {
+                            var isChName = isTitle;
+                            var _idLP = $("#_idLP").val();
+                            var idBook = $("#idBook").val();
+                            var idSubject = $("#idSubject").val();
+                            var idSeries = $("#idSeries").val();
+                            var idChapter = $("#idChapter").val();
+                            var isPeriods = $("#isPeriods").val();
+                            var isObjective = $("#isObjective").val();
+                            var isLearOutcome = $("#isLearOutcome").val();
+                            var isTeaMethod = $("#isTeaMethod").val();
+                            var isSuggFAAct = $("#isSuggFAAct").val();
+                            var isTypeLP = $("#isTypeLP").val();
+                            var _isChapter = $("#_isChapter").val();
+
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("ManageLP", "Admin")',
+                                data: { isChName: isChName, id: _idLP, idBook: idBook, idSubject: idSubject, idSeries: idSeries, idChapter: idChapter, isPeriods: isPeriods, isObjective: isObjective, isLearOutcome: isLearOutcome, isTeaMethod: isTeaMethod, isSuggFAAct: isSuggFAAct, isType: isTypeLP, isChapter: _isChapter },
+                                dataType: "json",
+                                success: function (data) {
+
+                                    if (data == null || data.data == "0") {
+                                        var opt = $.parseJSON('{"text":" Error occur try again.","layout":"center","type":"error"}')
+                                        noty(opt);
+                                    }
+                                    else {
+                                        if (_idLP == "" || _idLP == "0") {
+                                            var opt = $.parseJSON('{"text":"Inserted successfully done","layout":"center","type":"information"}')
+                                            noty(opt);
+                                        }
+                                        else {
+                                            var opt = $.parseJSON('{"text":"Updated successfully done","layout":"center","type":"information"}')
+                                            noty(opt);
+                                        }
+
+                                    }
+                                }
+                            });
+                        }
+                    }
+                },
+
+
+                open: function (event, ui) {
+                    $(this).load(url);
+                    $(".ui-dialog-buttonpane button:contains('Submit')").fadeOut();
+
+                }, close: function (event, ui) {
+
+                }
+            });
+            $("#dialog-form").dialog("open");
+            return false;
+        });
+
+        //$(document).on("click", ".jsedit", function () {
+        //    SetInitial();
+        //    //ShowLightBox();
+        //    alert("test");
+        //    $("#isTitle").val($.trim($(this).attr('isTitle')));
+        //    $("#id").val($(this).attr('_id'));
+        //    $("#isFromPage").val($(this).attr('_isFromPage'));
+        //    $("#isToPage").val($(this).attr('_isToPage'));
+        //    $("#btnSubmit").val("Update");
+        //    $("#btnCancel").fadeIn('fast');
+        //    $("#title").focus();
+        //    $("#isType").val($(this).attr('_isType'))
+        //    $("#isChapter").val($(this).attr('_isChapter'));
+        //    $("table tr").removeClass('rowedit');
+        //    $(this).parent().parent().parent().parent().parent().addClass('rowedit');
+        //    $("#isChapter").focus();
+        //    HideLightBox();
+        //});
+        $(document).on("click", "#btnCancel", function () {
+            SetInitial();
+            $("table tr").removeClass('rowedit');
+            HideLightBox();
+        });
+
+        $(document).on("click", ".jsActiveInactive", function () {
+            var ii = window.confirm("Are you sure edit this status.")
+            if (!ii)
+            { return false; }
+            var cid = $(this).attr('_id');
+            var bid = $(this).attr("_bid");
+            var _url = $.trim($(this).attr('_url'));
+
+            var v1 = this;
+
+            ///////////////////////
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: { cid: cid, bid: bid },
+                dataType: "json",
+                success: function (data) {
+
+                    if (data == null || data.data == "0") {
+                        var opt = $.parseJSON('{"text":" Error occur try again.","layout":"center","type":"error"}')
+                        noty(opt);
+                    }
+                    else {
+                        window.location.reload();
+                    }
+                }
+            });
+            ////////////////////
+        });
+        $(document).on("click", ".jsDelete", function () {
+            var ii = window.confirm("Are you sure delete this chapter.")
+            if (!ii)
+            { return false; }
+
+
+            ShowLightBox();
+            var cid = $(this).attr('_id');
+            var bid = $(this).attr("_bid");
+            var _url = $.trim($(this).attr('_url'));
+            var _tr = $.trim($(this).attr('_tr'));
+            var v1 = this;
+
+            ///////////////////////
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: { cid: cid, bid: bid },
+                dataType: "json",
+                success: function (data) {
+
+                    if (data == null || data.data == "0") {
+                        var opt = $.parseJSON('{"text":" Error occur try again.","layout":"center","type":"error"}')
+                        noty(opt);
+                        HideLightBox();
+                    }
+                    else {
+
+
+                        $("#" + _tr).html('');
+                        $("#" + _tr).remove();
+                        var options = $.parseJSON('{"text":"Chapter Deleted successfully.","layout":"center","type":"information"}');
+                        noty(options);
+                        if ($(".tablepagination tr").length == 1) {
+                            $(".tablepagination").html("<tr><td><div class='ndata'>No Data found................</div></td></tr>");
+                        }
+                        HideLightBox();
+                        // window.location.reload();
+                    }
+                }
+            });
+        });
+        HideLightBox();
+    });
+    function SetInitial() {
+        $("#isTitle").val('');
+        $("#id").val('');
+        $("#isFromPage").val('');
+        $("#isToPage").val('');
+        $("#btnSubmit").val("Add");
+        $("#btnCancel").fadeOut('fast');
+        $("#isChapter").val('');
+        $("#_isChapter").val();
+    }
+
+    //var AddTopic = function (Id) {
+    //    var bookid = $("#idBook").val();
+    //    var url = "/Books/AddTopic?Id=" + Id + "&bookid=" + bookid;
+    //    $("#myModalBodyDiv1").load(url, function () {
+    //        alert("loaded")
+    //        $("#myModal1").modal("show");
+    //    })
+    //}
+</script>

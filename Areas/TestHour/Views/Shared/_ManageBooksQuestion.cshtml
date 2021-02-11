@@ -1,0 +1,99 @@
+﻿@model IEnumerable<PrachiIndia.Portal.Models.objQuestions>
+@using PrachiIndia.Portal.BAL;
+@using PrachiIndia.Web.Areas.Model;
+@using PrachiIndia.Portal.Models
+@{
+    QuestionCategoryBAL qcb = new QuestionCategoryBAL();
+    var lstQC = qcb.GetAll(IsValid.All);
+}
+@if (Model.Count() > 0)
+{
+    foreach (var ct in (List<objQuestions>)ViewBag.results)
+    {
+        var cat = (from x in lstQC where x.ID == ct.idQuestionType select x).First();
+        <tr>
+            <td colspan="2">
+                <h4>@cat.isTitle</h4>
+
+                @foreach (var qu in ct.lstQuestions)
+                {
+                    var item = (from x in (List<objBookChapter>)ViewBag.lstChpater where x.id == qu.idChapter select x).First();
+                    <table style="margin:5px;border: solid 1px #cccccc;" id="tbl_@qu.ID" width="98%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="20px">
+                                <input class="jsQuestion" type="checkbox" _tbl="tbl_@qu.ID" id="chk_@qu.ID" value="@qu.ID" />
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)">
+                                    <label for="chk_@qu.ID">
+
+                                        <span style="font-size: 18px;">@item.isTitle | @item.isChapter <small>[ @cat.isTitle  ]</small> | @qu.ID</span>
+                                    </label>
+                                </a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="openPopUp(@qu.ID);"><i class="glyphicon glyphicon-pencil"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="3">
+                                <h4>
+                                    @Html.Raw(qu.isQuestion)
+                                    @if (qu.isImage.LongLength > 0)
+                                    {<br />
+
+                                        <img style="max-width:200px" src="data:@qu.isExtension;base64,@System.Convert.ToBase64String(qu.isImage)" />
+                                    }
+                                </h4>
+                                <ul class="ultp" style="list-style-type: decimal-leading-zero; margin-left: 30px">
+                                    @foreach (var opt in qu.lstQueOptions)
+                                    {
+
+
+                                        <li style="line-height: 20px">
+                                            @Html.Raw("<b>" + opt.ID + " | </b>" + opt.isOption)
+
+                                            @if (opt.isChildOption != "")
+                                            {
+                                                <br />
+                                                <text>ChildOption:-</text>@Html.Raw(opt.isChildOption)
+
+                                            }
+
+
+                                            @if (opt.isImage.LongLength > 0)
+                                            {<br />
+                                                <img style="max-width:200px" src="data:@opt.isExtension;base64,@System.Convert.ToBase64String(opt.isImage)" />
+                                            }
+                                            <br />
+                                            Ans: @Html.Raw(opt.isAns)
+                                        </li>
+                                    }
+
+                                </ul>
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+
+
+                }
+
+            </td>
+        </tr>
+
+    }
+
+}
+else
+{
+    <tr>
+        <td colspan="2">
+            <div class="ndata">No Data found................</div>
+        </td>
+    </tr>
+}
+

@@ -1,0 +1,196 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<PrachiIndia.Sql.Order>
+@{
+    ViewBag.Title = "UserCartHistory";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+@Html.Partial("_Settings")
+<div class="col-md-9">
+
+    <div class="accountset">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p style="margin:0;padding: 2px 0;"><b>Order History</b><span class="extra-title muted"></span></p>
+            </div>
+            <div class="panel-body">
+                @*chnage*@
+                @using (Html.BeginForm("UserCartHistory", "CartHistory", FormMethod.Get))
+                {
+
+                    @*<div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    @Html.TextBox("fromdate", Model[0].fromdate.ToString("MM/dd/yyyy"), new { @class = "form-control date-picker", @id = "id-date-picker-1" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    @Html.TextBox("todate", Model[0].todate.ToString("MM/dd/yyyy"), new { @class = "form-control date-picker", @id = "id-date-picker-2" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div>
+                                    @{
+                                        var listItems = new List<SelectListItem> {
+                                            new SelectListItem{ Text="Select Status", Value = "0",Selected=true },
+                                            new SelectListItem{ Text="Pending", Value = "1" },
+                                            new SelectListItem{ Text="approve", Value = "2" },
+                                             };
+                                    }
+                                    @Html.DropDownList("TranId", listItems, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit"><span class="fa fa-filter fa-2x"></span></button>
+                            </div>
+                        </div>*@
+
+
+                }
+
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="bg-success">
+                                <th>
+                                    @Html.ActionLink("Payment Date", "UserCartHistory",
+            new { sortOrder = "PaymentDate", CurrentSort = ViewBag.CurrentSort })
+
+                                </th>
+                                <th>Order No#</th>
+                                <th>Amount</th>
+                                <th>Payment Status</th>
+                                <th>Configuration</th>
+                                <th>&nbsp;</th>
+                                @*<th>Dispatch No.</th>
+                                    <th>Order Status</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var m in Model)
+                                {
+                                    if (m.TransactionId != null)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @m.UpdatedDate.Value.ToString("dd-MM-yyyy")<br />
+                                                <small>@m.UpdatedDate.Value.ToString("hh-mm tt")</small>
+                                            </td>
+                                            <td><span>@m.TransactionId</span></td>
+                                            <td><i class="fa fa-inr"></i><span>&nbsp;@m.Amount</span></td>
+                                            <td>
+                                                @if (m.Status == 1)
+                                                {
+                                                    <span class="label label-info">Approved</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-success">Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (m.Status == 1)
+                                                {
+                                                    <a title="Create configuration" href='@Url.Action("DownloadReatilFile", "CartHistory", new { OrderId = @m.Id})' class='link-icon'><i class="fa fa-cogs" aria-hidden="true"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <span>N/A</span>
+                                                }
+                                            </td>
+                                            @*@if (m.AWBNO != null)
+                                                {
+                                                    <td><span class="label label-info">@m.AWBNO/@m.dispatchby</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="label label-info">Not Dispatched</span></td>
+                                                }
+                                                @if (m.IsRecive == true)
+                                                {
+                                                    <td><span class="label label-info">Received</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="label label-info">Yet Not Recived</span></td>
+                                                }*@
+
+                                            <td>
+                                                <a href="@Url.Action("OrderDetail","CartHistory",new { orderId = m.Id })"><span class="text-info">Details</span></a>
+                                                @*<a href="OrderDetail?OrderId=@m.Id" ><span class="text-info">Details</span></a>*@
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7"><h3 style="color:red;text-align:center">No Order Found</h3></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div id="container" style="margin-left: 20px">
+                        <p></p>
+                        <p></p>
+                        <div class="pagination" style="margin-left: 400px">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("UserCartHistory", new { page }))
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/dist/css/bootstrap-datepicker3.min.css" />
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="~/dist/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script>
+        //$(document).ready(function () {
+        //    $(".dropdown").hover(
+        //       function () {
+        //           $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+        //           $(this).toggleClass('open');
+        //       },
+        //       function () {
+        //           $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+        //           $(this).toggleClass('open');
+        //       }
+        //   );
+        //    //<a href="~/Controllers/CatalogueController.cs">~/Controllers/CatalogueController.cs</a>
+        //    $(".check").css("display", "none");
+        //});
+        $(document).ready(function () {
+            $(".mycart").hide();
+        });
+        function Mainpage() {
+            var url = "/Catalogue";
+            window.location.href = url;
+        }
+        $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true
+        })
+    </script>
+}

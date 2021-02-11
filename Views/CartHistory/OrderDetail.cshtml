@@ -1,0 +1,143 @@
+﻿@model List<PrachiIndia.Portal.Models.CartHistoryVM>
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+    // var customer = ViewBag.customer;
+}
+
+<div class="row" style="margin-top:40px;">
+    <div class="col-md-12">
+        <a class="hide" href="@Url.Action("PrintInvoice","CartHistory",new { id = Model.First().OrderId })"><span class="fa fa-download"></span></a>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Order Detail<span class="extra-title muted"></span> <span class="pull-right" onclick="printDiv('printableArea')" style="cursor:pointer"><i class="fa fa-print" aria-hidden="true"></i></span></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row" style="margin-bottom:20px;">
+                    <h4 class="text-left" style="text-transform:capitalize;">Billing Information:</h4>
+                    @{
+                        var order = ViewBag.Order as PrachiIndia.Sql.Order;
+                        if (order != null)
+                        {
+                            <div class="col-md-9">
+                                <strong>Name: @order.Name</strong><br />
+                                <strong>Email: @order.Email</strong><br />
+                                <strong>Mobile: @order.Phone</strong>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Transaction Id: @order.TransactionId</strong><br />
+                                <strong>Transaction Date: @order.UpdatedDate.Value.ToString("dd-MMM-yyyy")</strong><br />
+                                <strong>
+                                    Status: @if (order.Status == 1)
+                                    {
+                                        <span>Success</span>
+                                    }
+                                    else if (order.Status == 1)
+                                    {
+                                        <span>Failed</span>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </strong>
+                            </div>
+                        }
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="table-responsive" id="printableArea">
+                        <table class="table table-bordered">
+
+                            <thead>
+                                <tr class="bg-success">
+
+                                    <th>Book Name</th>
+                                    <th>Book Type</th>
+                                    @*<th>TransactionId</th>*@
+                                    <th class="text-right">Unit Price</th>
+                                    <th class="text-right">Quantity</th>
+                                    <th class="text-right">Discount</th>
+                                    <th class="text-right">Tax</th>
+                                    <th class="text-right">Subtotal</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="text-align: center;">
+                                @{
+                                    decimal sum = 0;
+                                    decimal totalDiscount = 0;
+                                    decimal totaltax = 0;
+                                    var flag = "";
+                                    foreach (var obj in Model)
+                                    {
+                                        var discount = obj.Discount;
+                                        var price = (Convert.ToDecimal(obj.price)) * Convert.ToInt32(obj.Quantity);
+                                        var subtotal = price - discount;
+                                        totaltax = totaltax + obj.TaxPrice;
+
+                                        totalDiscount += discount;
+                                        sum += subtotal;
+                                        <tr>
+                                            <td align="left"><img src="@obj.Image" style="width:70px; height:90px; margin-right:5px;">@obj.Title</td>
+                                            @if (obj.BookType == PrachiIndia.Portal.Framework.BookType.Both.ToString())
+                                            {
+                                                <td align="left">Both</td>
+                                            }
+                                            else if (obj.BookType == PrachiIndia.Portal.Framework.BookType.EBook.ToString())
+                                            {
+                                                <td align="left">EBook</td>
+                                            }
+                                            else
+                                            {
+                                                <td align="left">Pbook</td>
+                                            }
+                                            @*<td align="left">@obj.TransactionId</td>*@
+                                            <td class="text-right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", obj.price)</td>
+                                            <td class="text-right">@obj.Quantity</td>
+                                            <td class="text-right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", discount)</td>
+                                            <td class="text-right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", obj.TaxPrice)</td>
+                                            <td class="text-right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", subtotal)</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="6" align="right" style="text-align:right"><strong> Subtotal </strong></td>
+                                        <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", sum)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" align="right" style="text-align:right"><strong> Discount </strong></td>
+                                        <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", totalDiscount)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" align="right" style="text-align:right"><strong> Tax </strong></td>
+                                        <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", totaltax)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" align="right" style="text-align:right"><strong> Total Amount </strong></td>
+                                        <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", (sum + totaltax))</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+}
+
+

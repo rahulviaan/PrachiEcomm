@@ -1,0 +1,54 @@
+﻿@model PrachiIndia.Portal.Models.OrderTrackUpdateVm
+<div class="modal fade" id="Logins">
+    <div class="modal-dialog" style="width:50% ; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="clearvalidation();" data-dismiss="modal">
+                    <span class="h2"><span class="glyphicon glyphicon-remove"></span></span>
+                </button>
+                <h4 class="modal-title"><span class="glyphicon glyphicon-shopping-cart"></span> <span class="small">100% Secure, Safe Online Shipping   &amp; Order Processing</span> </h4>
+            </div>
+            <div class="modal-body" style="background: #eee;">
+
+                @using (Html.BeginForm("UpdateOrderTrack", "Admin", FormMethod.Post))
+                {
+                    <div class="row">
+
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3  control-label">ReciveBy:</label>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(m => m.OrderRecivedBy, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                        <div class="form-group" style="margin-bottom: 46px";>
+                            <label for="email" class="col-sm-3  control-label">Recive Date:</label>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(m => m.ReciveDate, new { @class = "form-control date-picker", @id = "id-date-picker-1" })
+                            </div>
+                        </div>
+                        @Html.HiddenFor(m => m.OrderId, new { @id = "HDNOrders" })
+                        <div class="form-group">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6">
+                                <input type="submit" class="btn btn-primary" id="btndispatch" style="margin-top:10PX;" value="Order Recive">
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <div id="" class="col-lg-11 text-left text-uppercase text-muted ">
+                    <p><span class="pull-left small">By creating account, building profile, signing in and sharing Personal Information, I understand and agree all the relevant terms and conditions.    We do not share any information with third party(s) in any form, without your written prior concent.</span></p>
+                </div>
+                <div id="" class="col-lg-1 text-center">
+                    <button type="button" class="close" onclick="clearvalidation();" data-dismiss="modal">
+                        <span class="h2"><span class="glyphicon glyphicon-remove"></span></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

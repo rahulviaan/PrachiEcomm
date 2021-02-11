@@ -1,0 +1,435 @@
+﻿
+@{
+    ViewBag.Title = "Add Subscription";
+}
+<div class="panel-heading h2" style="border-bottom:1px solid #eae7e7"><strong>Subject</strong></div>
+<div class="panel-heading" id="divHeader" style="font-size:large"></div>
+<div class="col-lg-12">
+    <table class="table table-striped" style="width:100%;">
+        <tr style="width:100%;text-align:center">
+            @*<th text-align:center">SNo.</th>*@
+            <th style="width:15%;text-align:center">Image</th>
+            <th style="width:20%;text-align:center">Created Date</th>
+            <th style="width:40%;">Title</th>
+
+            <th style="width:15%;text-align:center">Display Order</th>
+            <th style="width:10%"></th>
+        </tr>
+        <tbody id="tbody"></tbody>
+    </table>
+</div>
+@*<img src="~/Images/Subject/2016-02-04 (3).png" />*@
+<style>
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+        .inputfile + label {
+            font-size: 1.0em;
+            font-weight: 400;
+            color: white;
+            background-color: #999;
+            display: inline-block;
+            /*padding: 1px;*/
+        }
+
+        .inputfile + label {
+            cursor: pointer; /* "hand" cursor */
+        }
+
+            .inputfile:focus + label,
+            .inputfile + label:hover {
+                background-color: red;
+            }
+
+        .inputfile:focus + label {
+            outline: 1px dotted #666;
+            outline: -webkit-focus-ring-color auto 0px;
+        }
+
+
+
+        .inputfile:focus + label,
+        .inputfile.has-focus + label {
+            outline: 0px dotted #666;
+            outline: -webkit-focus-ring-color auto 0px;
+        }
+
+    .scroll {
+        overflow: scroll;
+    }
+</style>
+@section scripts{
+
+    <script src="~/Content/js/common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript">
+        function setDefaultImage(source) {
+            var badImg = new Image();
+            badImg.src = "/Images/NoImage.jpg";
+            var cpyImg = new Image();
+            cpyImg.src = source.src;
+
+            if (!cpyImg.width) {
+                source.src = badImg.src;
+            }
+
+        }
+
+
+        function onImgError(source) {
+            source.src = "/Images/NoImage.jpg";
+            source.onerror = "";
+            return true;
+        }
+        function FillGrid() {
+
+            $("#tbody").html(' <tr><td colspan="10"><div class="progress"> <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Please wait..     </div>  </div></td></tr>');
+            var isTbody = "";
+            var tbl = "";
+            var tHeader = "";
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetAllSubject", "Admin", new {area= "CPanel" })',
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+
+                        var srNo = parseInt(i + 1);
+                        var tact = "";
+                        var img = "";
+                        if (item.Status == '@((int)PrachiIndia.Web.Areas.Model.IsPublished.No)') {
+                            tact = "jsActiveInactive btn btn-success btn-sm  glyphicon glyphicon-ok";
+                        }
+                        else {
+                            tact = "jsActiveInactive btn btn-warning btn-sm  glyphicon glyphicon-remove";
+                        }
+
+                        if (item.Image != '' || item.Image != null) {
+
+                            img = " <div  id='dvImageShow_" + item.Id + "'  _id=" + item.Id + ">";
+                            img += "<img id='img' src='/Images/Subject/" + item.Image + "'   onerror='onImgError(this);' onLoad='setDefaultImage(this);'  style='max-width:60px; '/>";
+                            img += "   <div  id='dvUploadButton_" + item.Id + "'  _id=" + item.Id + ">";
+                            img += "         <input type='hidden' name='hdImg_" + item.Id + "' id='hdImg_" + item.Id + "' value=''  _id=" + item.Id + ">";
+                            img += "         <input type='file' class='jsFileUpload inputfile' id='flUpload" + item.Id + "' name='flUpload" + item.Id + "' onchange='UploadImage(event,this," + item.Id + ")' _id=" + item.Id + "  _index=" + item.Id + " _dvimageshow='dvImageShow_" + item.Id + "' _dvuploadbutton='dvUploadButton_" + item.Id + "'>";
+                            img += "         <label for='flUpload" + item.Id + "' _id=" + item.Id + " data-toggle='tooltip' title='upload image'><span class='btn fa fa-upload'></span></label>";
+                            img += "    </div> </div>";
+                        }
+                        else {
+
+                            img = "  <div id='dvImageShow_" + item.Id + "'></div>";
+                            img += "   <div id='dvUploadButton_" + item.Id + "'  _id=" + item.Id + ">";
+                            img += "         <input type='hidden' name='hdImg_" + item.Id + "' id='hdImg_" + item.Id + "' value=''  _id=" + item.Id + ">";
+                            img += "         <input data-toggle='tooltip' title='Upload image' type='file' class='jsFileUpload inputfile' id='flUpload" + item.Id + "' name='flUpload" + item.Id + "' onchange='UploadImage(event,this," + item.Id + ")' _id=" + item.Id + "  _index=" + item.Id + " _dvimageshow='dvImageShow_" + item.Id + "' _dvuploadbutton='dvUploadButton_" + item.Id + "'>";
+                            img += "         <label data-toggle='tooltip' title='Upload image' for='flUpload" + item.Id + "' _id=" + item.Id + "><span class='btn fa fa-upload'></span></label>";
+                            img += "     </div>";
+                        }
+                        if (i == 0) {
+                            tHeader = "<strong><span class='text-uppercase'></span>Total Subject(" + data.length + ") </strong><a id='AddSubject' _id=" + 0 + " class='pull-right btn btn-default btn-xs AddSubject' data-toggle='tooltip' title='Add Subject'><span class='glyphicon glyphicon-plus-sign ' aria-hidden='true'> </span></a>";
+                        }
+                        tbl += "<tr  >  ";
+                        //tbl += "<td style='text-align:center'>" + srNo + "</a></td>"
+                        tbl += "<td style='text-align:center'>" + img + "</a></td>"
+                        tbl += "<td style='text-align:center' id='tddate'" + item.Id + ">" + ConvertJsonDateString(item.CreateDate) + "</td>"
+                        tbl += "<td id='tdtitle_" + item.Id + "'> " + item.Title + "</td>  "
+
+                        tbl += "<td style='text-align:center' id='tdorder_" + item.Id + "'> " + item.DisplayOrder + "</td>"
+                        tbl += "<td align='center'> "
+                        tbl += "<a data-toggle='tooltip' title='Edit' class='jsedit btn btn-primary btn-sm glyphicon glyphicon-edit ' href='javascript:void(0);'   _id=" + item.Id + " _Category='Subject' _uc='ucSubject'>  </a>   "
+                        tbl += "<a data-toggle='tooltip' title='Update Status' class='" + tact + "' _id='" + item.Id + "' id='ac_" + item.Id + "' _type='ucSubject' _status=" + item.Status + "  href='javascript:void(0);'>  </a> ";
+                        tbl += "</td></tr >  ";
+                    });
+                    if (tbl == "") {
+                        $("#divHeader").html("<strong><span class='text-uppercase'></span>Total Subject(0) </strong><a id='AddSubject' class='pull-right btn btn-default btn-xs AddMater' data-toggle='tooltip' title='Add Subject'><span class='glyphicon glyphicon-plus-sign ' aria-hidden='true'> </span></a>");
+                        $("#tbody").html('<tr><td colspan="10"><div class="progress"> <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">No Data Found </div>  </div></td></tr>');
+                    }
+                    else {
+                        $("#divHeader").html(tHeader);
+                        $("#tbody").html(tbl);
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }
+
+                    $('[data-toggle="tooltip"]').tooltip();
+                }
+            })
+        }
+
+        function Upload(ID) {
+
+            var data = new FormData();
+            var files = $("#file").get(0).files;
+            if (files.length > 0) { data.append("Images", files[0]); }
+            else {
+                common.showNotification('warning', 'Please select file to upload.', 'top', 'right');
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Upload", "Admin", new {area= "CPanel" })',
+                processData: false,
+                data: data,
+                dataType: 'json',
+                contentType: false,
+                success: function (data) {
+
+                },
+                error: function (error) {
+                    alert("errror");
+                }
+            });
+        }
+
+
+
+        function ConvertJsonDateString(jsonDate) {
+            var shortDate = null;
+            if (jsonDate) {
+                var regex = /-?\d+/;
+                var matches = regex.exec(jsonDate);
+                var dt = new Date(parseInt(matches[0]));
+                var month = dt.getMonth() + 1;
+                var monthString = month > 9 ? month : '0' + month;
+                var day = dt.getDate();
+                var dayString = day > 9 ? day : '0' + day;
+                var year = dt.getFullYear();
+                shortDate = monthString + '-' + dayString + '-' + year;
+            }
+            return shortDate;
+        };
+        function ChangeStatus(_Id, _type, _status) {
+
+            var model = {
+                Id: _Id, Status: _status
+            };
+            var _url = '';
+            var IsUpdate = window.confirm("Are you sure want to change the status ?.")
+            if (!IsUpdate)
+            { return false; }
+
+            _url = '@Url.Action("UpdateStatus","Admin", new {area= "CPanel" })';
+            var v1 = this;
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                //data:model,
+                data: { Id: _Id, type: _type, Status: _status },
+                dataType: "json",
+                success: function (data) {
+
+
+                    HidePopup();
+                    if (data.data == "0") {
+                        $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                    }
+                    else {
+                        $.toaster({ priority: 'success', title: 'Update ', message: " successfully." });
+                        if ($("#ac_" + _Id).hasClass("glyphicon glyphicon-ok")) {
+                            $("#ac_" + _Id).removeClass("btn btn-success glyphicon glyphicon-ok");
+                            $("#ac_" + _Id).addClass("btn btn-warning glyphicon glyphicon-remove");
+                        }
+                        else {
+                            $("#ac_" + _Id).removeClass("btn btn-warning glyphicon glyphicon-remove");
+                            $("#ac_" + _Id).addClass("btn btn-success glyphicon glyphicon-ok")
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+
+        $(function () {
+
+            FillGrid();
+
+        });
+
+
+        $(document).on("click", "#AddSubject", function () {
+            AddSubject("ucSubscription", 0, "Subscription");
+        });
+        function AddSubject(uc, _id, _title) {
+            alert("AddSubscription" + _id);
+            ShowPopup();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SelectPartialView", "Admin", new {area= "CPanel" })',
+                data: { uc: uc, id: _id },
+                success: function (data) {
+                    HidePopup();
+                    bootbox.dialog({
+                        title: _title,
+                        message: data,
+                        closeButton: true,
+
+                        buttons: {
+                            main: {
+                                label: "Cancel",
+                                className: "jsLoadingCancel col-lg-2 btn-default",
+                                callback: function () {
+                                    bootbox.hideAll();
+                                }
+                            },
+                            success: {
+                                label: "Submit",
+                                className: "jsLoading col-lg-2 btn-success",
+                                callback: function () {
+                                    $("#frmMain").submit();
+                                    return false;
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+        $(document).on("click", ".jsedit", function () {
+            var _id = $(this).attr("_id");
+            var _uc = $(this).attr("_uc");
+            var _Category = $(this).attr("_Category");
+            AddSubject(_uc, _id, _Category);
+        });
+        $(document).on("click", ".jsActiveInactive", function () {
+            var _id = $(this).attr("_id");
+            _type = $(this).attr('_type');
+            _status = $(this).attr('_status');
+            ChangeStatus(_id, _type, _status);
+        });
+
+
+
+
+        function UploadImage(evt, objFile,id) {
+
+            var selectedFile = objFile.files[0];
+
+            var _dvImageShow = $(objFile).attr("_dvImageShow");
+            var _index = $(objFile).attr("_index");
+            var _dvUploadButton = $(objFile).attr("_dvUploadButton");
+
+            if (selectedFile) {
+
+                var FileSize = 0;
+                var imageType = /image.*/;
+
+                if (selectedFile.size > 1048576) {
+                    FileSize = Math.round(selectedFile.size * 100 / 1048576) / 100 + " MB";
+                }
+                else if (selectedFile.size > 1024) {
+                    FileSize = Math.round(selectedFile.size * 100 / 1024) / 100 + " KB";
+                }
+                else {
+                    FileSize = selectedFile.size + " Bytes";
+                }
+
+                if (selectedFile.type.match(imageType)) {
+                    Upload(selectedFile, _dvImageShow, _index, _dvUploadButton, id, selectedFile.name)
+
+                }
+                else {
+                    var isHtml = '<div class="form-group col-lg-12 alert alert-danger small">'
+           + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'
+           + '<strong> * You are uploading invalid image file type</strong> . Valid image type supported are png, gif jpg, jpeg.'
+           + '</div>';
+                    $("#" + _dvImageShow + "").html(isHtml);
+
+                }
+            }
+
+        }
+        function Upload(selectedFile, _dvImageShow, _index, _dvUploadButton,id,fileName) {
+
+            $("#" + _dvUploadButton + "").addClass("hide");
+
+            $("#" + _dvImageShow + "").empty();
+            $("#" + _dvImageShow + "").html("<span class='text-center text-muted'>Please Wait...</span>")
+            $("#hdImg_" + _index + "").val("");
+            var dataString = new FormData();
+
+            dataString.append("uploadedFile", selectedFile);
+            $.ajax({
+                url: '@Url.Action("Upload","Admin", new {area= "CPanel" })',  //Server script to process data
+                type: 'POST',
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                    }
+                    return myXhr;
+                },
+                //Ajax events
+                success: function (data) {
+                    if (data.status == 1) {
+                        UpdateImage(id, fileName);
+
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var dataURL = reader.result;
+                            $("#" + _dvImageShow + "").empty();
+                            img = " <div id='dvImageShow_" + id + "'  _id=" + id + ">";
+                            img += "<img id='img_' + _index + '' src='" + dataURL + "' style='max-width:60px;  '/>";
+
+                            img += "   <div id='dvUploadButton_" + id + "' >";
+                            img += "         <input type='hidden' name='hdImg_" + id + "' id='hdImg_" + id + "' value='' >";
+                            img += "         <input type='file' class='jsFileUpload inputfile' id='flUpload" + id + "' name='flUpload" + id + "' onchange='UploadImage(event,this," + id + ")'    _index=" + id + " _dvimageshow='dvImageShow_" + id + "' _dvuploadbutton='dvUploadButton_" + id + "'>";
+                            img += "         <label data-toggle='tooltip' title='upload image' for='flUpload" + id + "'  ><span class='btn fa fa-upload'></span></label>";
+                            img += "     </div></div>";
+
+                            $("#" + _dvImageShow + "").empty();
+                            $("#" + _dvImageShow + "").html(img);
+
+
+                        };
+                         reader.readAsDataURL(selectedFile);
+                    }
+                    else {
+                        $("#" + _dvImageShow + "").empty();
+                        $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                        $("#" + _dvUploadButton + "").removeClass("hide");
+                    }
+                },
+                error: function (data) {
+                    $("#" + _dvImageShow + "").empty();
+                    $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                    $("#" + _dvUploadButton + "").removeClass("hide");
+                },
+                complete: function (data) {
+                    $("#" + _dvImageShow + "").empty();
+                    $("#" + _dvUploadButton + "").removeClass("hide");
+                    ResetError();
+                    //if (data.data == "0") {
+                    //    $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                    //}
+                },
+
+                data: dataString,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        function ResetError() {
+            $(".jsError").html("");
+            $(this).parent().parent().parent().removeClass("bg-danger")
+        }
+
+        function UpdateImage(Id, fileName)
+        {
+            var Folder = "Subject";
+            var Id = Id;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpoladImageFile", "Admin", new {area= "CPanel" })',
+                data: { Id: Id, Folder: Folder, fileName: fileName },
+                success: function (data) {
+                }
+            });
+
+        }
+    </script>
+}

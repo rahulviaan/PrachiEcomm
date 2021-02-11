@@ -1,0 +1,603 @@
+﻿@model PrachiIndia.Web.Areas.Model.Books
+
+@{
+    ViewBag.Title = "Books";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Books</h4></div>
+        <div class="panel-body">
+
+            @using (Ajax.BeginForm("GetAllBooks", "Admin", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divbook", LoadingElementId = "progress", InsertionMode = InsertionMode.Replace }))
+            {
+               
+                    <div class="col-md-6">
+                        @Html.Label("Board")
+                        @Html.DropDownListFor(model => model.idBoard, (SelectList)ViewBag.Boards, "--Select Board--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.Label("Class")
+                        @Html.DropDownListFor(model => model.idClass, (SelectList)ViewBag.Class, "--Select Class--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.idSubject)
+                        @Html.DropDownListFor(model => model.idSubject, (SelectList)ViewBag.Subjects, "--Select Subject--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.idSeries)
+                        @Html.DropDownListFor(model => model.idSeries, (SelectList)ViewBag.Series, "--Select Series--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="margin-top:2%">
+                            @Html.TextBoxFor(model => model.BookTitle, new { @class = "form-control", placeholder = "Search by Title" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="margin-top:2%">
+                            <input type="submit" class="btn btn-primary" id="btnsubmit" value="Submit" />
+                        </div>
+                    </div>
+            }
+            <div class="clearfix"></div>
+            <div class="col-md-12" id="divbook">
+
+            </div>
+            <div id="progress" class="modal" style="background: rgba(255, 255, 255, 0.7);">
+                <div class="text-center" style="position:absolute;width: 100%;top: 50%;">
+                    <img src="~/Content/tinymce/skins/lightgray/img/loader.gif" />
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .toast-top-right {
+        right: 40% !important;
+        top: 20% !important;
+        opacity: 1 !important;
+    }
+
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+        .inputfile + label {
+            font-size: 1.0em;
+            font-weight: 400;
+            color: white;
+            background-color: #999;
+            display: inline-block;
+            /*padding: 1px;*/
+        }
+
+        .inputfile + label {
+            cursor: pointer; /* "hand" cursor */
+        }
+
+            .inputfile:focus + label,
+            .inputfile + label:hover {
+                background-color: red;
+            }
+
+        .inputfile:focus + label {
+            outline: 1px dotted #666;
+            outline: -webkit-focus-ring-color auto 0px;
+        }
+
+
+
+        .inputfile:focus + label,
+        .inputfile.has-focus + label {
+            outline: 0px dotted #666;
+            outline: -webkit-focus-ring-color auto 0px;
+        }
+
+    .scroll {
+        overflow: scroll;
+    }
+</style>
+@section scripts{
+@Scripts.Render("~/bundles/jqueryUnobtrusive");
+    <script src="~/Content/js/common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="~/Content/Dashboard/css/toastr.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        function setDefaultImage(source) {
+            var badImg = new Image();
+            badImg.src = "/Images/NoImage.jpg";
+            var cpyImg = new Image();
+            cpyImg.src = source.src;
+
+            if (!cpyImg.width) {
+                source.src = badImg.src;
+            }
+        }
+        function onImgError(source) {
+            source.src = "/Images/NoImage.jpg";
+            source.onerror = "";
+            return true;
+        }
+
+        function FillGrid() {
+            $('#btnsubmit').click();
+        }
+
+        function Upload(ID) {
+
+            var data = new FormData();
+            var files = $("#file").get(0).files;
+            if (files.length > 0) { data.append("Images", files[0]); }
+            else {
+                common.showNotification('warning', 'Please select file to upload.', 'top', 'right');
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Upload", "Admin", new {area= "CPanel" })',
+                processData: false,
+                data: data,
+                dataType: 'json',
+                contentType: false,
+                success: function (data) {
+
+                },
+                error: function (error) {
+                    alert("errror");
+                }
+            });
+        }
+
+
+
+        function ConvertJsonDateString(jsonDate) {
+            var shortDate = null;
+            if (jsonDate) {
+                var regex = /-?\d+/;
+                var matches = regex.exec(jsonDate);
+                var dt = new Date(parseInt(matches[0]));
+                var month = dt.getMonth() + 1;
+                var monthString = month > 9 ? month : '0' + month;
+                var day = dt.getDate();
+                var dayString = day > 9 ? day : '0' + day;
+                var year = dt.getFullYear();
+                shortDate = monthString + '-' + dayString + '-' + year;
+            }
+            return shortDate;
+        };
+        function ChangeStatusBooks(_Id, _type, _status) {
+
+            var model = {
+                Id: _Id, Status: _status
+            };
+            var _url = '';
+            var IsUpdate = window.confirm("Are you sure want to change the status ?.")
+            if (!IsUpdate)
+            { return false; }
+
+            _url = '@Url.Action("UpdateStatusBooks", "Admin", new {area= "CPanel" })';
+            var v1 = this;
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                //data:model,
+                data: { Id: _Id, type: _type, Status: _status },
+                dataType: "json",
+                success: function (data) {
+
+
+                    HidePopup();
+                    if (data.data == "0") {
+                        $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                    }
+                    else {
+                        $.toaster({ priority: 'success', title: 'Update ', message: " successfully." });
+                        if ($("#ac_" + _Id).hasClass("glyphicon glyphicon-ok")) {
+                            $("#ac_" + _Id).removeClass("btn btn-success glyphicon glyphicon-ok");
+                            $("#ac_" + _Id).addClass("btn btn-warning glyphicon glyphicon-remove");
+                        }
+                        else {
+                            $("#ac_" + _Id).removeClass("btn btn-warning glyphicon glyphicon-remove");
+                            $("#ac_" + _Id).addClass("btn btn-success glyphicon glyphicon-ok")
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+
+        $(function () {
+            GetSeries();
+        });
+
+
+        $(document).on("click", "#AddBooks", function () {
+            var idSubject = $("#idSubject option:selected").val()
+            var idSeries = $("#idSeries option:selected").val()
+            AddBooks("ucBooks", 0, "Books", idSubject, idSeries);
+        });
+        function AddBooks(uc, _id, _title, _idSubject, _idSeries) {
+            ShowPopup();
+            var btnName = "Submit";
+            if (_id > 0) {
+                btnName = "Update";
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SelectPartialView", "Admin", new {area= "CPanel" })',
+                data: { uc: uc, id: _id, idSubject: _idSubject, idSeries: _idSeries },
+                success: function (data) {
+                    HidePopup();
+                    bootbox.dialog({
+                        title: _title,
+                        message: data,
+                        closeButton: true,
+
+                        buttons: {
+                            main: {
+                                label: "Cancel",
+                                className: "jsLoadingCancel btn-default",
+                                callback: function () {
+                                    bootbox.hideAll();
+                                }
+                            },
+                            success: {
+                                label: btnName,
+                                className: "jsLoading btn-success",
+                                callback: function () {
+                                    if ($("#SubjectId").val() == "") {
+                                        toastr.error("Subject is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#SeriesId").val() == "") {
+                                        toastr.error("Series is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Title").val() == "") {
+                                        toastr.error("Title is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Author").val() == "") {
+                                        toastr.error("Author is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#ISBN").val() == "") {
+                                        toastr.error("ISBN is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#EbookPrice").val() == "") {
+                                        toastr.error("Ebook price is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#PrintPrice").val() == "") {
+                                        toastr.error("Print book price is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#PageCount").val() == "") {
+                                        toastr.error("Page count is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Edition").val() == "") {
+                                        toastr.error("Edition is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Discount").val() == "") {
+                                        toastr.error("Discount is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#TaxId").val() == "") {
+                                        toastr.error("Tax is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if (btnName != "Update") {
+                                        if ($("#Boards").val() == "") {
+                                            toastr.error("Boards is required", '', { timeOut: 5000 })
+                                            return false;
+                                        }
+                                    }
+                                    $("#frmMain").submit();
+                                    return true;
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+
+        function UpdateBooks(uc, _id, _title, _idSubject, _idSeries) {
+            ShowPopup();
+            var btnName = "Submit";
+            if (_id > 0) {
+                btnName = "Update";
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SelectPartialView_Update", "Admin", new {area= "CPanel" })',
+                data: { uc: uc, id: _id, idSubject: _idSubject, idSeries: _idSeries },
+                success: function (data) {
+                    HidePopup();
+                    bootbox.dialog({
+                        title: _title,
+                        message: data,
+                        closeButton: true,
+
+                        buttons: {
+                            main: {
+                                label: "Cancel",
+                                className: "jsLoadingCancel btn-default",
+                                callback: function () {
+                                    bootbox.hideAll();
+                                }
+                            },
+                            success: {
+                                label: btnName,
+                                className: "jsLoading btn-success",
+                                callback: function () {
+                                    if ($("#SubjectId").val() == "") {
+                                        toastr.error("Subject is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#SeriesId").val() == "") {
+                                        toastr.error("Series is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Title").val() == "") {
+                                        toastr.error("Title is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Author").val() == "") {
+                                        toastr.error("Author is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#ISBN").val() == "") {
+                                        toastr.error("ISBN is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#EbookPrice").val() == "") {
+                                        toastr.error("Ebook price is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#PrintPrice").val() == "") {
+                                        toastr.error("Print book price is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#PageCount").val() == "") {
+                                        toastr.error("Page count is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Edition").val() == "") {
+                                        toastr.error("Edition is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Discount").val() == "") {
+                                        toastr.error("Discount is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#TaxId").val() == "") {
+                                        toastr.error("Tax is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+                                    if ($("#Boards").val() == "") {
+                                        toastr.error("Boards is required", '', { timeOut: 5000 })
+                                        return false;
+                                    }
+
+                                    $("#frmMain").submit();
+                                    return true;
+                                }
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+        $(document).on("click", ".text-primary", function () {
+            var _id = $(this).attr("_id");
+            var _uc = $(this).attr("_uc");
+            var _Category = $(this).attr("_Category");
+            UpdateBooks(_uc, _id, _Category);
+        });
+        $(document).on("click", ".jsActiveInactive", function () {
+            var _id = $(this).attr("_id");
+            _type = $(this).attr('_type');
+            _status = $(this).attr('_status');
+            // ChangeStatusBooks(_id, _type, _status);
+        });
+
+
+
+
+        function UploadImage(evt, objFile, id) {
+            // alert(id);
+            var selectedFile = objFile.files[0];
+
+            var _dvImageShow = $(objFile).attr("_dvImageShow");
+            var _index = $(objFile).attr("_index");
+            var _dvUploadButton = $(objFile).attr("_dvUploadButton");
+
+            if (selectedFile) {
+
+                var FileSize = 0;
+                var imageType = /image.*/;
+
+                if (selectedFile.size > 1048576) {
+                    FileSize = Math.round(selectedFile.size * 100 / 1048576) / 100 + " MB";
+                }
+                else if (selectedFile.size > 1024) {
+                    FileSize = Math.round(selectedFile.size * 100 / 1024) / 100 + " KB";
+                }
+                else {
+                    FileSize = selectedFile.size + " Bytes";
+                }
+
+                if (selectedFile.type.match(imageType)) {
+                    Upload(selectedFile, _dvImageShow, _index, _dvUploadButton, id, selectedFile.name)
+
+                }
+                else {
+                    var isHtml = '<div class="form-group col-lg-12 alert alert-danger small">'
+           + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'
+           + '<strong> * You are uploading invalid image file type</strong> . Valid image type supported are png, gif jpg, jpeg.'
+           + '</div>';
+                    $("#" + _dvImageShow + "").html(isHtml);
+
+                }
+            }
+
+        }
+        function Upload(selectedFile, _dvImageShow, _index, _dvUploadButton, id, fileName) {
+
+            $("#" + _dvUploadButton + "").addClass("hide");
+
+            $("#" + _dvImageShow + "").empty();
+            $("#" + _dvImageShow + "").html("<span class='text-center text-muted'>Please Wait...</span>")
+            $("#hdImg_" + _index + "").val("");
+            var dataString = new FormData();
+            // alert("ID in ajax = " + id);
+            dataString.append("uploadedFile", selectedFile);
+            dataString.append("ItemId", id);
+            $.ajax({
+                url: '@Url.Action("Upload","Admin", new {area= "CPanel" })',  //Server script to process data
+                type: 'POST',
+                xhr: function () {  // Custom XMLHttpRequest
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                    }
+                    return myXhr;
+                },
+                //Ajax events
+                success: function (data) {
+                    if (data.status == 1) {
+                        UpdateImage(id, fileName);
+
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var dataURL = reader.result;
+                            $("#" + _dvImageShow + "").empty();
+                            img = " <div id='dvImageShow_" + id + "'  _id=" + id + ">";
+                            img += "<img id='img_' + _index + '' src='" + dataURL + "' style='max-width:40px; max-height:44px; width:40px; height:44px; float:left;'/>";
+
+                            img += "   <div  id='dvUploadButton_" + id + "' style='float:left;width: auto;margin-left: 5px;'>";
+                            img += "         <input type='hidden' name='hdImg_" + id + "' id='hdImg_" + id + "' value='' >";
+                            img += "         <input type='file' class='jsFileUpload inputfile' id='flUpload_" + id + "' name='flUpload_" + id + "' onchange='UploadImage(event,this," + id + ")'    _index=" + id + " _dvimageshow='dvImageShow_" + id + "' _dvuploadbutton='dvUploadButton_" + id + "'>";
+                            //img += "         <label data-toggle='tooltip' title='upload image' for='flUpload" + id + "'  ><span class='btn fa fa-upload'></span></label>";
+                            img += "     </div></div>";
+
+                            $("#" + _dvImageShow + "").empty();
+                            $("#" + _dvImageShow + "").html(img);
+
+
+                        };
+                        reader.readAsDataURL(selectedFile);
+                    }
+                    else {
+                        $("#" + _dvImageShow + "").empty();
+                        $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                        $("#" + _dvUploadButton + "").removeClass("hide");
+                    }
+                },
+                error: function (data) {
+                    $("#" + _dvImageShow + "").empty();
+                    $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                    $("#" + _dvUploadButton + "").removeClass("hide");
+                },
+                complete: function (data) {
+                    $("#" + _dvImageShow + "").empty();
+                    $("#" + _dvUploadButton + "").removeClass("hide");
+                    ResetError();
+                },
+
+                data: dataString,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+        function ResetError() {
+            $(".jsError").html("");
+            $(this).parent().parent().parent().removeClass("bg-danger")
+        }
+
+        function UpdateImage(Id, fileName) {
+            var Folder = "Series";
+            var Id = Id;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpoladImageFile", "Admin", new {area= "CPanel" })',
+                data: { Id: Id, Folder: Folder, fileName: fileName },
+                success: function (data) {
+                }
+            });
+
+        }
+        function GetSeries() {
+            var idSubject = $("#idSubject option:selected").val() == "" ? 0 : $("#idSubject option:selected").val();
+            $("#idSeries").html("");
+            var isoption = '<option value="">--Select Series--';
+            $.ajax({
+                type: "POST",
+                data: { idSubject: idSubject },
+                url: '@Url.Action("getSeries", "Admin", new {area= "CPanel" })',
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+                        isoption += '<option value="' + item.Id + '">' + item.Title + '</option>';
+                    });
+                    if (data.length > 0) {
+                        $("#idSeries").append(isoption);
+                        $("#idSeries").focus();
+                    }
+                    else {
+                        $("#idSeries").focus();
+                    }
+                }
+            });
+            return false;
+        }
+        $(document).on("change", "#idSubject", function () {
+            GetSeries();
+        });
+        $(document).on("change", "#idSeries", function () {
+
+            var idSubject = $("#idSubject option:selected").val() == "" ? 0 : $("#idSubject option:selected").val();
+            var idSeries = $("#idSeries option:selected").val() == "" ? 0 : $("#idSeries option:selected").val();
+            //FillGrid();
+        });
+
+        $(document).on("click", ".glyphicon-record", function () {
+
+        });
+        function ActiveInactive(ID, object) {
+            var ckb = $(object).is(':checked');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DeleteBooks",
+                data: { BookID: ID, Flag: ckb },
+                success: function (data) {
+                    if (data == 'true')
+                        toastr.success("Book Activated Successfully", '', { timeOut: 5000 })
+                    else
+                        toastr.success("Book Deactivated Successfully", '', { timeOut: 5000 })
+                },
+                error: function () {
+                    alert("Error occured!!")
+                }
+            });
+
+        }
+    </script>
+}

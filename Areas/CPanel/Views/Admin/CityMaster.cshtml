@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PrachiIndia.Sql.City>
+
+@{
+    ViewBag.Title = "CityMaster";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">City Master</h4></div>
+        <div class="panel-body">
+
+            <p>
+                @Html.ActionLink("Create New", "AddCity",null, new {@class="btn btn-info" })
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("SNo")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CityName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+
+                    @{
+                        int Count = 0;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @(Count + 1)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CityName)
+                                </td>
+
+                                <td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        @Html.Label("Active", item.IsActive);
+                                    }
+                                    else
+                                    {
+                                        @Html.Label("InActive", item.IsActive);
+                                    }
+                                </td>
+                                <td>
+                                    <a title="Edit" class="text-primary" href="@Url.Action("CityMasterEdit", "Admin", new {CityId = item.CityId})"><i class="fa fa-pencil"></i></a>
+
+                                </td>
+                            </tr>
+                            Count = Count + 1;
+                        }
+                    }
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+

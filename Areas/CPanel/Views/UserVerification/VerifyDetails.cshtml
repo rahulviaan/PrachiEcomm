@@ -1,0 +1,151 @@
+﻿
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Otp</title>
+    <style>
+        .paramargin {
+            margin: 0;
+            padding: 5px;
+            font-size: 20px;
+        }
+
+        .smileeface {
+            font-size: 35px;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <table style="width: 550px; margin: 0 auto;">
+        <tbody>
+            <tr>
+                <td style="padding-top: 10%;">
+                    <table style="width: 100%; border: solid 1px #cccccc; padding: 25px;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p class="paramargin" style="color:#5b7212;text-align: center;border-bottom: solid 1px #e0e0e0;margin-bottom: 6%;"> <img src="http://prachiindia.com/img/logo.png" alt="" width="200"></p>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="paramargin" style="color:#5b7212;text-align: center;margin-bottom: 6%;">Your email is Verified&nbsp;&nbsp;&nbsp; <img src="https://image.ibb.co/czEgzn/right.png" alt="" width="20" height="15"></p>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td id="mobileVerify">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>
+                                                <p class="paramargin">Verify Your Mobile</p>
+
+                                                <input id="OTP" placeholder="OTP" style="width: 95%; border-radius: 5px; border: solid 1px #cccccc; padding: 12px;margin: 0 auto;" type="text">
+
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <button type="button" id="veryOTP" style="border: solid 1px #169fc9; padding: 9px 10px; background: #5673ad; color: #ffffff; font-size: 19px; border-radius: 2px;width: 100%;text-transform: uppercase;margin-top: 1%;cursor: pointer;">Verify</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td style="text-align: center; padding-top:5px;">
+                                                <button type="button" style="padding: 5px 10px; background: #f35858; color: #ffffff; font-size: 14px; border-radius: 2px;float: right;text-transform: uppercase;border: solid 1px #f2e5e5;cursor: pointer;" id="resend">Resend OTP</button>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="mobileVerified">
+                                    <p class="paramargin" style="color:#5b7212;text-align: center;">Your mobile is Verified&nbsp;&nbsp;&nbsp; <img src="https://image.ibb.co/czEgzn/right.png" alt="" width="20" height="15"></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#mobileVerify").show();
+        $("#mobileVerified").hide();
+    })
+    $("#veryOTP").on('click', function () {
+        var OTP = $("#OTP").val();
+        if (OTP == "") {
+            toastr.error(" Please insert OTP", '', { timeOut: 5000 })
+
+        }
+
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("VerifyMobile")',
+                data: '{OTP: ' + JSON.stringify(OTP) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result == "1") {
+                        toastr.success("Verified Successfully ", '', { timeOut: 5000 });
+                        $("#mobileVerify").hide();
+                        $("#mobileVerified").show();
+                    }
+                    else {
+                        toastr.error("Wrong OTP", '', { timeOut: 5000 });
+                        $("#mobileVerify").show();
+                        $("#mobileVerified").hide();
+                    }
+
+                },
+                error: function () {
+                    toastr.alert("Error while inserting data", '', { timeOut: 5000 });
+
+                }
+            });
+        }
+    });
+
+    $("#resend").click(function () {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ResendOTP")',
+            //data: '{OTP: ' + JSON.stringify(OTP) + '}',
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                toastr.success("OTP sent Successfully ", '', { timeOut: 5000 })
+
+            },
+            error: function () {
+                alert("Error while inserting data");
+            }
+        });
+    })
+</script>
+

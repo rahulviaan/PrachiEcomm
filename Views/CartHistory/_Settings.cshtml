@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+<div class="col-md-3">
+    <div style="margin-top:16%; background-color:#ffffff;border:solid 1px #e8e8e8;float: left;box-shadow: 0px 0px 2px #fbfbfb; width:100%;">
+        <div class="col-md-12">
+            <div class="profile-sidebar">
+                <div>
+                    <h4 class="text-left" style="border-bottom: solid 1px #eeeeee; padding-bottom: 14px;"> My Account</h4>
+                </div>
+                <div>
+                    <div class="settings" style="border:none;">
+                        <p class="subheading">Orders</p>
+                        <ul class="accountSettings">
+                            <li><a href="@Url.Action("UserCartHistory","CartHistory")" id="MycartHistory"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;My Orders </a></li>
+                            @if (User.IsInRole(PrachiIndia.Portal.Models.Roles.School))
+                            {
+                                <li><a href="@Url.Action("MyPO","CartHistory")" id="MyPO"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;E-Book Orders </a></li>
+                            }
+                            <li><a href="@Url.Action("MyLibrary","CartHistory")" id="MyLibrary"><i class="glyphicon glyphicon-book"></i>&nbsp;E-Book Library </a></li>
+                            @*<li><a href="@Url.Action("UserSubscriptionHistory", "CartHistory")" id="MySubscription"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;My Subscription </a></li>*@
+                        </ul>
+                    </div>
+                    <div class="settings" style="border-top: 1px solid #e8e8e8;padding-top: 8px;">
+                        <p style="margin:0;padding:0;line-height:24px;margin-top:-5px;">Personal Information</p>
+                        <ul class="accountSettings">
+                            <li><a href="@Url.Action("UserProfile","Account")" id="Profileusers"><i class="fa fa-user "></i>&nbsp;Profile Settings</a></li>
+                            <li><a href="@Url.Action("ChangePassword","Account")" id="ChangePwd"><i class="icon-history"></i><i class="glyphicon glyphicon-user"></i>&nbsp;Change Password</a></li>
+                            @*<li><a href="#" id="AddresID"><i class="glyphicon glyphicon-home"></i>Address </a> </li>*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="col-md-3">
+    <div style="margin-top:16%; background-color:#ffffff;border:solid 1px #e8e8e8;float: left;box-shadow: 0px 0px 2px #fbfbfb; width:100%;">
+        <div class="col-md-12">
+            <div class="profile-sidebar">
+                <div>
+                    <h4 class="text-left" style="border-bottom: solid 1px #eeeeee; padding-bottom: 14px;"> My Account</h4>
+                </div>
+                <div>
+                    <div class="settings" style="border:none;">
+                        <p class="subheading">Orders</p>
+                        <ul class="accountSettings">
+                            <li><a href="@Url.Action("UserCartHistory","CartHistory")" id="MycartHistory"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;My Orders </a></li>
+                            <li><a href="@Url.Action("UserSubscriptionHistory", "CartHistory")" id="MySubscription"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;My Subscription </a></li>
+                        </ul>
+                    </div>
+                    <div class="settings" style="border-top: 1px solid #e8e8e8;padding-top: 8px;">
+                        <p style="margin:0;padding:0;line-height:24px;margin-top:-5px;">Personal Information</p>
+                        <ul class="accountSettings">
+                            <li><a href="@Url.Action("UserProfile","Account")" id="Profileusers"><i class="fa fa-user "></i>&nbsp;&nbsp;Profile Settings</a></li>
+                            <li><a href="@Url.Action("ChangePassword","Account")" id="ChangePwd"><i class="icon-history"></i><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Change Password</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+

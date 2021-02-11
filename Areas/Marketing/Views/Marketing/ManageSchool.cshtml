@@ -1,0 +1,79 @@
+﻿@model PrachiIndia.Portal.Areas.Marketing.Models.MarketingModel
+@{
+    ViewBag.Title = "ManageSchool";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+        font-size: 11px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Manage School Profile</h2>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("ManageSchool", "Marketing", FormMethod.Post))
+                {
+                    @Html.HiddenFor(t => t.Id)
+                    @Html.HiddenFor(t => t.EmailConfirmed)
+                    @Html.HiddenFor(t => t.MobileConfirmed)
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label text-right">Name</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(t => t.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(t => t.Name)
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label text-right">Email</label>
+                        <div class="col-md-9">
+                            @if (!Model.EmailConfirmed)
+                            {
+                                @Html.TextBoxFor(t => t.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(t => t.Email)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(t => t.Email)
+                                @Html.DisplayFor(t => t.Email, new { @class = "control-label" })
+                            }
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label text-right">Mobile</label>
+                        <div class="col-md-9">
+                            @if (!Model.MobileConfirmed)
+                            {
+                                @Html.TextBoxFor(t => t.Mobile, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(t => t.Mobile)
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(t => t.Mobile)
+                                @Html.DisplayFor(t => t.Mobile, new { @class = "control-label" })
+                            }
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label text-right">No of Systems</label>
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(t => t.DeviceCount, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(t => t.DeviceCount)
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

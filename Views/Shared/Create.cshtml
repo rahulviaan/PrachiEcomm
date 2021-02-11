@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+<div class="col-md-12 row">
+<h2>Create</h2>
+<div class="col-sm-2 form-group">
+    <input type="hidden" id="count" value="0">
+    <label for="Board">Board</label>
+    <select class="form-control" name="Board">
+        <option value="0"></option>
+        <option value="1">English</option>
+        <option value="2">Mathematics</option>
+        <option value="3">Science</option>
+        <option value="4">Social Science</option>
+        <option value="5">Hindi</option>
+        <option value="6">Sanskrit</option>
+        <option value="7">Art and Craft</option>
+        <option value="8">Health and Physical Education</option>
+        <option value="9">Term Book</option>
+        <option value="10">Environmental Studies</option>
+        <option value="11">General Knowledge</option>
+        <option value="12">Moral Education</option>
+        <option value="13">Computer</option>
+        <option value="14">French</option>
+        <option value="15">Atlas</option>
+        <option value="16">Value Education</option>
+        <option value="17">Enviromental Studies</option>
+        <option value="18">Magic Number</option>
+        <option value="19">Assignment for Holidays</option>
+        <option value="20">Holiday Homework </option>
+        <option value="21">Mathematics(Hindi)</option>
+        <option value="22">Smajik Vigyan </option>
+        <option value="23">Vigyan </option>
+        <option value="24">Physics </option>
+        <option value="25">Chemistry </option>
+        <option value="26">Rhythmic Rhymes</option>
+        <option value="27">Sahitya Prabha </option>
+    </select>
+
+</div>
+<div class="col-sm-2 form-group">
+
+    <label for="Subject">Subject</label>
+    <select class="form-control" name="Board">
+        <option value="0"></option>
+        <option value="1">English</option>
+        <option value="2">Mathematics</option>
+        <option value="3">Science</option>
+        <option value="4">Social Science</option>
+        <option value="5">Hindi</option>
+        <option value="6">Sanskrit</option>
+        <option value="7">Art and Craft</option>
+        <option value="8">Health and Physical Education</option>
+        <option value="9">Term Book</option>
+        <option value="10">Environmental Studies</option>
+        <option value="11">General Knowledge</option>
+    </select>
+</div>
+<div class="col-sm-2 form-group">
+    <label for="Series">Series</label>
+    <select class="form-control" name="Board">
+        <option value="0"></option>
+        <option value="1">English</option>
+        <option value="2">Mathematics</option>
+        <option value="3">Science</option>
+        <option value="4">Social Science</option>
+        <option value="5">Hindi</option>
+        <option value="6">Sanskrit</option>
+        <option value="7">Art and Craft</option>
+        <option value="8">Health and Physical Education</option>
+        <option value="9">Term Book</option>
+        <option value="10">Environmental Studies</option>
+        <option value="11">General Knowledge</option>
+    </select>
+</div>
+<div class="col-sm-2 form-group">
+    <label for="Class">Class</label>
+    <select class="form-control" name="Board">
+        <option value="0"></option>
+        <option value="1">English</option>
+        <option value="2">Mathematics</option>
+        <option value="3">Science</option>
+        <option value="4">Social Science</option>
+        <option value="5">Hindi</option>
+        <option value="6">Sanskrit</option>
+        <option value="7">Art and Craft</option>
+        <option value="8">Health and Physical Education</option>
+        <option value="9">Term Book</option>
+        <option value="10">Environmental Studies</option>
+        <option value="11">General Knowledge</option>
+    </select>
+</div>
+<div class="col-sm-2">
+    <label>Add More</label><br/>
+    <button type="button" id="load_list" class="btn btn-warning"><i class="fa fa-plus" aria-hidden="true"></i></button>
+</div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="rolename">Role Name</label>
+        <div class="col-md-4">
+            <select id="dates-field2" class="multiselect-ui form-control" multiple="multiple">
+                <option value="cheese">Cheese</option>
+                <option value="tomatoes">Tomatoes</option>
+                <option value="mozarella">Mozzarella</option>
+                <option value="mushrooms">Mushrooms</option>
+                <option value="pepperoni">Pepperoni</option>
+                <option value="onions">Onions</option>
+            </select>
+        </div>
+    </div>
+</div>
+    <div class="clearfix"></div>
+    <div id="valueappen" class="col-md-12 row"></div>
+   
+@Scripts.Render("~/bundles/jquery")
+    @section scripts{
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="~/Content/PO/multiselect.js"></script>
+
+<link href="~/Content/PO/multiselect.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.multiselect-ui').multiselect({
+                    includeSelectAllOption: true
+                    
+                });
+                // start append here
+                $('#load_list').click(function () {
+                    var count = parseInt($("#count").val());
+                    $("#count").val(count + 1);
+                    $("#valueappen").append('<div class="clearfix"></div><div id="row_' + count + '"><div class="col-sm-2 form-group"><select class="form-control"><option value="0"></option><option value="1">English</option><option value="2">Mathematics</option><option value="3">Science</option><option value="4">Social Science</option><option value="5">Hindi</option></select></div><div class="col-sm-2 form-group"><select class="form-control"><option value="0"></option><option value="1">English</option><option value="2">Mathematics</option><option value="3">Science</option><option value="4">Social Science</option><option value="5">Hindi</option></select></div><div class="col-sm-2 form-group"><select class="form-control"><option value="0"></option><option value="1">English</option><option value="2">Mathematics</option><option value="3">Science</option><option value="4">Social Science</option><option value="5">Hindi</option></select></div><div class="col-sm-2 form-group"><select class="form-control"><option value="0"></option><option value="1">English</option><option value="2">Mathematics</option><option value="3">Science</option><option value="4">Social Science</option><option value="5">Hindi</option></select></div><div class="col-sm-2 form-group"><button type="button" onclick="removeRow(' + count + ')" class="btn btn-danger remove"><i class="fa fa-trash" aria-hidden="true"></i></button></div></div><div class="clearfix"></div>');
+                    $("#valueappend_" + count).multiselect({
+                        includeSelectAllOption: true
+                    });
+                });
+                //$('.remove').click(function () {
+                //    $(this).parent('div').remove();
+                //});
+                //// end append here
+                $(document).click(function () {
+                    $('.multiselect-container').css("display", "none")
+
+                })
+                
+                $('.multiselect').click(function () {
+                    
+                    $('.multiselect-container').css("display", "block")
+                })
+            });
+    
+            function removeRow(id)
+            {
+                $("#row_" + id).remove();
+            }
+
+        </script>

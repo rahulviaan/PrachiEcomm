@@ -1,0 +1,134 @@
+﻿@model PrachiIndia.Web.Areas.Model.MasterSeries
+@{
+
+    Layout = null;
+    var i = Model.Id;
+    var MasterSubjectRepository = new PrachiIndia.Sql.CustomRepositories.MasterSubjectRepository();
+    var ltSubject = MasterSubjectRepository.GetAll();
+    IEnumerable<SelectListItem> lst = (from m in ltSubject select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title.ToString(), Value = m.Id.ToString() });
+    var lstSubject = new SelectList(lst, "Value", "Text");
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmMain", id = "frmMain", }))
+{
+
+
+    <input type="hidden" id="hdnid" value="@Model.Id" />
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.SubjectId)
+            @Html.DropDownListFor(model => model.SubjectId, lstSubject, "--Select Subject--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Title) })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.OredrNo)
+            @Html.TextBoxFor(model => model.OredrNo, new { @style = "width:120px", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OredrNo) })
+            @Html.ValidationMessageFor(model => model.OredrNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @style = "width:100%", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+        </div>
+        <div class="row">
+            @*<div class="col-lg-6">
+                @Html.LabelFor(m => m.IdSeries)
+                @Html.DropDownListFor(model => model.IdSeries, lstSubject, new { @class = "form-control" })
+            </div>*@
+            <div class="col-lg-6 hide">
+               
+                @Html.TextBoxFor(model => model.IdServer, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @*<div class="col-lg-12">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+            </div>*@
+    </div>
+}
+@Scripts.Render("~/bundles/jquery")
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.toaster.js"></script>
+<script>
+
+    function getSeries() {
+        var isoption = '<option value="0">---Select---</option>';
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetAllSeries", "Readedge", new {area= "CPanel" })',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    isoption += '<option value="' + item.idServer + '">' + item.Title + '</option>';
+                });
+                isoption += '<option value="0">None</option>';
+                $("#IdSeries").html(isoption);
+            }
+        });
+        return false;
+    }
+    $(function () {
+        getSeries();
+        if ('@Model' != null) {
+            setTimeout(function () { $("#IdSeries").val('@Model.IdServer').attr("selected", "selected"); }, 3000);
+        }
+        $(document).on("change", "#IdSeries", function () {
+            var IdServer = $("#IdSeries option:selected").val() == "" ? 0 : $("#IdSeries option:selected").val();
+            $("#IdServer").val(IdServer);
+        });
+
+        $(document).on("submit", "#frmMain", function (e) {
+            if ($(this).valid()) {
+                var Id = $("#hdnid").val();
+                var Title = $("#Title").val();
+                var SubjectId = $("#SubjectId option:selected").val();
+                var OredrNo = $("#OredrNo").val();
+                var IdServer = $("#IdServer").val();
+                var Description = $("#Description").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateMasterSeries", "Admin", new {area= "CPanel" })',
+                    data: { Id: Id, Title: Title, OredrNo: OredrNo, Description: Description, SubjectId: SubjectId ,IdServer:IdServer },
+                    success: function (data) {
+
+                        $("#tdtitle_" + Id).html($("#Title").val());
+                        $("#tdorder_" + Id).html($("#OredrNo").val());
+                        $(".jstoast").remove();
+                        if (data.Id > 0) {
+                            var idSubject = $("#SubjectId option:selected").val();
+                            FillGrid(idSubject);
+                            if (Id > 0) {
+                                $.toaster({ priority: 'success', title: 'Update ', message: " successfully." });
+                            }
+                            else { $.toaster({ priority: 'success', title: 'Inserted ', message: " successfully." }); }
+                        }
+                        else {
+                            $.toaster({ priority: 'danger', title: '', message: 'Sorry for inconvinience. Please try again.' });
+                        }
+                        setTimeout(function () { bootbox.hideAll(); }, 2000);
+                        return false;
+                    }
+                });
+            }
+
+            return false;
+        });
+        $("#OredrNo").keyup(function () {
+            var num = $("#OredrNo").val();
+            if (!$.isNumeric(num)) {
+                alert("only numeric value allow");
+                $("#OredrNo").val("");
+            }
+            else {
+
+            }
+        });
+
+    });
+
+</script>

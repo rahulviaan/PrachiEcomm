@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+<div class="panel-body">
+    <div style="background-color:#ffffff;border:solid 1px #e8e8e8;float: left;box-shadow: 0px 0px 2px #fbfbfb; width:100%;">
+    <div class="panel-body">
+    <div class="profile-sidebar">
+        <div>
+            <h4 class="text-left" style="border-bottom: solid 1px #eeeeee; padding-bottom: 14px;">My Account</h4>
+        </div>
+        <div>
+            <div class="settings" style="border:none;">
+                <p class="subheading">Orders</p>
+                <ul class="accountSettings">
+                    <li><a href="@Url.Action("UserCartHistory","CartHistory")" id="MycartHistory"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;My Orders </a></li>
+                    <li><a href="@Url.Action("UserSubscriptionHistory", "CartHistory")" id="MySubscription"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;My Subscription </a></li>
+                </ul>
+            </div>
+            <div class="settings" style="border-top: 1px solid #e8e8e8;padding-top: 8px;">
+                <p>Personal Information</p>
+                <ul class="accountSettings">
+                    <li><a href="@Url.Action("UserProfile","Account")" id="Profileusers"><i class="fa fa-user "></i>&nbsp;&nbsp;Profile Settings</a></li>
+                    <li><a href="@Url.Action("ChangePassword","Account")" id="ChangePwd"><i class="fa fa-lock"></i>&nbsp;&nbsp;Change Password</a></li>
+                    @*<li><a href="#" id="AddresID"><i class="glyphicon glyphicon-home"></i>Address </a> </li>*@
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div></div>
+</div>
+
+
+

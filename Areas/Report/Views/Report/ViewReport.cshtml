@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "ViewReport";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link rel="stylesheet" href="~/dist/css/bootstrap-datepicker3.min.css" />
+
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">View Sales Report</h4></div>
+        <div class="panel-body">
+            @*@using (Html.BeginForm("ViewReport", "Report", FormMethod.Post))
+        {*@
+            <div class="col-md-12 row">
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input type="text" id="id-date-picker-1" name="fromdate" class="form-control date-picker" placeholder="From Date">
+
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input type="text" id="id-date-picker-2" name="todate" class="form-control date-picker" placeholder="To Date">
+
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input type="text" id="txtsearch" name="txtsearch" class="form-control" placeholder="PO, School Name, Email & Mobile">
+                        <span class="input-group-addon" style="padding:0;border: none !important;">
+                            <button type="submit" id="btnshw" class="btn btn-primary" style="border-radius:0px 4px 4px 0px;padding: 9px 15px;"><span class="fa fa-search bigger-110"></span></button>
+                        </span>
+                    </div>
+                </div>
+
+
+            </div>
+            @*}*@
+            <section class="social" id="ReportDisplayPanel">
+                @*@Html.Partial("ViewReport");*@
+                <div class="myIframe col-md-12 table-responsive">
+                    <iframe id="ifrmReportViewer" frameborder="0" scrolling="auto" width="auto" height="auto"></iframe>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+@section scripts{
+
+@Scripts.Render("~/bundles/jqueryUnobtrusive")
+
+}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="~/dist/js/date-time/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+  
+       $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+
+       }).attr('readonly', 'true');
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        ReportValidationchk();
+      
+    });
+    $("#btnshw").click(function () {
+        ReportValidationchk();
+    });
+</script>
+<script>
+    function ReportValidationchk()
+    {
+        var tsearch = $("#txtsearch").val();
+        var fdate = $("#id-date-picker-1").val();
+        var tdate = $("#id-date-picker-2").val();
+        url = "../../Areas/Report/AppReportView.aspx?search=" + tsearch + "&fromdate=" + fdate + "&todate=" + tdate + "&rptType=Sales";
+        var myframe = document.getElementById("ifrmReportViewer");
+        if (myframe !== null) {
+            //alert('p');
+            if (myframe.src) {
+                //alert('frame');
+                myframe.src = url;
+            }
+            else if(myframe.contentWindow!==null && myframe.contentWindow.location!==null)
+            {
+                //alert('k');
+                myframe.contentWindow.location = url;
+                //alert(myframe.contentWindow.location);
+            }
+            else{myframe.setAttribute('src',url)}
+        }
+    }
+</script>
+<style>
+    #ReportViewer1_fixedTable {
+        overflow-x:scroll;
+    }
+    .myIframe {
+     position: relative;
+     padding-bottom: 65.25%;
+     padding-top: 30px;
+     height: 0;
+     overflow: auto; 
+     -webkit-overflow-scrolling:touch;
+    
+} 
+     table {
+            width:100%;
+            
+        }
+.myIframe iframe {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 600px;
+}
+</style>
+@*<script type="text/javascript">
+
+        
+</script>*@  

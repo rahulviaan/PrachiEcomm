@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "ManageOrder";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Manage Order</h4></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    @Html.DropDownList("StateId", ViewBag.Countries as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+                <div class="col-md-5 form-group">
+                    <select id="CityId" class="form-control">
+                        <option value="0">Please select</option>
+                    </select>
+
+                </div>
+                <div class="col-md-1 form-group">
+                    <button class="btn btn-primary" id="btnFilter">
+                        <i class="fa fa-search-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-6">
+
+
+        <div class="panel panel-default" style="border-top:none;">
+            <div class="panel-heading">
+                <p><b>Order Details</b></p>
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-border">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Order No</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Payment Status</th>
+                            <th>User Name</th>
+                            <th>mobile No</th>
+                         
+                        </tr>
+                    </thead>
+                    <tbody id="tblBody"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var StateId = $('select#StateId option:selected').val();
+            var CityId = $('select#CityId option:selected').val();
+            //alert(StateId);
+            //alert(CityId);
+            FillGrid(StateId, CityId);
+            $('#btnFilter').on('click', function () {
+                var StateId = $('select#StateId option:selected').val();
+                var CityId = $('select#CityId option:selected').val();
+                FillGrid(StateId, CityId);
+            });
+
+            $('#StateId').on('change', function () {
+                var StateId = $(this).val();
+                $('#CityId').html();
+                $.ajax({
+                    type: "POST",
+                    data: { stateId: StateId },
+                    url: '@Url.Action("GetCities", "Dashboard", new {area= "CPanel" })',
+                    success: function (items) {
+                        $('#CityId').append('<option value="0">Please select</option>');
+                        $.each(items, function (i, d) {
+                            // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                            $('#CityId').append('<option value="' + d.CityId + '">' + d.CityName + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+
+       
+        function FillGrid(StateId, CityId) {
+            $("#tblBody").html(' <tr><td colspan="10"><div class="progress"> <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Please wait..     </div>  </div></td></tr>');
+            var isTbody = "";
+            var tbl = "";
+            var tHeader = "";
+            $.ajax({
+                type: "POST",
+                data: { stateId: StateId, cityId: CityId },
+                url: '@Url.Action("GetOrders", "Dashboard", new {area= "CPanel" })',
+                success: function (items) {
+                    //alert(123);
+                    console.log(JSON.stringify(items));
+                    //console.log(items + "fdjnkj");
+                    var trRecord = "";
+                    $.each(items, function (i, item) {
+                        var srNo = parseInt(i + 1);
+                        console.log(item);
+                        trRecord = trRecord + "<tr>";
+                        trRecord = trRecord + "<td>" + srNo + "</td>";
+                        trRecord = trRecord + "<td>" + item.TransactionId + "</td>";
+                        trRecord = trRecord + "<td>" + item.Amount + "</td>";
+                       
+                        trRecord = trRecord + "<td>" + item.CreatedDate+ "</td>";
+                        if (item.Status == 1) {
+                            trRecord = trRecord + "<td>transaction successful</td>";
+                        }
+                        else {
+                            trRecord = trRecord + "<td>transaction failed</td>";
+                        }
+                        trRecord = trRecord + "<td>" + item.Name + "</td>";
+                        trRecord = trRecord + "<td>" + item.Phone + "</td>";
+                        //trRecord = trRecord + "<td>" + item.AspNetUser.Address + ", " + item.AspNetUser.City + ", " + item.AspNetUser.State + ", " + item.AspNetUser.Country + ", " + "</td>";
+                        trRecord = trRecord + "</tr>";
+                    });
+                    $("#tblBody").html(trRecord);
+                }
+            });
+        }
+    </script>
+}

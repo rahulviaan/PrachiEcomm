@@ -1,0 +1,120 @@
+﻿@using PrachiIndia.Portal.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="clear:both; height:10px;"></div>
+<div class="wrapper">
+    <div class="inner LoginMain">
+    <div class="container">
+        <div class="panel-body">
+            <div class="col-md-12 form-group text-center" style="margin:15% 0;">
+                <img src="/Images/logo.png" alt="Prachi India Pvt Ltd" title="Prachi India Pvt Ltd">
+            </div>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                <div style="margin-bottom: 8%" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "User Name", @style = "border: none !important;" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                <div style="margin-bottom: 8%" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @style = "border: none !important;" })
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @name = "abc" })
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 text-right">@Html.ActionLink("Forgot password?", "ForgotPassword")</div>
+                </div>
+                <div style="margin-top:5%" class="form-group">
+                    <div class="col-sm-12 controls text-center">
+                        <input type="submit" value="Log in" class="col-md-12 theme-btn loginBtn btn" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12 control">
+                        <div style="border-top: 1px solid #cacaca; padding-top:15px; text-align:center;">
+                            Don't have an account !<br />
+                            @Html.ActionLink("Sign Up Here", "Register")
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+   </div> </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $(".navbar-right").hide();
+            //$(input[type = "hidden"]).remove();
+            $('input[type="hidden"][value="false"]').remove();
+            //$("input[name=RememberMe]").remove();
+        });
+    </script>
+    <style>
+        .input-group {
+            border: solid 1px #f0e3e3 !important;
+        }
+
+        .input-group-addon {
+            border: none !important;
+        }
+
+        .form-control:focus {
+            border-color: #cccccc;
+            box-shadow: inherit;
+        }
+
+        .form-control {
+            height: 45px;
+            box-shadow: none;
+        }
+
+
+
+        .mainav {
+            display: none;
+        }
+    </style>
+}

@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<PrachiIndia.Portal.Areas.CPanel.Controllers.ReadEdgeBookModel>
+@using PagedList.Mvc;
+ 
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Books
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Sr No#</th>
+                            <th>Board</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Series</th>
+                            <th>Books</th>
+                            @*<th>ISBN</th>*@
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = ((Model.PageNumber-1) * 25)+1;
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Board</td>
+                                    <td>@item.Classes</td>
+                                    <td>@item.Subject</td>
+                                    <td>@item.Series</td>
+                                    <td>@item.BookName</td>
+                                    @*<td>@item.ISBN</td>*@
+                                    <td>
+                                        <a href="@Url.Action("Details", "BookMigrations", new { Id = item.Id })">Migrate Contents</a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <tfoot>
+                            <tr>
+                                <td colspan="7"><h4>No book found.</h4></td>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    </div>
+</div>

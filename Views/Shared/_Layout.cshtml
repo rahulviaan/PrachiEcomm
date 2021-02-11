@@ -1,0 +1,673 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @RenderSection("metatags", required: false)
+
+
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/img/favicon-32x32.png" sizes="32x32" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
+    
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jqBootstrapValidation.js"></script>
+    <script src="~/Content/js/agency.js"></script>
+
+    <script src="~/Scripts/addthis_widget.js"></script>
+    <link href="~/Content/Css/bootstrap.vertical-tabs.css" rel="stylesheet" />
+    <script type="text/javascript">
+        (function () {
+            var a = document.createElement("script");
+            a.type = "text/javascript";
+            a.async = !0;
+            a.src = "https://www.prachiindia.com/Scripts/addthis_widget.js#pubid=ra-53771b0213640e49";
+            var b = document.getElementsByTagName("script")[0];
+            b.parentNode.insertBefore(a, b);
+        })();
+    </script>
+    <style>
+        .btn.solutionBtn {
+            background: none;
+            border: none;
+            font-size: 12px;
+            font-family: arial;
+            padding: 20px 0 0 26px;
+            margin-bottom: 6px;
+            width: 100%;
+            float: left;
+            text-align: left;
+        }
+
+        .blink_me {
+            -webkit-animation-name: blinker;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-timing-function: linear;
+            -webkit-animation-iteration-count: infinite;
+            -moz-animation-name: blinker;
+            -moz-animation-duration: 1s;
+            -moz-animation-timing-function: linear;
+            -moz-animation-iteration-count: infinite;
+            animation-name: blinker;
+            animation-duration: 1s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @@-moz-keyframes blinker {
+            0% {
+                opacity: 1.0;
+            }
+
+            50% {
+                opacity: 0.0;
+            }
+
+            100% {
+                opacity: 1.0;
+            }
+        }
+
+        @@-webkit-keyframes blinker {
+            0% {
+                opacity: 1.0;
+            }
+
+            50% {
+                opacity: 0.0;
+            }
+
+            100% {
+                opacity: 1.0;
+            }
+        }
+
+        @@keyframes blinker {
+            0% {
+                opacity: 1.0;
+            }
+
+            50% {
+                opacity: 0.0;
+            }
+
+            100% {
+                opacity: 1.0;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="/*background: #fff url('/img/cloud2.png') no-repeat;*/">
+        <section style="padding: 0px; color: rgb(255, 255, 255); background-color:#e90202;">
+
+            <div class="container top-navmenu">
+
+                <a id="resp-menu" class="responsive-menu" href="#"><i class="fa fa-reorder"></i> Menu</a>
+
+                @*<li><a href="~/Home/Setup">Setup</a></li>*@
+                <ul class="menu">
+                    <li><a href="https://www.amazon.in/prachipublications" target="_blank"><span class="fa fa-amazon"></span> Amazon</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#solution"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Solutions</a></li>
+                    <li class="dropdown">
+                        @*<li><a href="@Url.Action("PayNow","ExternalPayment")"><span class="blink_me">Payment</span></a></li>*@
+                        @*<li>
+                                <a href="@Url.Action("Download", "Home")"><span class="fa fa-cog"></span> Download Setup</a>
+
+                            </li>*@
+                    <li><a href="@Url.Action("Index", "Catalogue")"><span class="glyphicon glyphicon-shopping-cart"></span> Order Online</a></li>
+                    <li><a href="~/Home/Series"><span class="fa fa-search"></span> Browse Catalogue</a></li>
+                    <li><a href="~/Home/About"><i class="fa fa-info-circle"></i> About us</a></li>
+
+                    <li><a href="~/Home/Career"><i class="fa fa-briefcase"></i> Careers</a></li>
+                    <li><a href="~/Home/Contact"><span class="glyphicon glyphicon-map-marker"></span> Contact us</a></li>
+
+                    @if (Request.IsAuthenticated)
+                    {
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><span class="userpic-icon1"><img src="@Session["ProfileImageUrl"]" /></span> <span style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 180px; display: block;">@User.Identity.Name</span> <span class="caret" style="text-align: right; position: relative; float: right; top: -9px; right: -2px;border-top: 4px solid #ffffff;"></span></a>
+
+
+                            <ul class="dropdown-menu" role="menu">
+                                @if (!(Roles.IsUserInRole("Sales") && Roles.IsUserInRole("Marketing")))
+                                {
+                                    if (new PrachiIndia.Sql.CustomRepositories.SolutionRepositories().GetAllSolutionsForUser(User.Identity.GetUserId()).Count() > 0)
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("MielibReader", "Account")" style="padding: 16px 5px 4px 24px !important;color:#5a5a5a;" target="_blank"> Read Solutions </a>
+                                        </li>
+                                    }
+                                }
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    if (Roles.IsUserInRole("Sales"))
+
+                                    {
+                                        <li>@Html.ActionLink("My Orders", "Index", "Sales", new { area = "Sales" }, null)</li>
+                                        <li>@Html.ActionLink("Profile Setting", "UserProfile", "Account")</li>
+                                        <li>
+                                            <hr />
+                                            <a href="javascript:document.getElementById('logoutForm').submit()"> Sign Out</a>
+                                        </li>
+                                    }
+                                    if (Roles.IsUserInRole("Marketing"))
+                                    {
+                                        <li> @Html.ActionLink("My Orders", "Index", "Marketing", new { area = "Marketing" }, null)</li>
+                                        <li> @Html.ActionLink("Profile Setting", "UserProfile", "Account")</li>
+                                        <li>
+                                            @*<hr />*@
+                                            <a href="javascript:document.getElementById('logoutForm').submit()"> Sign Out</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li> @Html.ActionLink("My Orders", "UserCartHistory", "CartHistory")</li>
+
+                                        <li> @Html.ActionLink("Profile Setting", "UserProfile", "Account")</li>
+                                        <li>
+                                            @*<hr />*@
+                                            <a href="javascript:document.getElementById('logoutForm').submit()"> Sign Out</a>
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li><a href="~/Account/Login" title="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    }
+                    <li><a href='@Url.Action("Index", "UserSubscription")' title="Subscribe" id="Subscribe"><span class="fa fa-bell-o"></span> Subscribe ReadEdge</a>
+                    <li>
+                </ul>
+
+
+
+            </div>
+        </section>
+
+        <div class="container topHeader">
+            <div class="col-lg-3 maintoplogo">
+                <a class="navbar-brand page-scroll" href="@Url.Action("Index", "Home")">
+                    <img src="~/img/logo.png" class="mainlogo" alt="logo" style="max-height:50px; min-height:50px; height:auto;" />
+                </a>
+
+            </div>
+            <div class="col-lg-9 mainav">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+
+
+
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a href="@Url.Action("Index", "Home")"><span class="fa fa-home"></span> Home</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false"><span class="fa fa-book"></span> Publishing <i class="fa fa-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="~/Home/K12Publishing"><span class="fa fa-angle-right"></span> K-12 Publishing</a></li>
+                                <li><a href="~/Home/eBookSeries"><span class="fa fa-angle-right"></span> <span style="text-transform:lowercase">e</span>Book Series</a></li>
+                                <li><a href="~/Home/FutureTrack"><span class="fa fa-angle-right"></span> Future Track</a></li>
+                                <li><a href="~/Home/HaryanaBoard"><span class="fa fa-angle-right"></span> Haryana Board</a></li>
+                                <li><a href="~/Home/UPBoard"><span class="fa fa-angle-right"></span> UP Board</a></li>
+                                <li><a href="~/Home/BanglaBoard"><span class="fa fa-angle-right"></span> Bangla Board</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li><a class="page-scroll" href="~/Home/Product"> <span class="fa fa-database"></span> Products</a></li>
+                        @*<li><a class="page-scroll" href="@Url.Action("TeacherasSistance","Home")"> <span class="fa fa-mortar-board"></span> Teacher Assistance </a></li>*@
+                        <li><a class="page-scroll" href="~/Home/TeacherasSistance"> <span class="fa fa-mortar-board"></span> Teacher Assistance </a></li>
+                        <li><a class="page-scroll" href="~/Home/Services"> <span class="fa fa-cog"></span> Services</a></li>
+                        @*<li><a class="page-scroll" href="@Url.Action("NewsEvents","Home")"> <span class="fa fa-calendar"></span> Events</a></li>*@
+                        <li><a class="page-scroll" href="~/Home/NewArrivals"><span class="newarrivaltab"> <span class="fa fa-paper-plane"></span> New Arrival</span></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    @Html.Partial("~/Views/Catalogue/_login.cshtml", new PrachiIndia.Portal.Models.LoginViewModel())
+    @RenderBody()
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    @RenderSection("scripts", required: false)
+    <div class="container EbookOrderdiv">
+
+        <p class="text-center"><button type="button" class="btn perfectbtn disclambtn">DISCLAIMER</button></p>
+        <div class="disclamdiv" style="display:none;">BY USING WWW.PRACHIINDIA.COM WEBSITE SERVICES YOU ARE AGREEING TO COMPLY WITH TERMS OF USE AS SET FORTH IN "PRIVACY POLICY", "TERMS OF USE", WHICH MAY CHANGE FROM TIME TO TIME. IF YOU DO NOT AGREE TO BE BOUND BY THESE TERMS OF USE, DO NOT USE OUR SERVICES. BY USING WWW.PRACHIINDIA.COM WEBSITE, I CONFIRM THAT, I HAVE READ AND COMPLETELY AGREE TO ALL TERMS AND CONDITIONS AND POLICIES RELATED TO THE FORMS CREATION, POSTING AND PUBLISHING. BY SIGNING IN AS NEW USER OR PROVIDING YOUR PERSONAL INFORMATION, IT IS UNDERSTOOD THAT YOU HAVE COMPLETELY READ AND AGREE WITH TERMS AND CONDITIONS OF USAGE OF VARIOUS SECTIONS, SERVICES OF THIS WEBSITE. KINDLY READ ALL TERMS AND CONDITIONS, SITE USAGE POLICES AS THESE ARE SUBJECT TO CHANGE WITHOUT ANY PRIOR NOTIFICATION TO THE USERS, MEMBERS, OR VISITORS OF THIS WEBSITE. ALL ABOVE STATEMENTS, DISCLAIMERS, AND NOTIFICTIONS ARE EQUALLY APPLICABLE TO ALL NEW OR ALREADY REGISTERED USERS, MEMBERS, AND VISITORS OF THIS WEBSITE AND RELATED SERVICES.</div>
+    </div>
+    <footer id="footer" class="">
+
+        <div class="container">
+            <div class="col-md-12">
+                <div class="col-sm-3 col-lg-3">
+                    <div class="widget">
+                        <h4>Find Us</h4>
+                        <address>
+                            <strong>Prachi [India] Pvt. Ltd.</strong><br>
+                            309/10, ALLIED HOUSE, INDER LOK, DELHI-110035<br>
+                        </address>
+                        <ul class="addressdiv">
+                            <li><i class="fa fa-phone" style="margin-right:5px"></i> 011-47320666 (8 Lines)</li>
+                            <li><i class="fa fa-fax" style="margin-right:5px"></i> 011-43852438, 47320680</li>
+                            <li><i class="fa fa-globe" style="margin-right:5px"></i> <a href="http://prachiindia.com/">www.prachiindia.com</a></li>
+                            <li><i class="fa fa-envelope-o" style="margin-right:5px"></i> <a href="mailto:info@prachiindia.com">info@prachiindia.com</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-sm-3 col-lg-3">
+                    <div class="widget">
+                        <h4>Navigation</h4>
+                        <ul class="link-list">
+                            <li>
+                                <a href="@Url.Action("About", "Home")"><i class="fa fa-angle-double-right"></i> About us</a>
+                            </li>
+
+                            @*<li>
+                                    <a href="@Url.Action("Publications","Home")"><i class="fa fa-angle-double-right"></i> Publishing</a>
+                                </li>*@
+                            <li>
+                                <a href="@Url.Action("Product", "Home")"><i class="fa fa-angle-double-right"></i> Products</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("TeacherasSistance", "Home")"><i class="fa fa-angle-double-right"></i> Teacher Assistance</a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("NewsEvents", "Home")"><i class="fa fa-angle-double-right"></i> News & Events </a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("Contact", "Home")"><i class="fa fa-angle-double-right"></i> Contact us</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-sm-3 col-lg-3">
+                    <div class="widget">
+                        <h4>Pages</h4>
+                        <ul class="link-list">
+                            <li>
+                                <a href="@Url.Action("PrivacyPolicy", "Home")"><i class="fa fa-angle-double-right"></i> Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("TermsofUse", "Home")"><i class="fa fa-angle-double-right"></i> Terms of Use</a>
+                            </li>
+                            <li><a href="@Url.Action("Career", "Home")"><i class="fa fa-angle-double-right"></i> Careers</a></li>
+                        </ul>
+                        @*<div class="row col-md-12">
+                                <h4>Subscribe</h4>
+                                <p class="subscribe"><a href="@Url.Action("Index", "Subscriptions")">Subscribe!</a></p>
+                            </div>*@
+                    </div>
+                </div>
+
+                <div class="col-sm-3 col-lg-3 leavemessage">
+                    <p class="widget">
+                        <h4>Get in touch with us</h4>
+                    <p id="mailStatus"></p>
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "Form_Get_In_Touch" }))
+                    {
+                        <p>
+                            <input type="text" name="Name" id="Name" class="form-control" placeholder="Type your Name :" required="required" />
+                        </p>
+                        <p>
+                            <input type="text" name="ContactNo" id="ContactNo" class="form-control" placeholder="Type your Contact No :" required="required" />
+                        </p>
+                        <p>
+                            <input type="email" name="Email" id="Email" class="form-control" placeholder="Type your E-mail :" required="required" />
+                        </p>
+                        <p>
+                            <textarea class="form-control" name="Message" id="Message" placeholder="Type your Message :" required="required"></textarea>
+                        </p>
+                        <p class="text-center"><button type="button" id="btnGetInTouchWith" class="btn perfectbtn">Submit</button></p>
+                    }
+                    <div id="validation"></div>
+                </div>
+
+
+            </div>
+        </div>
+        <div id="sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="copyright">
+                            <span class="copyright">Copyright &copy; 2016, PRACHI GROUP, All rights reserved.</span>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    @*<script src="~/Content/js/form/jquery.validate.min.js"></script>*@
+    @*<script src="~/Content/js/form/contact.js"></script>*@
+    @*<script src="~/Content/js/form/jquery.form.js"></script>*@
+    <script type="text/javascript">
+
+
+
+
+        $(document).ready(function () {
+            $('.dropdown-menu').find('form').click(function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var touch = $('#resp-menu');
+            var menu = $('.menu');
+
+            $(touch).on('click', function (e) {
+                e.preventDefault();
+                menu.slideToggle();
+            });
+
+            $(window).resize(function () {
+                var w = $(window).width();
+                if (w > 767 && menu.is(':hidden')) {
+                    menu.removeAttr('style');
+                }
+            });
+
+
+           @*$('#MieLibId').on("click", function () {
+                debugger;
+                if (confirm('You will be logged out from this application and redirected to reader , is it ok ?')) {
+                    $.get('@Url.Action("MielibReader","Account")');
+                }
+                else return;
+        })*@
+
+
+            $(".disclambtn").click(function () {
+                $(".disclamdiv").slideToggle("hide");
+            });
+
+
+
+            $("#btnGetInTouchWith").on("click", function () {
+                var Name = $("#Name").val();
+                var ContactNo = $("#ContactNo").val();
+                var Email = $("#Email").val();
+                var Message = $("#Message").val();
+                var validationStatus = true;
+                $("#validation").empty();
+                if (Name == "") {
+                    $("#validation").append("<br />Please enter your name").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (ContactNo == "") {
+                    $("#validation").append("<br />Please enter your contact no.").css("color", "Red");
+                    validationStatus = false;
+                }
+
+                if (Email == "") {
+                    $("#validation").append("<br />Please enter your e-mail address").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (Message == "") {
+                    $("#validation").append("<br />Please add your write-up").css("color", "Red");
+                    validationStatus = false;
+                }
+                if (validationStatus) {
+                    $("#btnGetInTouchWith").attr("disabled", "disabled");
+                    $("#validation").append("<b>Please wait<b>.....").css("color", "green");
+                    var datastring = $("#Form_Get_In_Touch").serialize();
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ContactUs", "Home")',
+                        data: datastring,
+                        success: function (data) {
+                            if (data == "Message sent") {
+                                $("#validation").empty();
+                                $("#mailStatus").css("color", "green").html(data);
+                                $("#Name").val("");
+                                $("#ContactNo").val("");
+                                $("#Email").val("");
+                                $("#Message").val("");
+                                $("#btnGetInTouchWith").removeAttr("disabled");
+                            }
+                            else {
+                                $("#mailStatus").css("color", "red").html(data);
+                            }
+                            $("#mailStatus").fadeOut(10000);
+                        }
+                    });
+                }
+                else {
+                    return false;
+
+                }
+
+            })
+
+        });
+
+
+        function Subscribe(type) {
+            var IsAutheticated = '@Request.IsAuthenticated';
+            if (IsAutheticated == 'False') {
+                $('#Login').modal('show');
+                $("#sign-up").css("display", "none");
+                $("#sign-in").css("display", "block");
+                $("#loginidfail").css("display", "none");
+                }
+            else {
+                location.href = "/UserSubscription/payment?Type=" + type;
+            }
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "300px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+
+
+    </script>
+
+    <!--dooor slider start here-->
+
+    <div id="mySidenav" class="sidenav">
+        <p style="padding:4px 0;margin:0;"><span onclick="closeNav()" class="supt-close">X</span></p>
+        <div class="sidenav-2">
+            <p><img src="~/img/get-your-ebook.png" class="img-responsive" /></p>
+            <p style="font-size:20px; padding-top:8%;"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;+91 9142-62-62-62</p>
+            <p><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;<a href="mailto:digitalsupport@prachiindia.com">digitalsupport@prachiindia.com</a></p>
+        </div>
+
+    </div>
+    @*<span onclick="openNav()" class="floating-div"><img src="~/img/support.png" /></span>*@
+
+    <div class="Social-icon-bar">
+        <a href="JavaScript:Void(0);" onclick="openNav()" class="supportIcon"><img src="~/Images/support.png" alt="support" class="SocialWdt" style="width:20px;" /> Support</a>
+        <a href="https://www.facebook.com/PrachiIndiaPvtLtd" class="facebookIcon" target="_blank"><i class="fa fa-facebook SocialWdt"></i> Facebook</a>
+        <a href="https://www.youtube.com/channel/UCiddONTNQ9nK7EWfX3_B-Xg" class="linkedinIcon" target="_blank"><i class="fa fa-youtube SocialWdt"></i> Youtube</a>
+        <a href="https://www.instagram.com/prachiindiapvt.ltd" class="instagram" target="_blank"><i class="fa fa-instagram SocialWdt"></i> Instagram</a>
+    </div>
+
+
+
+    <div class="modal fade" id="solution" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="border:none;padding-top:0;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-left">Solutions</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-2">
+                            <div class="col-md-3 col-sm-3">
+                                <div class="newarivalstab">
+                                    <div class="panel-body">
+                                        <div class="col-md-12 text-center"><img class="img-responsive img-thumbnail" style="border:none;" alt="hrs10" src="~/ModuleFiles/Items/ftspst10.png" /></div>
+                                        <div class="col-md-12 text-center booktitle">
+                                            <h3 data-toggle="tooltip" class="tip-top" title="" data-original-title="Sample Papers - Social Science">Sample Papers - Social Science</h3>
+                                            @if (Request.IsAuthenticated)
+                                            {
+                                                if (new PrachiIndia.Sql.CustomRepositories.SolutionRepositories().FindByItemAndUserId(Convert.ToInt64(1003), User.Identity.GetUserId()) != null)
+                                                {
+                                                    <p>&nbsp;</p>
+                                                    <p> <a href="@Url.Action("MielibReader", "Account")" class="btn ReadSolution" target="_blank"> Read Solutions </a></p>
+
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                    <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 921 })" class="btn buyNowbtn">Buy Now</a></p>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 921 })" class="btn buyNowbtn">Buy Now</a></p>
+                                            }
+                                            @*<p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>*@
+                                            @*<p><a href="@Url.Action("Solutions","catalogue",new { Id = 921})">Buy Now</a></p>*@
+                                            @*<p><button type="button" class="btn newarv_btn" disabled="disabled">Coming Soon...</button></p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                <div class="newarivalstab">
+                                    <div class="panel-body">
+                                        <div class="col-md-12 text-center"><img class="img-responsive img-thumbnail" style="border:none;" alt="hrs10" src="~/ModuleFiles/Items/ftspm10.png" /></div>
+                                        <div class="col-md-12 text-center booktitle">
+                                            <h3 data-toggle="tooltip" class="tip-top" title="" data-original-title="Sample Papers - Mathematics">Sample Papers - Mathematics</h3>
+                                            @if (Request.IsAuthenticated)
+                                            {
+                                                if (new PrachiIndia.Sql.CustomRepositories.SolutionRepositories().FindByItemAndUserId(Convert.ToInt64(1002), User.Identity.GetUserId()) != null)
+                                                {
+                                                    <p>&nbsp;</p>
+                                                    <p> <a href="@Url.Action("MielibReader", "Account")" class="btn ReadSolution" target="_blank"> Read Solutions </a></p>
+
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                    <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 922 })" class="btn buyNowbtn">Buy Now</a></p>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 922 })" class="btn buyNowbtn">Buy Now</a></p>
+                                            }
+                                            @*<p><button type="button" class="btn newarv_btn" disabled="disabled">Coming Soon...</button></p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                <div class="newarivalstab">
+                                    <div class="panel-body">
+                                        <div class="col-md-12 text-center"><img class="img-responsive img-thumbnail" style="border:none;" alt="hrs10" src="~/ModuleFiles/Items/ftsps10.png" /></div>
+                                        <div class="col-md-12 text-center booktitle">
+                                            <h3 data-toggle="tooltip" class="tip-top" title="" data-original-title="Sample Papers - Science">Sample Papers - Science</h3>
+                                            @if (Request.IsAuthenticated)
+                                            {
+                                                if (new PrachiIndia.Sql.CustomRepositories.SolutionRepositories().FindByItemAndUserId(Convert.ToInt64(1000), User.Identity.GetUserId()) != null)
+                                                {
+                                                    <p>&nbsp;</p>
+                                                    <p> <a href="@Url.Action("MielibReader", "Account")" class="btn ReadSolution" target="_blank"> Read Solutions </a></p>
+
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                    <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 923 })" class="btn buyNowbtn">Buy Now</a></p>
+                                                    <p>@*<button type="button" class="btn newarv_btn" disabled="disabled">Coming Soon...</button>*@</p>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p><span class="solPrice"><i class="fa fa-inr" aria-hidden="true"></i> 15.00</span></p>
+                                                <p><a href="@Url.Action("Solutions", "catalogue", new { Id = 923 })" class="btn buyNowbtn">Buy Now</a></p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+<!-- Facebook Pixel Code -->
+<script>
+    !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () {
+            n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        };
+        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+        n.queue = []; t = b.createElement(e); t.async = !0;
+        t.src = v; s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '503171460298169');
+    fbq('track', 'PageView');
+</script>
+<noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=503171460298169&ev=PageView&noscript=1" />
+</noscript>
+<!-- End Facebook Pixel Code -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-165876782-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-165876782-1');
+</script>

@@ -1,0 +1,293 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.ChapterContentModel
+@{
+    ViewBag.Title = "ManageContents";
+}
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+
+
+<div class="col-md-6 col-md-offset-3 inprdservice">
+    <div class="col-md-12 inprdservicehead" style="margin-bottom:0;">
+        <div class="panel-header"><h4 class="card-title">Manage Content<span class="pull-right"><a class="pull-right btn" title="Book Chapters" href="@Url.Action("BookDetails","Admin",new {Id = Model.BookId })"><i class="fa fa-list fa-2x"></i></a></span></h4></div>
+    </div>
+
+    <div class="panel-body">
+        <div class="table-responsive panel-body">
+            @using (Html.BeginForm("ManageContents", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(t => t.Id)
+                @Html.HiddenFor(t => t.BookId)
+                @Html.HiddenFor(t => t.ChapterId)
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Type</label>
+                        @Html.ValidationMessageFor(t => t.Type, "", new { style = "color:red" })
+                        @Html.DropDownListFor(t => t.Type, ViewBag.ChapterType as IEnumerable<SelectListItem>, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">SrNo.</label>
+                        @Html.ValidationMessageFor(t => t.OrderNo, "", new { style = "color:red" })
+                        @Html.TextBoxFor(t => t.OrderNo, new { @class = "form-control" })
+                    </div>
+                </div>
+                        <div class="form-group row">
+
+                            <div class="col-md-12">
+                                <label class="control-label">Name</label>
+                                @Html.ValidationMessageFor(t => t.Title, "", new { style = "color:red" })
+                                @Html.TextBoxFor(t => t.Title, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="control-label">Content Type</label>
+                                <select name="ContentType" id="ContentType" class="form-control">
+                                    <option value="7">PDF</option>
+                                    <option value="3">PNG</option>
+                                    <option value="1">HTML</option>
+                                    <option value="2">MATHML</option>
+                                    <option value="4">JPG</option>
+                                    <option value="5">JPEG</option>
+                                    <option value="6">MP4</option>
+                                    <option value="8">ImageHtml</option>
+                                </select>
+                                @Html.ValidationMessageFor(t => t.Title)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12" id="divPostedFile">
+                                <label class="control-label">File</label>
+                                @Html.TextBoxFor(t => t.PostedFile, new { @class = "form-control", type = "file" })
+                            </div>
+                        </div>
+                        <div class="card card--popout" id="samples">
+
+                            <p>
+                                <select id="Renderer" onchange="setMode(this.value)" style="margin: 0px 0px 0px;visibility:hidden "></select>
+                            </p>
+                        </div>
+                        <div class="form-group row" id="HtmlID">
+
+                            <div class="col-md-12">
+                                <label class="control-label">Description</label>
+                                @Html.TextAreaFor(t => t.Descreption, new { @class = "form-control" })
+
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="Mathml">
+                            <div class="col-md-12">
+                                <span style="text-align:left;font-weight: 600">Description</span>
+                                <textarea id="MathInput" rows="10" name="MathInput" placeholder="Put MathMl content here" class="form-control" onblur="GetData();"></textarea>
+                            </div>
+                            <div class="form-group row padding5-top">
+                                <div class="col-md-12"><button type="submit" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">Preview</button></div>
+
+                            </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="card card--popout" id="samples">
+
+                                        <p>
+                                            <select id="Renderer" onchange="setMode(this.value)" style="margin: 0px 0px 0px;visibility:hidden "></select>
+                                        </p>
+                                    </div>
+
+
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                            </div>
+                        </div>
+            }
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Preview is shown here:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card card--popout" id="demo">
+                    <div id="MathPreview" class="preview" style=""></div>
+                    <div id="MathBuffer" class="preview" style="visibility:hidden; position:absolute; top:0; left: 0"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/tinymce/tinymce.min.js"></script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var contentType=@Html.Raw(Json.Encode(Model.ContentType));
+            var MathInput=@Html.Raw(Json.Encode(Model.Descreption));
+            $("#ContentType").val(contentType);
+            $("#HtmlID").css("display", "none");
+            $("#Mathml").css("display", "none");
+            if(contentType==2)
+            {
+                $("#MathInput").val(MathInput);
+                $("#Descreption").val("");
+                $("#Mathml").css("display", "block");
+                $("#HtmlID").css("display", "none");
+                $("#divPostedFile").css("display", "none");
+            }
+            if(contentType==1)
+            {
+                $("#HtmlID").css("display", "block");
+                $("#Mathml").css("display", "none");
+                $("#divPostedFile").css("display", "none");
+            }
+
+            $("#ContentType").change(function () {
+                var value = $("#ContentType").val()
+                if (value == 1 || value == 2) {
+                    if (value == 1) {
+                        $("#HtmlID").css("display", "block");
+                        $("#Mathml").css("display", "none");
+                        $("#divPostedFile").css("display", "none");
+                    }
+                    else if (value == 2)
+                    {
+                        $("#Mathml").css("display", "block");
+                        $("#HtmlID").css("display", "none");
+                        $("#divPostedFile").css("display", "none");
+                    }
+                }
+                else {
+                    $("#HtmlID").css("display", "none");
+                    $("#Mathml").css("display", "none");
+                    $("#divPostedFile").css("display", "block");
+                }
+
+            });
+
+
+            @*$('#allDescription').hide();
+            $('#allFile').hide();
+            $('#allLink').hide();
+            $('#HeaderFile').hide();
+            var type = '@Model.MenuType';
+            $('#MenuType').val(type);*@
+            //ShowHideContent(type);
+            //if ($('#IsMenuContainer').is(':checked')) {
+            //    $('#AllowHtml').hide();
+            //    $('#HeaderFile').show();
+            //}
+            //else {
+            //    $('#AllowHtml').show();
+            //$('#HeaderFile').hide();
+            //    }
+            //    $('#IsMenuContainer').change(function () {
+            //        if ($('#IsMenuContainer').is(':checked')) {
+            //            $('#AllowHtml').hide();
+            //            $('#HeaderFile').show();
+            //        }
+            //        else {
+            //            $('#AllowHtml').show();
+            //            $('#HeaderFile').hide();
+            //        }
+            //    });
+
+            //    $('#MenuType').change(function () {
+            //        var type = $(this).val();
+            //        ShowHideContent(type);
+            //    });
+
+            //});
+            function ShowHideContent(type) {
+                //if (type == '1') {
+                //    $('#allDescription').hide();
+                //    $('#allFile').hide();
+                //    $('#allLink').show();
+                //}
+                //else if (type == '2') {
+                //    $('#allDescription').hide();
+                //    $('#allFile').show();
+                //    $('#allLink').hide();
+                //}
+                //else if (type == '3') {
+                //    $('#allDescription').show();
+                //    $('#allFile').hide();
+                //    $('#allLink').hide();
+                //}
+                //else {
+                //    $('#allDescription').hide();
+                //    $('#allFile').hide();
+                //    $('#allLink').hide();
+                //}
+            }
+            // Initialize your tinyMCE Editor with your preferred options
+            tinymce.init({
+                selector: 'textarea#Descreption',
+                height: 200,
+                theme: 'modern',
+                plugins: [
+                   'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                   'searchreplace wordcount visualblocks visualchars code fullscreen',
+                   'insertdatetime media nonbreaking save table contextmenu directionality',
+                   'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+                ],
+                toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
+                image_advtab: true,
+                templates: [
+                    { title: 'Test template 1', content: 'Test 1' },
+                    { title: 'Test template 2', content: 'Test 2' }
+                ],
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'
+                ]
+            });
+        });
+    </script>
+
+
+
+    <script src="~/Content/js/MathML/main.js"></script>
+    <script src="~/Content/js/MathML/editor.js"></script>
+    <script>
+        //$(document).ready(function() {
+        //    $("#MathInput").Editor();
+        //});
+
+        function GetData(){
+
+            //alert($(this).val());
+        }
+    </script>
+
+}

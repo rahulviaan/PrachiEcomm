@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrachiIndia :: @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .navbar-fixed-left {
+            width: 250px;
+            position: fixed;
+            border-radius: 0;
+            height: 100%;
+            padding-left: 20px;
+        }
+
+            .navbar-fixed-left .navbar-nav > li {
+                float: none; /* Cancel default li float: left */
+                width: 250px;
+            }
+        .nav > li > a {
+            padding:5px !important;
+
+        }
+            .navbar-fixed-left + .container {
+                padding-left: 160px;
+            }
+
+            /* On using dropdown menu (To right shift popuped) */
+            .navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+                margin-top: -10px;
+                margin-left: 140px;
+            }
+    </style>
+
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+</head>
+<body style="margin-top:20px; height:auto">
+    <div style="height:70px" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <a style="margin-left:-90px" href="@Url.Action("Index","Admin")">
+                    <img height="70px" src="~/Images/logo.png" />
+                </a>
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:gray;font-weight:bold"> @User.Identity.Name <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                            <li>
+                                <a href="@Url.Action("Index", "Admin")"><span class="glyphicon glyphicon-user"></span>&nbsp;My Account</a>
+                            </li>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Register", "Account")"><span class="glyphicon glyphicon-user"></span>&nbsp;Signup </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span>&nbsp; Log in</a>
+                                </li>
+                            }
+                            else
+                            {
+                                
+                                <li>
+                                    <a href="@Url.Action("LogOut", "Account", new { area="" })"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Log Off</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div >
+
+        <div class="navbar navbar-default navbar-fixed-left" style="margin-left:20px;">
+
+            <div class="row">
+
+                <ul class="nav navbar-nav">
+                    <li class="hide"><a style="overflow:hidden " href="@Url.Action("Index","Admin",new { area ="CPanel"})"> <span class="fa fa-user"></span>  @User.Identity.Name</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">CMS <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Header</a></li>
+                            <li><a href="#">Footer</a></li>
+                            <li><a href="#">Left Page</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Sub Menu4</a></li>
+                            <li><a href="#">Sub Menu5</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Subject", "Admin")">Subjects</a></li> 
+                    <li><a href="@Url.Action("Series", "Admin")">Series</a></li>
+                    <li><a href="@Url.Action("Class", "Admin")">Classes</a></li>
+                    <li><a href="@Url.Action("Boards", "Admin")">Boards</a></li>
+                    <li><a href="@Url.Action("Books", "Admin")">Books</a></li>
+                    <li><a href="@Url.Action("Order", "Admin")">Orders</a></li>
+                    <li><a href="@Url.Action("subscription", "Subscription")">Subscription</a></li>
+                    <li class="divider"></li>
+                    @*<li><a href="#">Workshop Requests</a></li>
+                    <li><a href="#">Specimen Requests</a></li>*@
+                </ul>
+            </div>
+
+        </div>
+        @*style="margin-left:250px;margin-top:20px;"*@
+        <div>
+            @RenderBody()
+        </div>
+       
+        <div>
+            <footer >
+                <p>&copy; @DateTime.Now.Year </p>
+            </footer>
+        </div>
+    </div>
+   
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

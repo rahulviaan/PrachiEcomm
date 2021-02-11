@@ -1,0 +1,108 @@
+﻿@model List<PrachiIndia.Portal.Areas.Report.Models.RetailOrderVM>
+@{var groupedModel = Model.GroupBy(item => item.TransactionID);}
+
+@if (ViewBag.Type == "User_1")
+{
+
+    <table id="order-details2" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <td>SNo#</td>
+                <td>TransactionId</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact No</td>
+                <td>Order Date</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{int count = 1; }
+            @foreach (var group in Model)
+            {
+                if (group.TransactionID.Length > 0)
+                {
+                    <tr>
+                        <td>@count</td>
+                        <td>@group.TransactionID</td>
+                        <td>@group.Name</td>
+                        <td>@group.Email</td>
+                        <td>@group.PhoneNo</td>
+                        <td>@group.OrderDate.ToString("dd/MM/yyyy")</td>
+
+
+                        @*}*@
+
+                    </tr>
+                }
+                else
+                {
+                      <tr>
+                        <td colspan="6" style="text-align:center;color:red"><b>No Record found !!!</b></td>
+                      </tr>
+                        }
+                        count = count + 1;
+
+
+                        }
+
+                </tbody>
+
+    </table>
+}
+
+@if (ViewBag.Type == "User_2")
+{
+    <table id="order-details4" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <td>SNo#</td>
+                <td>TransactionId</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact No</td>
+                <td>Order Date</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{int count4 = 1; }
+            @foreach (var group in Model)
+            {
+                if (group.TransactionID.Length > 0)
+                {
+                    <tr>
+                        <td>@count4</td>
+                        <td>@group.TransactionID</td>
+                        <td>@group.Name</td>
+                        <td>@group.Email</td>
+                        <td>@group.PhoneNo</td>
+                        <td>@group.OrderDate.ToString("dd/MM/yyyy")</td>
+
+
+                        @*}*@
+
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" style="text-align:center;color:red"><b>No Record found !!!</b></td>
+                    </tr>
+                }
+                count4 = count4 + 1;
+
+
+            }
+
+        </tbody>
+
+    </table>
+                }
+
+
+
+
+
+
+

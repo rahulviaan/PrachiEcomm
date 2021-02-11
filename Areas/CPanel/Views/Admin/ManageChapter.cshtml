@@ -1,0 +1,94 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.ChapterModel
+@{
+    ViewBag.Title = "ManageChapter";
+}
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+<div class="card card--popout" id="Mathml">
+    <p>
+        <select id="Renderer" onchange="setMode(this.value)" style="margin: 0px 0px 0px;visibility:hidden "></select>
+    </p>
+</div>
+<div class="col-md-6 col-md-offset-3 inprdservice">
+    <div class="col-md-12 inprdservicehead" style="margin-bottom:0;">
+        <div class="panel-header"><h4 class="card-title">@ViewBag.BookName Chapters<span class="pull-right"><a class="btn btn-sm" title="Subject List" href="@Url.Action("BookDetails","Admin",new {Id = Model.BookId })"><i class="fa fa-list fa-2x"></i></a></span></h4></div>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive panel-body">
+            @using (Html.BeginForm("ManageChapter", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(t => t.Id)
+                @Html.HiddenFor(t => t.BookId)
+                <div class="form-group row">
+
+                    <div class="col-md-12">
+                        <label class="control-label">Chapter Index</label>
+                        @Html.ValidationMessageFor(t => t.OrderNo, "", new { @style = "color:red" })
+                        @Html.TextBoxFor(t => t.OrderNo, new { @class = "form-control" })
+                    </div>
+                </div>
+                        @*<div class="form-group row">
+                            <label class="col-md-3 control-label">Published</label>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(t => t.Status)
+                            </div>
+                        </div>*@
+                        <div class="form-group row">
+
+                            <div class="col-md-12">
+                                <label class="control-label">Name</label>
+                                @Html.ValidationMessageFor(t => t.Title, "", new { @style = "color:red" })
+                                @Html.TextBoxFor(t => t.Title, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            <div class="col-md-12">
+                                <label class="control-label">Pages</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">From Page</span>
+                                            @Html.ValidationMessageFor(t => t.FromPage, "", new { @style = "color:red" })
+                                            @Html.TextBoxFor(t => t.FromPage, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">To Page</span>
+                                            @Html.ValidationMessageFor(t => t.ToPage, "", new { @style = "color:red" })
+                                            @Html.TextBoxFor(t => t.ToPage, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="control-label">Description</label>
+                                @Html.TextAreaFor(t => t.Descreption, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                            </div>
+                        </div>
+            }
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+@*@Scripts.Render("~/bundles/jquery")*@
+@Scripts.Render("~/bundles/jqueryval")

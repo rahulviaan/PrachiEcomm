@@ -1,0 +1,146 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Controllers.ReadEdgeBookModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <h2>Readedge Books</h2>
+            </div>
+            <table class="table table-condensed table-bordered">
+                <thead class="text-danger">
+                    <tr>
+                        <th>Board</th>
+                        <th>Classes</th>
+                        <th>Subject</th>
+                        <th>Series</th>
+                        <th>BookName</th>
+                        <th>ISBN</th>
+                        <th>Chapter</th>
+                    </tr>
+                </thead>
+                <tbody class="text-success">
+                    <tr>
+                        <td>@Model.Board</td>
+                        <td>@Model.Classes</td>
+                        <td>@Model.Subject</td>
+                        <td>@Model.Series</td>
+                        <td>@Model.BookName</td>
+                        <td>@Model.ISBN</td>
+                        <td>@Html.DropDownList("ChapterID", new SelectList(ViewBag.TestHourChapter, "Text", "Value") , new { @class = "form-control" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <h2>Prachi Books</h2>
+            </div>
+            <div class="panel-body" style="padding:5px;">
+                @using (Ajax.BeginForm("GetAllChapters", "QuestionMigration", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divbook", InsertionMode = InsertionMode.Replace }))
+                {
+                    <div class="form-group col-md-3">
+                        <label>Board </label>
+                        @Html.DropDownList("Board", (IEnumerable<SelectListItem>)ViewBag.Board, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Class </label>
+                        @Html.DropDownList("Classes", (IEnumerable<SelectListItem>)ViewBag.Class, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Subject </label>
+                        @Html.DropDownList("Subject", (IEnumerable<SelectListItem>)ViewBag.Subject, new { @class = "form-control", onchange = "GetSeries(this)" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Series</label>
+                        @Html.DropDownList("Series", (IEnumerable<SelectListItem>)ViewBag.Series, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-1" style="margin-top:2.5%;">
+                        <button type="submit" class="btn btn-primary btn-sm" id="searchID">Search</button>
+
+                    </div>
+                }
+                <div class="clearfix"></div>
+                @using (Ajax.BeginForm("Migrate", "QuestionMigration", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divbook",OnSuccess = "OnSuccess", LoadingElementId = "progress", InsertionMode = InsertionMode.Replace }))
+                {
+                    @Html.Hidden("TestHourChapterID")
+                    <div class="col-md-12" id="divbook">
+                      
+                    </div>
+                    <div id="progress" class="modal" style="background: rgba(255, 255, 255, 0.7);">
+                        <div class="text-center" style="position:absolute;width: 100%;top: 50%;">
+                            <img src="~/img/loader.gif" style="width: 150px;" />
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryUnobtrusive")
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script>
+
+
+    $(document).ready(function () {
+        var chapters = '@ViewBag.TestHourChapterCount';
+        if (chapters<2)
+        {
+            $("#searchID").attr("disabled", "disabled");
+        }
+
+        $("#ChapterID").change(function () {
+            $("#TestHourChapterID").val($(this).val());
+        })
+
+        
+    })
+
+    function GetSeries(id) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllSeries", "QuestionMigration")',
+            data: { "SubjectID": $(id).val() },
+            success: function (Result) {
+                var ddlObj = $("#Series");
+                //alert(ddlObj.attr("name"));
+                ddlObj.empty();
+                ddlObj.append("<option value='0'>Select</option>");
+
+                $.each(Result, function (key, value) {
+                    //alert(value.Series);
+                    ddlObj.append($("<option></option>").val(value.SeriesID).html(value.Series));
+                });
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function OnSuccess(data) {
+            toastr.success("Chapter Migrated Successfully", '', { timeOut: 5000 })
+        
+        //else if (data == 2) {
+        //    toastr.warning("No Content available to migrate", '', { timeOut: 5000 })
+        //}
+        //else if (data == 3) {
+        //    toastr.warning("Please choose at least one checkbox", '', { timeOut: 5000 })
+        //}
+        //else {
+        //    toastr.error("Something went wrong!!", '', { timeOut: 5000 })
+        //}
+    }
+
+</script>

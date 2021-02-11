@@ -1,0 +1,51 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.Employee_Migration
+@{
+    ViewBag.Title = "Save";
+    // Layout = "~/Areas/CPanel/Views/_ViewStart.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+
+
+@{
+    ViewBag.Title = "FileSave";
+}
+
+<div class="p15">
+    <div class="panel p5 clearfix">
+
+        <div class="panel-heading">
+            <span class="panel-title">Book Migration</span>
+        </div>
+
+
+        @using (@Html.BeginForm("Save", "EmployeeMigration", FormMethod.Post))
+        {
+
+            <div class="row col-md-12 button_top_padding">
+                <div id="message" class="col-md-12" style="color:#029802">
+                    @Html.Raw(ViewBag.Message)
+                </div>
+
+                @if (ViewBag.Flag != "true")
+                {
+                    <div class="form-group col-md-6 button_top_padding" style="padding-top: 39px">
+
+                        <input type="submit" id="bttn_Save" value="Save" class="btn btn-primary" />
+                    </div>
+                }
+                @if (ViewBag.UploadFlag == "true")
+                {
+                    <div class="form-group col-md-2 button_top_padding" style="padding-top: 39px">
+
+                        <a href="/CPanel/EmployeeMigration/EmployeeMigration"><img src="~/img/backtoupload.png" width="100%" /></a>
+                    </div>
+                }
+            </div>
+
+
+        }
+
+    </div>
+</div>
+

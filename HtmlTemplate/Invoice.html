@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+
+
+</head>
+<body>
+    <table style="width:800px; margin:0 auto; border:solid 1px #e1e1e1;font-family: sans-serif,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+        <tr>
+            <td>
+                <table style="width: 760px; margin: 0 auto; font-family: sans-serif,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: normal; font-size: 12px; line-height:18px; color: #000000;" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;" colspan="2">
+                                <h1>Tax Invoice</h1>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="190" valign="top">
+                                <a href="https://prachiindia.com" target="_blank">
+                                    <img src="https://prachiindia.com/img/logo.png" style="width:190px;" />
+                                </a>
+                            </td>
+                            <td valign="top" style="width:384px; text-align:right; line-height:15px;">
+                                <h3 style="margin-bottom:5px;">Prachi India Pvt. Ltd.</h3>
+                                <strong> 25 Ashoka Park Extension <br />Near Ashoka Park Main<br /> New Delhi - 110026</strong>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width: 760px; margin: 0 auto; font-family: sans-serif,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: normal; font-size: 12px; line-height:18px; color: #000000;" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <td style="padding-top:20px;"><strong>GSTIN: </strong>07AACCP5921G2ZI</td>
+                            <td style="padding-top:20px;" align="right"><strong>Invoice No#: {{InvoiceNo}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PAN: </strong>AACCP5921G</td>
+                            <td align="right"><strong>Invoice Date: {{InvoiceDate}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom:10px;"><strong>State: </strong>Delhi(07)</td>
+                            <td style="padding-bottom:10px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <strong>Details of Recipient (Billed to): </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table style="width: 100%; margin-bottom:20px; font-family: sans-serif,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: normal; font-size: 11px; line-height:17px; text-align: left;" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <td valign="top"><strong>Name:</strong> {{Name}}</td>
+                                            <td valign="top"><strong></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong>E-mail:</strong> {{Email}}</td>
+                                            <td valign="top"><strong></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong>Mobile:</strong> {{Mobile}}</td>
+                                            <td valign="top"><strong></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong>Place of Supply.</strong> </td>
+                                            <td valign="top"><strong></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong>Adddress:</strong> {{Address}}</td>
+                                            <td valign="top"><strong>State:</strong> {{StateName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong>GSTIN:</strong> N/A</td>
+                                            <td valign="top"><strong>State Code:</strong> {{StateCode}}</td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                {{ProductDetails}}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <p style="margin-top:25px;">
+                                    <b>Seller Registered Address </b><br /> Prachi India Pvt. Ltd.<br />309, Allied House Inder Lok, New Delhi <br />NEW DELHI DELHI INDIA 110035<br />
+                                    CIN: U22110DL1999PTC099814
+                                </p>
+                                <p><b>Declaration</b><br />The goods purchased at Prachi India website are solely intended for the end user only and not for any resale purposes.</p>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p>
+                                    <strong>
+                                        Get Started with Readedge::
+                                    </strong>
+                                    <ol>
+                                        <li>Please visit the website, Link: <a href="http://readedge.mielib.com/">readedge.mielib.com</a> </li>
+                                        <li>To login please use the same User-Id and password that you have used before while login on to <a href="https://www.prachiindia.com/">www.prachiindia.com</a> </li>
+                                        <li>Once you have successfully logged in, you can find and start with your purchased Ebook/s.</li>
+                                    </ol>
+                                </p>
+                                <p>
+                                    For any troubles faced with Readedge, please contact our customer service below:
+                                </p>
+                                <p>IVR support: 9142-62-62-62</p>
+                                <p>Email-Id: digitalsupport@gmail.com</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

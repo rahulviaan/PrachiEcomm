@@ -1,0 +1,114 @@
+﻿@model PrachiIndia.Portal.Models.ExternalPayment
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="clear:both; height:10px;"></div>
+<div class="container" style="margin:8% 0 3% 0;">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel-body" style="background-color:#fff;box-shadow: 0px 0px 5px #f6f6f6;border: solid 1px #e9e9e9;">
+                <div class="panel-heading">
+                    <h3 style="margin:10px 0px 10px 0;border-bottom: solid 1px #e9e9e9;padding-bottom: 20px;">
+                        Make your payment
+               
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput"> Name<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Email<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Phone No.<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Country</label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.CounteryId, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.CounteryId, ViewBag.Country as SelectList, new { @id = "CountryId", @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Address<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Amount </label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Amount, null,new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Description </label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Pincode, "", new { @class = "text-danger" })
+                                @Html.TextAreaFor(m => m.Pincode , new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            <div class="col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" value="Pay Now" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Content/js/notify.min.js"></script>
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .topHeader {
+            padding-bottom: 16px!important;
+        }
+        .navbar-brand {
+            padding: 8px 15px !important;
+        }
+        .container {
+            width: 98% !important;
+        }
+    </style>
+
+    }

@@ -1,0 +1,777 @@
+﻿@model PrachiIndia.Portal.Models.LoginViewModel
+@using Microsoft.AspNet.Identity
+@using PrachiIndia.Sql
+
+@using System.Globalization;
+@{
+    dbPrachiIndia_PortalEntities Context = new dbPrachiIndia_PortalEntities();
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+    var item = ViewData["item"] as PrachiIndia.Portal.Models.ItemVM;
+    var imageUrl = string.Format("https://www.prachiindia.com/ModuleFiles/Items/{0}", item.Image);
+    var setuIds = new List<long> { 246, 247, 248, 249, 250, 251, 252, 253, 254 };
+
+    var result = Context.tblCataLogs.Where(x => x.Id == item.Id).FirstOrDefault();
+    var Published_Date = result.PublishedDate;
+    var PublishedDate = string.Empty;
+    var ActiveSince = string.Empty;
+    if (PublishedDate != null && PublishedDate != "")
+    {
+        PublishedDate = result.PublishedDate.Value.ToString("dd/MM/yyyy");
+    }
+    else
+    {
+        PublishedDate = "N/A";
+    }
+
+    var discountPrice = (Convert.ToInt32(item.PrintPrice) * (item.Discount)) / 100;
+    var DiscountedPrice = Convert.ToInt32(item.PrintPrice) - discountPrice;
+
+    var ediscountPrice = (Convert.ToInt32(item.EbookPrice) * (item.EbookDiscount)) / 100;
+    var eDiscountedPrice = Convert.ToInt32(item.EbookPrice) - ediscountPrice;
+
+    var youtubeid = "https://www.youtube.com/embed/"+item.Youtubelink.Split('=')[1];
+}
+@section metatags{
+    <title>Prachi Group - @item.Title</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="">
+    @*<meta property="og:title" content="@item.Title-@item.Class" />*@
+    <meta property='og:image' content="@imageUrl" />
+    @*<meta property="og:description" content="@Html.Raw(item.SeriesDescription)" />*@
+    <meta property="og:url" content="https://www.prachiindia.com/" />
+    <meta property="og:type" content="Website" />
+    <meta property="og:site_name" content="Prachi [India] Pvt. Ltd." />
+}
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<style type="text/css">
+    .gold {
+        color: #FFBF00;
+    }
+
+    .product {
+        border: 1px solid #dddddd;
+        height: 321px;
+    }
+
+        .product > img {
+            max-width: 230px;
+        }
+
+    .product-rating {
+        margin: 2px 0;
+        padding: 2px 0;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    .product-title {
+        font-size: 20px;
+    }
+
+    .product-desc {
+        font-size: 14px;
+    }
+
+    .product-price {
+        font-size: 22px;
+    }
+
+    .product-stock {
+        color: #008000;
+        font-size: 24px;
+        margin-top: 10px;
+    }
+
+    .product-info {
+        margin-top: 50px;
+    }
+
+    .rightdescrip {
+        background-color: #fbf8f8;
+        padding: 2px 10px;
+        width: 100%;
+        float: left;
+        height: auto;
+    }
+
+
+
+
+    .view-wrapper {
+        float: right;
+        max-width: 70%;
+        margin-top: 25px;
+    }
+
+    .container {
+        padding-left: 0px;
+        padding-right: 0px;
+        max-width: 100%;
+    }
+
+    .service1-items {
+        padding: 0px 0 0px 0;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        max-width: 100%;
+        height: 321px;
+        width: 130px;
+    }
+
+    .service1-item {
+        height: 107px;
+        width: 120px;
+        display: block;
+        float: left;
+        position: relative;
+        padding-right: 20px;
+        border-right: 1px solid #DDD;
+        border-top: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+    }
+
+        .service1-item > img {
+            max-height: 110px;
+            max-width: 110px;
+            opacity: 0.6;
+            transition: all .2s ease-in;
+            -o-transition: all .2s ease-in;
+            -moz-transition: all .2s ease-in;
+            -webkit-transition: all .2s ease-in;
+        }
+
+            .service1-item > img:hover {
+                cursor: pointer;
+                opacity: 1;
+            }
+
+    .service-image-left {
+        padding-right: 50px;
+    }
+
+    .service-image-right {
+        padding-left: 50px;
+    }
+
+        .service-image-left > center > img, .service-image-right > center > img {
+            max-height: 155px;
+        }
+
+    .detailsbook {
+        padding: 40px 0;
+    }
+</style>
+<style>
+    .animated {
+        -webkit-transition: height 0.2s;
+        -moz-transition: height 0.2s;
+        transition: height 0.2s;
+    }
+
+    .stars {
+        margin: 20px 0;
+        font-size: 24px;
+        color: #d17581;
+    }
+
+    .form-group {
+        margin-bottom: 4px !important;
+    }
+
+    .booksdisct {
+        border: solid 1px #cccccc;
+        padding: 3px 9px;
+        font-size: 13px;
+    }
+
+    .widthview {
+        border: solid 1px #e9e9e9;
+        background-color: #ffffff;
+        padding: 14px 0;
+        box-shadow: 0px 0px 1px #fbfbfb;
+        width: 100%;
+        height: auto;
+        float: left;
+        margin-bottom: 5%;
+    }
+</style>
+<link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+<div class="clearfix" style="margin-top:5%;"></div>
+<section class="detailsbook">
+    <div class="container">
+        <div class="col-md-12">
+            <div id="demo" class="collapse row">
+                <div id="nunempty">
+                    <div class="col-md-12" id="Addcarts" style="min-height: 285px; overflow-y: scroll; max-height: 285px;">
+                        <div class="table-responsive">
+                            <table class="table cartlist table-bordered">
+                                <thead>
+                                    <tr class="header">
+                                        <th>&nbsp;</th>
+                                        <th>Item Name</th>
+                                        <th class="text-right">Price</th>
+                                        <th>Quantity</th>
+                                        <th class="text-right">Discount</th>
+                                        <th class="text-right">Subtotal (Rs)</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblData"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3 col-md-offset-8" style="padding-bottom:10px;">
+                                <div class="form-horizontal">
+                                    <strong>Total</strong><span id="totalvalue" class="pull-right">200</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-md-offset-8" style="margin-top:10px;">
+                                <button type="button" style="margin-bottom: 48px;" id="btnCheckOut" class="btn btn-block btn-success"><i class="fa fa-shopping-cart"></i>&nbsp;Checkout</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnaddcart" value="" />
+    <div class="container">
+        <div class="col-md-12" id="productdetail" style="margin-top:1%;">
+            @{
+
+                if (item != null)
+                {
+                    <div class="col-md-8">
+                        <div class="widthview">
+                            <div class="col-md-5 text-center">
+
+                                <img id="item-display" class="img-responsive img-thumbnail" src="@item.Image" alt="" />
+                                <div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>
+
+                            </div>
+                            <div class="col-md-7">
+                                <div class="row form-group">
+                                    <div class="col-md-12 product-title"><h3 style="margin:0 0 8px 0px;">@item.Title</h3></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>Author</b></p>
+                                    </div>
+                                    <div class="col-md-9"><p>@item.Author</p></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>ISBN</b></p>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <p>@item.ISBN</p>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>CLASS</b></p>
+                                    </div>
+                                    <div class="col-md-9"><p>@item.Class</p></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>BOARD</b></p>
+                                    </div>
+                                    <div class="col-md-9"><p>@item.BoardId</p></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>EDITION</b></p>
+                                    </div>
+                                    <div class="col-md-9"><p>@item.Edition</p></div>
+                                </div>
+                                @if (setuIds.Contains(item.Id))
+                                {
+                                    <div class="row form-group">
+                                        <div class="col-md-3">
+                                            <p><b>ACTIVE SINCE</b></p>
+                                        </div>
+                                        <div class="col-md-9">
+                                            if(item.PublishedDate != null) {
+                                            if(!string.IsNullOrEmpty(item.PublishedDate.ToString()){
+                                            <p>
+                                                item.PublishedDate.ToString();
+                                            </p>
+                                            }
+                                            }
+                                            else{
+                                            <p>
+                                                "2014";
+                                            </p>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (item.PrintPrice > 0)
+                                {
+                                    <div class="row form-group">
+                                        <div class="col-md-3">
+                                            <p><b>Print Price</b></p>
+                                        </div>
+
+                                        <div class="col-md-9">
+
+                                            <p>
+
+                                                @if (discountPrice > 0)
+                                                {
+                                                    string.Format("{0:0.00}", item.PrintPrice);
+                                                    <input type="checkbox" name="Pbook_@item.Id" id="Pbook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()" style="position:relative !important; left: 0 !important;" /> <i class="fa fa-inr"></i>
+                                                    <span>@string.Format("{0:0.00}", DiscountedPrice)</span>
+
+                                                    <strike style="color:red">
+                                                        <i class="fa fa-inr"></i>&nbsp;@string.Format("{0:0.00}", item.PrintPrice)
+                                                    </strike>
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" name="Pbook_@item.Id" id="Pbook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()" style="position:relative !important; left: 0 !important;" />
+                                                    <i class="fa fa-inr"></i>
+                                                    <span>@string.Format("{0:0.00}", item.PrintPrice)</span>
+
+                                                }
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+                                }
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <p><b>e-Book Price</b></p>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @if (item.Ebook == 1)
+                                        {
+                                            <p>
+                                                @if (ediscountPrice > 0)
+                                                {
+                                                    <input type="checkbox" name="Ebook_@item.Id" id="Ebook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" style="position:relative !important; left: 0 !important;" />
+                                                    <i class="fa fa-inr"></i> <span>@string.Format("{0:0.00}", eDiscountedPrice)</span>;
+                                                    <strike style="color:red">
+                                                        <i class="fa fa-inr"></i>&nbsp;@string.Format("{0:0.00}", item.EbookPrice)
+                                                    </strike>
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" name="Ebook_@item.Id" id="Ebook_@item.Id" value="@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" style="position:relative !important; left: 0 !important;" />
+                                                    <i class="fa fa-inr"></i>
+                                                    <span>@string.Format("{0:0.00}", item.EbookPrice)</span>
+                                                }
+
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <span>N/A</span>
+                                        }
+                                    </div>
+                                </div>
+                                @if (item.Status == 1)
+                                {
+                                    <div class="product-stock"><span style="border: solid 1px #e4e4e4; padding: 2px 10px; background-color: #f6f6f6;">In Stock</span></div>
+
+                                }
+                                else
+                                {
+                                    <div class="product-stock" style="border: solid 1px #e4e4e4; padding: 2px 10px; background-color: #f6f6f6;"><span>Out of Stock</span></div>
+
+                                }
+                                <hr>
+                                <div class="row form-group">
+                                    <button type="button" onclick="addcart(@item.Id);" data-id="@item.Id" class="btn btn-primary" style="font-size:16px; padding:10px 25px;">
+                                        <span class="glyphicon glyphicon-shopping-cart"></span> Add to cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 rightdescrip">
+                        <h3>Description</h3>
+                        <p>
+                            <iframe src="@youtubeid" style="width:100%;height:16em;"></iframe>
+                        </p>
+                        <p style="text-align:justify;">@Html.Raw(item.SeriesDescription)</p>
+                        <p>
+                            <iframe src="https://www.facebook.com/plugins/share_button.php?href=@HttpContext.Current.Request.Url.AbsoluteUri;F&layout=button&size=large&mobile_iframe=true&appId=1042927872582381&width=73&height=28" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                        </p>
+                    </div>
+
+                }
+
+            }
+        </div>
+
+
+    </div>
+</section>
+
+
+@Html.Partial("_login")
+@*this Part we using for Login Popup Start Here By Deepak:15_09_2016*@
+
+@*//this Part we using for Login Popup End Here By Deepak:15_09_2016*@
+@section scripts{
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/js/notify.min.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script>
+        $(document).ready(function () {
+
+            $('.ac_click').click(function() {
+                $('.profileac').css("display","block");
+            });
+            $(document).click(function(){
+                $('.profileac').css("display","none"); //hide the button
+            });
+            $("#books").css("display", "none");
+            $("#wishlistsid").css("display","none");
+            Getcart();
+            bindmenus();
+            $(".dropdown").hover(
+               function () {
+                   $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                   $(this).toggleClass('open');
+               },
+               function () {
+                   $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                   $(this).toggleClass('open');
+               }
+           );
+        });
+
+        function ProductDetails(Id) {
+            var url = '/Catalogue';
+            window.location.href = url;
+        }
+
+        $(document).on("click", ".AddToCart", function (e) {
+            var itemId = $(this).attr('data-id');
+            $.getJSON('@Url.Action("AddToCart", "Catalogues")', { id: itemId }, function (dataVal) {
+            });
+        });
+        function addcart(id) {
+          //  alert(id);
+            var BId = "";
+            BId = id;
+            var IsAutheticated = '@Request.IsAuthenticated';
+
+            if (IsAutheticated == 'False') {
+                $('#Login').modal('show');
+                $("#sign-up").css("display", "none");
+                $("#sign-in").css("display", "block");
+                $("#loginidfail").css("display", "none");
+            } else {
+                var Ebook = 0;
+                var Pbook = 0;
+                $('input[name=Ebook_' + id + ']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Ebook:';
+                    }
+                    Ebook = $(this).val();
+                });
+                $('input[name=Pbook_' + id + ']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Pbook:';
+                    }
+                    Pbook = $(this).val();
+
+                });
+
+
+                if (Ebook == 0 && Pbook == 0) {
+                    toastr.error("Please select the Print Book or E-Book", '', { timeOut: 2000 })
+                    return;
+                }
+                $.post('@Url.Action("AddToCart", "Catalogue")', { BookId: BId, Ebook: Ebook, Pbook: Pbook },
+                  function (returnedData) {
+
+                      toastr.success("Book add to cart list.", '', { timeOut: 2000 })
+                      $('input:checkbox').removeAttr('checked');
+                  });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function Getcart() {
+            var html = '';
+            var total = 0;
+            var count = 0;
+            var elems = [];
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                if (dataVal != null && dataVal.length > 0) {
+                    count = dataVal.length;
+                    $("#empty").css("display","none");
+                    $("#nunempty").css("display","block")
+                    $.each(dataVal, function (i, item) {
+                        var price = parseInt(item.Quantity) * parseFloat(item.Price);
+                        //var discount = parseInt(item.Quantity) * parseFloat(item.Discount);
+                        var discount = item.Discount*parseInt(item.Quantity)
+                        var subtotal = price - discount;
+                        var EPbook=parseFloat(item.Price)+parseFloat(item.EbookPrice)
+                        total = total + subtotal;
+                        html = html + '<tr>';
+                        html = html + '<td>  <img class="itme_pic" style="width:50px;" src="'+item.Image+'" alt=""></td>';
+                        html = html + '<td>';
+                        html = html + ' ' + item.Title + ' ';
+                        html = html + '<br />';
+                        html = html + '</td>';
+                        //html = html + '<td>';
+                        //html = html + ' ' + item.Classname + ' ';
+                        //html = html + '<br />';
+                        //html = html + '</td>';
+                        //html = html + '<td>';
+                        //html = html + ' ' + item.BoardName + ' ';
+                        //html = html + '<br />';
+                        //html = html + '</td>';
+                        html = html + '<td class="tdPrice text-center">';
+                        html = html + '<i class="fa fa-inr" /> <span class="price"><label>' + item.Price + '</label> </span>';
+                        html = html + '</td>';
+                       // html = html + '<td class="text-center">';
+                       // html = html + 'PBook';
+                           if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.Both.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">Both</td>'
+                    }
+                    else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">EBook</td>'
+                    }
+                    else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">PBook</td>'
+                    }
+                    else if (item.IsSolution) {
+
+                        html = html + '<td width="10%" class="text-center">Solution</td>'
+                        }
+                        html = html + '<br />';
+                       // html = html + '</td>';
+                        html = html + '<td class="Quantity" style="text-align:center">';
+                        if (item.IsSolution) { html = html + '<i class="text-center" /> <span class="qty"><label>' + item.Quantity + '</label> </span>'; }
+                        else {
+                            html = html + '<input class="qty" id="Qunt_' + item.Id + '" onChange = "UpdateQuntiy(' + item.Id + ');" style = "width: 40px;border: solid 1px #e2e2e2;text-align: center;" type="text" value="' + item.Quantity + '"/>';
+                        }
+                        //html = html + '<input class="qty" id="Qunt_' + item.Id + '" onChange = "UpdateQuntiy(' + item.Id + ');" style = "width: 25px;margin-left: 25px;" type="text" value="' + item.Quantity + '"/>';
+                        html = html + '<span id="spnAddCart_' + item.Id + '" style="display: none;text-align: center;"> <a style="margin-left: -80px;" onclick="AddMoreToCart(' + item.Id + ')" title="Update Quentity" href="#">Save</a></span>';
+                        html = html + '</td>';
+                        html = html + '<td class="text-center">';
+                        html = html + '<i class="fa fa-inr" /> <label>' + discount.toFixed(2) + '</label>';
+                        html = html + '</td>';
+                        html = html + '<td class="Subtotal text-right">';
+                        html = html + '<i class="fa fa-inr" style="padding-right:5px;" />';
+                        html = html + '<label>';
+                        html = html + '' + subtotal + '.00';
+                        html = html + '</label>';
+                        html = html + '</td>';
+                        html = html + '<td class="text-center">';
+                        html = html + '<span style="margin-top: 3px; text-align:center;"> <a onclick="RemoveAddCart(' + item.Id + ','+item.ItemId+')" style="text-decoration: none;" data-toggle="tooltip" title="Remove" href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></span>';
+                        html = html + '</td>';
+                        html = html + '</tr>';
+                        elems.push(''+item.ItemId+'');
+                    });
+                }
+                else{
+                    $("#empty").css("display","block");
+                    $("#nunempty").css("display","none")
+                }
+                window.localStorage.setItem('elems', JSON.stringify(elems));
+                $("#MyCart").empty();
+                $("#MyCart").css("opacity", "1.0")
+                var htmls = ' ' + count + '';
+                $("#MyCart").append(htmls);
+                $('#tblData').empty();
+                $('#tblData').append(html);
+                $('#totalvalue').empty();
+                $('#totalvalue').html(total+'.00');
+            });
+        }
+        //Remove From Add Cart Start Here By Deepak:10_09_2016
+        function RemoveAddCart(id,itemid) {
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveCart", "Catalogue")', { Id: id }, function (dataVal) {
+                    $("#cartcheck_"+itemid).removeClass("btn btn-success");
+                    $("#cartcheck_"+itemid).addClass("btn btn-primary");
+                    $("#cartcheck_"+itemid).attr("data-toggle", "tooltip")
+                    $("#cartcheck_"+itemid).attr("data-original-title", "")
+                    $(".elem").notify("Item Remove!","success");
+                    Getcart();
+                });
+            } else {
+            }
+        }
+        //Remove From Add Cart End Here By Deepak:10_09_2016
+
+        function UpdateQuntiy(id) {
+            var Quantity = $("#Qunt_" + id).val();
+            if ($.isNumeric(Quantity) && Quantity > 0) {
+                $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                    $(".elem").notify("Item Added!","success");
+                    Getcart();
+                });
+            }
+            else{
+                $.notify("Enter Onely Number", "error");
+                Getcart();
+            }
+        }
+        $("#btnCheckOut").click(function(){
+            var url = "/Payment/index";
+            window.location.href = url;
+        });
+        function AddMoreToCart(id) {
+            var Quantity = $("#Qunt_" + id).val();
+            $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                location.reload(true);
+            });
+        }
+        function Mainpage() {
+            var url = "/Home/index";
+            window.location.href = url;
+        }
+        //Update Quantity At Key Press End here BY Deepak:10_09_2016
+        $(document).ready(function() {
+            var success = @((TempData["BookId"] != null).ToString().ToLower());
+            if (success == true) {
+                var tempdataval = '@TempData["BookId"]';
+                addcart(tempdataval);
+            }
+        });
+        function productdetailss(){
+            var html="";
+            html=html+'<img id="item-display" src="http://www.corsair.com/Media/catalog/product/g/s/gs600_psu_sideview_blue_2.png" alt=""></img>';
+            html=html+'/center>';
+            html=html+'/div>';
+            html=html+'';
+            html=html+'<div class="container service1-items col-sm-2 col-md-2 pull-left">';
+            html=html+'<center>';
+            html=html+'<a id="item-1" class="service1-item">';
+            html=html+'    <img src="http://www.corsair.com/Media/catalog/product/g/s/gs600_psu_sideview_blue_2.png" alt=""></img>';
+            html=html+'</a>';
+            html=html+'<a id="item-2" class="service1-item">';
+            html=html+'    <img src="http://www.corsair.com/Media/catalog/product/g/s/gs600_psu_sideview_blue_2.png" alt=""></img>';
+            html=html+'</a>';
+            html=html+'<a id="item-3" class="service1-item">';
+            html=html+'    <img src="http://www.corsair.com/Media/catalog/product/g/s/gs600_psu_sideview_blue_2.png" alt=""></img>';
+            html=html+'</a>';
+            html=html+'</center>';
+            html=html+'</div>';
+            html=html+'<div class="col-md-7">';
+            html=html+'<div class="product-title">Corsair GS600 600 Watt PSU</div>';
+            html=html+'<div class="product-desc">The Corsair Gaming Series GS600 is the ideal price/performance choice for mid-spec gaming PC</div>';
+            html=html+'<div class="product-rating"><i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star gold"></i> <i class="fa fa-star-o"></i> </div>';
+            html=html+'<hr>';
+            html=html+'<div class="product-price">$ 1234.00</div>';
+            html=html+'<div class="product-stock">In Stock</div>';
+            html=html+'<hr>';
+            html=html+'<div class="btn-group cart">';
+            html=html+'<button type="button" onclick="addcart(242);"  class="btn btn-success">';
+            html=html+'    Add to cart';
+            html=html+'</button>';
+            html=html+'</div>';
+            html=html+'<div class="btn-group wishlist">';
+            html=html+'<button type="button" class="btn btn-danger">';
+            html=html+'    Add to wishlist';
+            html=html+'</button>';
+            html=html+'</div>';
+            html=html+'</div>';
+        }
+    </script>
+    @*Popup registration dropdown code start here :12/10/2013*@
+    <script>
+        $(function () {
+
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#StateId").empty();
+                    $('#StateId').html(items);
+                });
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    @*Popup registration dropdown code End here :12/10/2013*@
+    @*Added This Script for Adding Star in the book product start here :14/10/2016*@
+    <script>
+        (function (e) { var t, o = { className: "autosizejs", append: "", callback: !1, resizeDelay: 10 }, i = '<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; padding: 0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>', n = ["fontFamily", "fontSize", "fontWeight", "fontStyle", "letterSpacing", "textTransform", "wordSpacing", "textIndent"], s = e(i).data("autosize", !0)[0]; s.style.lineHeight = "99px", "99px" === e(s).css("lineHeight") && n.push("lineHeight"), s.style.lineHeight = "", e.fn.autosize = function (i) { return this.length ? (i = e.extend({}, o, i || {}), s.parentNode !== document.body && e(document.body).append(s), this.each(function () { function o() { var t, o; "getComputedStyle" in window ? (t = window.getComputedStyle(u, null), o = u.getBoundingClientRect().width, e.each(["paddingLeft", "paddingRight", "borderLeftWidth", "borderRightWidth"], function (e, i) { o -= parseInt(t[i], 10) }), s.style.width = o + "px") : s.style.width = Math.max(p.width(), 0) + "px" } function a() { var a = {}; if (t = u, s.className = i.className, d = parseInt(p.css("maxHeight"), 10), e.each(n, function (e, t) { a[t] = p.css(t) }), e(s).css(a), o(), window.chrome) { var r = u.style.width; u.style.width = "0px", u.offsetWidth, u.style.width = r } } function r() { var e, n; t !== u ? a() : o(), s.value = u.value + i.append, s.style.overflowY = u.style.overflowY, n = parseInt(u.style.height, 10), s.scrollTop = 0, s.scrollTop = 9e4, e = s.scrollTop, d && e > d ? (u.style.overflowY = "scroll", e = d) : (u.style.overflowY = "hidden", c > e && (e = c)), e += w, n !== e && (u.style.height = e + "px", f && i.callback.call(u, u)) } function l() { clearTimeout(h), h = setTimeout(function () { var e = p.width(); e !== g && (g = e, r()) }, parseInt(i.resizeDelay, 10)) } var d, c, h, u = this, p = e(u), w = 0, f = e.isFunction(i.callback), z = { height: u.style.height, overflow: u.style.overflow, overflowY: u.style.overflowY, wordWrap: u.style.wordWrap, resize: u.style.resize }, g = p.width(); p.data("autosize") || (p.data("autosize", !0), ("border-box" === p.css("box-sizing") || "border-box" === p.css("-moz-box-sizing") || "border-box" === p.css("-webkit-box-sizing")) && (w = p.outerHeight() - p.height()), c = Math.max(parseInt(p.css("minHeight"), 10) - w || 0, p.height()), p.css({ overflow: "hidden", overflowY: "hidden", wordWrap: "break-word", resize: "none" === p.css("resize") || "vertical" === p.css("resize") ? "none" : "horizontal" }), "onpropertychange" in u ? "oninput" in u ? p.on("input.autosize keyup.autosize", r) : p.on("propertychange.autosize", function () { "value" === event.propertyName && r() }) : p.on("input.autosize", r), i.resizeDelay !== !1 && e(window).on("resize.autosize", l), p.on("autosize.resize", r), p.on("autosize.resizeIncludeStyle", function () { t = null, r() }), p.on("autosize.destroy", function () { t = null, clearTimeout(h), e(window).off("resize", l), p.off("autosize").off(".autosize").css(z).removeData("autosize") }), r()) })) : this } })(window.jQuery || window.$);
+
+        var __slice = [].slice; (function (e, t) { var n; n = function () { function t(t, n) { var r, i, s, o = this; this.options = e.extend({}, this.defaults, n); this.$el = t; s = this.defaults; for (r in s) { i = s[r]; if (this.$el.data(r) != null) { this.options[r] = this.$el.data(r) } } this.createStars(); this.syncRating(); this.$el.on("mouseover.starrr", "span", function (e) { return o.syncRating(o.$el.find("span").index(e.currentTarget) + 1) }); this.$el.on("mouseout.starrr", function () { return o.syncRating() }); this.$el.on("click.starrr", "span", function (e) { return o.setRating(o.$el.find("span").index(e.currentTarget) + 1) }); this.$el.on("starrr:change", this.options.change) } t.prototype.defaults = { rating: void 0, numStars: 5, change: function (e, t) { } }; t.prototype.createStars = function () { var e, t, n; n = []; for (e = 1, t = this.options.numStars; 1 <= t ? e <= t : e >= t; 1 <= t ? e++ : e--) { n.push(this.$el.append("<span class='glyphicon .glyphicon-star-empty'></span>")) } return n }; t.prototype.setRating = function (e) { if (this.options.rating === e) { e = void 0 } this.options.rating = e; this.syncRating(); return this.$el.trigger("starrr:change", e) }; t.prototype.syncRating = function (e) { var t, n, r, i; e || (e = this.options.rating); if (e) { for (t = n = 0, i = e - 1; 0 <= i ? n <= i : n >= i; t = 0 <= i ? ++n : --n) { this.$el.find("span").eq(t).removeClass("glyphicon-star-empty").addClass("glyphicon-star") } } if (e && e < 5) { for (t = r = e; e <= 4 ? r <= 4 : r >= 4; t = e <= 4 ? ++r : --r) { this.$el.find("span").eq(t).removeClass("glyphicon-star").addClass("glyphicon-star-empty") } } if (!e) { return this.$el.find("span").removeClass("glyphicon-star").addClass("glyphicon-star-empty") } }; return t }(); return e.fn.extend({ starrr: function () { var t, r; r = arguments[0], t = 2 <= arguments.length ? __slice.call(arguments, 1) : []; return this.each(function () { var i; i = e(this).data("star-rating"); if (!i) { e(this).data("star-rating", i = new n(e(this), r)) } if (typeof r === "string") { return i[r].apply(i, t) } }) } }) })(window.jQuery, window); $(function () { return $(".starrr").starrr() })
+
+        $(function () {
+
+            $('#new-review').autosize({ append: "\n" });
+
+            var reviewBox = $('#post-review-box');
+            var newReview = $('#new-review');
+            var openReviewBtn = $('#open-review-box');
+            var closeReviewBtn = $('#close-review-box');
+            var ratingsField = $('#ratings-hidden');
+
+            openReviewBtn.click(function (e) {
+                reviewBox.slideDown(400, function () {
+                    $('#new-review').trigger('autosize.resize');
+                    newReview.focus();
+                });
+                openReviewBtn.fadeOut(100);
+                closeReviewBtn.show();
+            });
+
+            closeReviewBtn.click(function (e) {
+                e.preventDefault();
+                reviewBox.slideUp(300, function () {
+                    newReview.focus();
+                    openReviewBtn.fadeIn(200);
+                });
+                closeReviewBtn.hide();
+
+            });
+
+            $('.starrr').on('starrr:change', function (e, value) {
+                ratingsField.val(value);
+            });
+        });
+
+    </script>
+    @*Added This Script for Adding Star in the book product End here :14/10/2016*@
+
+
+}

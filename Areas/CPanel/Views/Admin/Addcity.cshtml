@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "Addcity";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Add City</h4></div>
+        <div class="panel-body">
+            <div class="col-md-4">
+                <select id="Country" class="form-control">
+                    @*<option value="0">Please select</option>*@
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select id="State" class="form-control">
+                    <option value="0">Please select State</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                @*<select id="City" class="form-control" style="display:none;">
+                <option value="0">Please select City</option>
+            </select>*@
+                <div id="dvAddcity" style="display:none;">
+                    <div class="control-label">
+                        <input type="text" class="form-control" id="txtcity" placeholder="Enter City" required="" />
+                    </div>
+                    <div class="form-actions pull-right">
+                        <br />
+                        <input class="btn btn-primary" type="button" id="btnSave" value="Save" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@Scripts.Render("~/bundles/jquery")*@
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllcountry", "Admin",new { Area="Cpanel"})',
+            success: function (Result) {
+                //console.log(Result)
+                var ddlObj = $("#Country");
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Please Select Country</option>"));
+                $.each(Result, function (key, value) {
+                    //alert(value.Name);
+                    ddlObj.append($("<option></option>").val(value.CountryId).html(value.Name));
+                });
+            }
+        });
+
+        $("#btnSave").click(function () {
+            //alert('ok');
+            var Cityobj = new Object();
+            // var contryId = $("#Country").val();
+            Cityobj.StateId = $("#State").val();
+            Cityobj.CityName = $("#txtcity").val();
+            var data = { StateId: Cityobj.StateId, CityName: Cityobj.CityName };
+            if ($('#txtcity').val() == "") {
+                toastr.error("Please Eneter City", '', { timeOut: 5000 })
+                return false;
+            }
+            $.ajax(
+            {
+                type: "POST",
+                url: '@Url.Action("AddCityName", "Admin", new { Area = "Cpanel" })',
+                data: data,
+                success: function (data) {
+                    if (data) {
+                        $("#txtcity").val('');
+                        toastr.success("City Activated Successfully", '', { timeOut: 5000 })
+                    }
+                    else {
+                        toastr.error("City can not be added", '', { timeOut: 5000 })
+
+                    }
+                },
+            });
+
+        });
+    });
+    $('#Country').on('change', function () {
+        var CountryId = $(this).val();
+        $('#State').html('');
+        $.ajax({
+            type: "POST",
+            data: { countryId: CountryId },
+            url: '@Url.Action("GetState", "Admin", new {area= "CPanel" })',
+            success: function (items) {
+                if (items.length <= 0) {
+                    //$('#State').append('<option value="0">Please select</option>');
+                    $('#State').append('<option value="0">No State</option>');
+                    $('#dvAddcity').hide();
+                }
+                else {
+
+                    $.each(items, function (i, d) {
+                        //alert(d);
+                        $('#State').append('<option value="' + d.StaeteId + '">' + d.StateName + '</option>');
+                    });
+                    $('#dvAddcity').show();
+                }
+
+            }
+        });
+    });
+
+    @*$('#State').on('change', function () {
+        var StateId = $(this).val();
+        $('#City').html('');
+        $.ajax({
+            type: "POST",
+            data: { stateId: StateId },
+            url: '@Url.Action("GetCity", "Admin", new {area= "CPanel" })',
+            success: function (items) {
+                if (items.length <= 0) {
+                    $('#City').append('<option value="0">Please select</option>');
+                    $('#City').append('<option value="No">No City</option>');
+                    $("#dvAddcity").show();
+                }
+                else {
+                    $("#State").show();
+                    $.each(items, function (i, d) {
+
+                       $('#City').append('<option value="' + d.cityId + '">' + d.CityName + '</option>');
+                    });
+                }
+
+            }
+        });
+    });*@
+
+</script>

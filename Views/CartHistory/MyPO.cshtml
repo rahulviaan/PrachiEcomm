@@ -1,0 +1,380 @@
+﻿@model List<PrachiIndia.Sql.EbookOrder>
+@{
+    ViewBag.Title = "MyPO";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+@Html.Partial("_Settings");
+<div class="col-md-9">
+    <div class="accountset">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>My E-Book Order</h2>
+            </div>
+            <div id="mypo_popup" class="col-md-12"><span class="btn btn-warning pull-right"><i class="fa fa-plus" aria-hidden="true"></i> Add</span></div>
+            <div class="clearfix"></div>
+            <div class="panel-body">
+
+                <div class="table-responsive" id="printableArea">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="bg-success">
+                                <th>#</th>
+                                <th>PO#</th>
+                                <th>Date</th>
+                                <th>School</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>Details</th>
+                                <th>Readedge</th>
+                                <th>TestHour</th>
+                            </tr>
+                        </thead>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 1;
+                        <tbody style="text-align: center;">
+                            @foreach (var item in Model)
+                                {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.RequestID</td>
+                                <td>@item.OrderDate</td>
+                                <td>@item.SchoolName</td>
+                                <td>@item.SchoolEmail</td>
+                                <td>@item.SchoolMobile</td>
+                                <td>@item.SchoolAddress</td>
+                                <td><a title="Veiw Form" class="text-primary" href="@Url.Action("ViewOrder", "PO", new { RequestID = item.RequestID,Area="PO"})" target="_blank"><i class="fa fa-eye"></i></a></td>
+                                <td>
+                                    @if (item.Status ?? false)
+                                    {
+                                        <a title="Create configuration" href='@Url.Action("DownloadFile", "CartHistory", new { RequestID = @item.RequestID,UserType="",ConfigurationType="readedge"})' class='link-icon'><i class="fa fa-cogs" aria-hidden="true"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Status ?? false)
+                                    {
+                                        <a title="Create configuration" href='@Url.Action("DownloadFile", "CartHistory", new { RequestID = @item.RequestID,UserType="",ConfigurationType="testhour"})' class='link-icon'><i class="fa fa-cogs" aria-hidden="true"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </td>
+                            </tr>
+                                    i = i + 1;
+                                }
+
+                        </tbody>
+                        }
+                        else
+                        {
+                           
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <h4 class="text-center">No book found!</h4>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="booksmodal5" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+
+            <div class="panel-body">
+                <div class="col-md-12 wrapcontrol">
+                    <div class="heading" style="border-bottom:solid 1px #cccccc; margin-bottom:2%;padding-bottom: 2%;">
+                        <span><b>##Generate PO</b></span>
+                        <button type="button" class="close" data-dismiss="modal" style="margin-right:1%; font-size: 29px;">&times;</button>
+                    </div>
+                </div>
+
+                <form id="SuubmitPO">
+                    <div class="col-sm-12">
+                        <input type="hidden" id="RequestID" name="RequestID" value="@Model[0].RequestID">
+                        @Html.Partial("~/Areas/PO/Views/PO/Create.cshtml")
+                        <div class="col-sm-12 text-center">
+                            <input value="SUBMIT" name="btnGetInTouchWith" id="submitPO" class="btn btn-primary" type="button">
+                            <input value="CLOSE" data-dismiss="modal" name="submit" class="btn btn-warning" type="reset">
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="loader" style="background:rgba(254, 254, 254, 0.5);width: 100%;height: auto;position: fixed;z-index: 9999999999999999999;top: 0;right: 0;left: 0;bottom: 0; display:none">
+    <div class="text-center">
+        <img src="~/Content/tinymce/skins/lightgray/img/loader.gif" style="padding-top:25%;" />
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Content/PO/multiselect.js"></script>
+    <link href="~/Content/PO/multiselect.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script type="text/javascript">
+
+
+        $("#mypo_popup").click(function () {
+            $("#booksmodal5").modal();
+        });
+    </script>
+    <style>
+                .toast-top-right {
+                            right: 40%!important;
+                            top:    08%!important;
+                            opacity:1!important;
+                         } 
+        .caret {
+            position: inherit !important;
+            float: none !important;
+        }
+
+        .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+            position: inherit !important;
+            margin-left: -20px !important;
+            left: -12px !important;
+            top: 3px !important;
+        }
+
+        .dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
+            background-color: transparent !important;
+        }
+    </style>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetBoard(0);
+        loadSubject(0);
+
+        $('.disclambtn').css("diplay", "block");
+        $('.multiselect-ui').multiselect({
+            includeSelectAllOption: true
+
+        });
+        $('#load_list').click(function () {
+            var count = parseInt($("#count").val());
+            $("#count").val(count + 1);
+            $("#valueappen").append('<div class="clearfix"></div><div id="row_' + count + '"><div class="col-sm-3 form-group"><select class="form-control" id=Board_' + count + ' name="POMasterDetails[' + count + '].BoardID" id="POMasterDetails_' + count + '" onchange="GetSubject(this, ' + count + ');">' +
+                                    '</select></div><div class="col-sm-3 form-group"><select class="form-control" id=Subject_' + count + '  name=POMasterDetails[' + count + '].SubjectID onchange="GetSeries(this,' + count + ')";></select></div><div class="col-sm-3 form-group">' +
+                                    '<select class="form-control" id="SubjectDetail_' + count + '" id=SubjectDetail_' + count + ' name=POMasterDetails[' + count + '].SeriesID onchange="GetClass(this, ' + count + ');"></select></div><div class="col-sm-2 form-group">' +
+                                    '<select class="multiselect-ui form-control" multiple="multiple" id=valueappend_' + count + ' name=POMasterDetails[' + count + '].ClassIDs id="valueappend_' + count + '"></select></div><div class="col-sm-1 form-group"><button type="button" onclick="removeRow(' + count + ')" class="btn btn-danger remove"><i class="fa fa-trash" aria-hidden="true"></i></button></div></div><div class="clearfix"></div>');
+
+            $("#valueappend_" + count).multiselect({
+                includeSelectAllOption: true
+            });
+             GetBoard(count);
+             loadSubject(count)
+        });
+
+    });
+
+    function removeRow(id) {
+        $("#row_" + id).remove();
+        var count = parseInt($("#count").val());
+        $("#count").val(count - 1);
+        var counter = parseInt(id - count);
+        while (id <= (count-1))
+        {
+            $("#Board_" + (id + 1)).attr("name", "POMasterDetails[" + id + "].BoardID");
+            $("#Board_" + (id + 1)).attr("id", "Board_" + id);
+
+            $("#Subject_" + (id + 1)).attr("name", "POMasterDetails[" + id + "].SubjectID");
+            $("#Subject_" + (id + 1)).attr("id", "Subject_" + id);
+
+            $("#SubjectDetail_" + (id + 1)).attr("name", "POMasterDetails[" + id + "].SeriesID");
+            $("#SubjectDetail_" + (id + 1)).attr("id", "SubjectDetail_" + id);
+
+            $("#valueappend_" + (id + 1)).attr("name", "POMasterDetails[" + id + "].ClassIDs");
+            $("#valueappend_" + (id + 1)).attr("id", "valueappend_" + id);
+            id++;
+        }
+    }
+    $("#submitPO").click(function () {
+        var validatition = false;
+        $('[id^=Board_]').each(function () {
+            var va=($(this).val())
+            if (va == "0") {
+                validatition = true;
+                $(this).css('border-color', 'red');
+            }
+            else {
+                $(this).css('border-color', '#cccccc')
+            }
+        })
+        $('[id^=Subject_]').each(function () {
+            var va = ($(this).val())
+            if (va == "0") {
+                validatition = true;
+                $(this).css('border-color', 'red');
+            }
+            else {
+                $(this).css('border-color', '#cccccc')
+            }
+        })
+        $('[id^=SubjectDetail_]').each(function () {
+            var va = ($(this).val())
+            if (va == "0" || va==null) {
+                validatition = true;
+                $(this).css('border-color', 'red');
+            }
+            else {
+                $(this).css('border-color', '#cccccc')
+            }
+        })
+        $('[id^=valueappend_]').each(function () {
+            var va = ($(this).val())
+            if (va == "0" || va == null) {
+                validatition = true;
+                $("#valueappend").css('border-color', 'red');
+               // $(this).css('border-color', 'red');
+            }
+            else {
+                $(this).css('border-color', '#cccccc')
+            }
+        })
+
+        if (validatition) {
+            toastr.error("Please fill required fields", '', { timeOut: 8000 })
+        }
+        else {
+            var PO = $("#SuubmitPO").serialize();
+            $("#loader").css("display", "block");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreatePO", "PO", new { Area = "PO" })',
+                data: PO,
+                success: function (Result) {
+                    $("#loader").css("display", "none");
+                    toastr.success("order submitted successfully", '', { timeOut: 2000 })
+                    setTimeout(
+                      function () {
+                          location.reload();
+                      }, 2000);
+                }
+            });
+        }
+
+    })
+
+    function GetBoard(Row) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllBoard",  "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Board_" + Row);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.BoardID).html(value.Board));
+                });
+            }
+        });
+    }
+
+    function GetSeries(Control, Row) {
+        var BoardID = $("#Board_"+Row).val();
+        var SubjectID = $(Control).val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllSeries",  "PO",new { Area="PO"})',
+            data: { "SubjectID": SubjectID, "BoardID": BoardID },
+            success: function (Result) {
+                var ddlObj = $("#SubjectDetail_" + Row);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.SeriesID).html(value.Series));
+                });
+            }
+        });
+    }
+
+    function GetClass(Control, Row) {
+        var SeriesID = $(Control).val();
+        var BoardID = $("#Board_" + Row).val();
+        var SubjectID = $("#Subject_" + Row).val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllClasses",  "PO",new { Area="PO"})',
+            data: { "SeriesID": SeriesID, "BoardID": BoardID, "subject": SubjectID },
+            success: function (Result) {
+                var ddlObj = $("#valueappend_" + Row);
+                ddlObj.empty();
+                //ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.ClassID).html(value.Class));
+                });
+                $("#valueappend_" + Row).multiselect("rebuild");
+            }
+        });
+    }
+
+    function loadSubject(RowID) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllSubject", "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Subject_" + RowID);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.SubjectID).html(value.Subject));
+                });
+            }
+        });
+    }
+
+    function GetSubject(Control,RowID)
+    {
+        var BoardID = $(Control).val();
+        $.ajax({
+            type: "GET",
+            data: { "BoardID": BoardID },
+            url: '@Url.Action("GetAllSubject", "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Subject_" + RowID);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.SubjectID).html(value.Subject));
+                });
+            }
+        });
+    }
+
+    function GetBoard(Row) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllBoard",  "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Board_"+Row);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.BoardID).html(value.Board));
+                });
+            }
+        });
+    }
+</script>

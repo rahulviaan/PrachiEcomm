@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Prachi Group - Educational Books Publishers India";
+
+
+    var qs = ViewBag.QS.ToString();
+    var aboutus = "";
+    var leadership = "";
+    var legacy = "";
+    var aboutusintro = "";
+    var visionmission = "";
+    if (ViewBag.QS != null && qs != "")
+    {
+        qs = ViewBag.QS.ToString();
+        if (qs == "Leadership")
+        {
+            leadership = "active in";
+            aboutus = "";
+            legacy = "";
+            visionmission = "";
+            aboutusintro = "";
+
+        }
+        else
+        {
+
+            leadership = "active";
+            aboutus = "";
+            legacy = "";
+            visionmission = "";
+            aboutusintro = "";
+        }
+
+
+
+    }
+
+
+
+}
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>About Us</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li>
+                            About Us
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="about" class="" style="padding-bottom:10px">
+    <div id="" class="container">
+        <div class="clearfix"></div>
+        <div class="panel-body">
+            <div id="leftmenu" class="col-md-3" style="padding:0px; border-right: 0;">
+                <ul class="nav nav-tabs tabs-left h4" style="height: 100%; border-right: 1px solid silver;">
+                    <li class="@aboutusintro active"><a data-toggle="tab" href="#aboutusintro"><span class="fa fa-book"></span> About Us</a></li>
+                    <li class="@aboutus"><a data-toggle="tab" href="#aboutus"><span class="fa fa-book"></span> Who We Are</a></li>
+                    <li class="@visionmission"><a data-toggle="tab" href="#visionmission"><span class="fa fa-book"></span> Vision &amp; Mission</a></li>
+                    <li class="@legacy"><a data-toggle="tab" href="#legacy"><span class="fa fa-book"></span> Legacy</a></li>
+                    <li class="@leadership"><a data-toggle="tab" href="#leadership"><span class="fa fa-book"></span> Leadership</a></li>
+                </ul>
+            </div>
+            <div id="" class="col-md-9" style="padding: 0;">
+                <div class="panel-body" style="border:solid 1px #dfdfdf;">
+                    <div class="tab-content">
+                        <div id="aboutusintro" class="tab-pane fade active in @aboutusintro">
+
+                            <div class="panel-body inprdservice" style="margin-bottom: 2%;">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>About Us</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-6"><img src="~/img/aboutus/aboutus.png" class="img-responsive img-thumbnail" /></div>
+                                    <div class="col-md-6"><p><b>PRACHI INDIA PVT. LTD.</b> is one of the pioneer educational publishers of India. The learner is centre of attention. We take pride in developing and publishing content catering to the needs of pre-primary level to high school level. It is sine qua non of our policy that the power of continuous innovation and insatiable knowledge always steers and motivates us to evolve and transform our books   It is our belief in power of innovation and knowledge which always steers us to evolve and transform our books to be the ne plus ultra for the future needs and dynamics. We publish in both print and digital media to serve the needs of learners at all levels and the scholarly community as a whole.</p></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="aboutus" class="tab-pane fade  @aboutus">
+                            <div class="panel-body inprdservice">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>Who We Are :</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>PRACHI INDIA PVT.LTD is one of the pioneer educational publishers of India. The learner is centre of attention. We take pride in developing and publishing content catering to the needs of pre-primary level to high school level. It is sine qua non of our policy that the power of continuous innovation and insatiable knowledge always steers and motivates us to evolve and transform our books   It is our belief in power of innovation and knowledge which always steers us to evolve and transform our books to be the ne plus ultra for the future needs and dynamics. We publish in both print and digital media to serve the needs of learners at all levels and the scholarly community as a whole.</p>
+                                    <p>Incorporated in 1996 with barely 24 titles to start with, Prachi (India) Pvt. Ltd. has embarked on the growth path since its inception. It has carved out a niche by producing more than 1000 titles to its credit for Nursery to XII classes in such a short span of time.</p>
+                                    <p>Books produced by the company have been and are being recommended by eminent educationalists running reputed and renowned Public Schools affiliated either to CBSE, ICSE or other State Boards of Education throughout the country.</p>
+                                    <p>Keeping pace with the rapid growth of public schools and globalization of career oriented professional education. The company has been upgrading the contents of its books from time to time. Our textbooks from classes I to VIII were selected and prescribed by the DIRECTORATE OF EDUCATION, Govt. of Arunachal Pradesh at state level during 2004-05 to 2006-07 (Three years).</p>
+                                    <p>It is a matter of pride for the company to mention that it was awarded the "Distinguished Young Publishers Award" in the year 2004 by the "FEDERATION OF EDUCATIONAL PUBLISHERS IN INDIA". In the same year the Federation also adjudged our two series : PLUS FOUR (+4) and SCIENCE as the best books of the year, produced on the respective subjects.</p>
+                                    <p>In the year 2009, the FEDERATION again adjudged our another series entitled "Excellence in Mathematics" as the best books produced on the subject.</p>
+                                    <p>Company's other two series Future-Track and Read Me for secondary and senior secondary classes are also gaining immense popularity. The idea behind these series is to make difficult subjects so simple and intelligible that every student is able to secure glittering marks in his/her respective examinations.</p>
+                                    <p>The company undertakes to write and produce books, at cost effective rates, for various Educational State Boards such as Rajasthan, M.P. etc. Our team of erudite authors at various levels comprises of experienced and calibred teachers from schools, colleges and universities.</p>
+                                    <p>The company, over the years, has achieved a multi-core turnover, which, in itself, speaks volumes of the steady growth of the company.</p>
+                                    <p>Prachi [India] Pvt. Ltd. is a professionally managed organization with a workforce of more than 300 dedicated employees (including professionals) and is capable of handling any amount of bulk supplies of quality educational books and e-learning solutions even at a short notice.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="visionmission" class="tab-pane fade  @visionmission">
+                            <div class="panel-body inprdservice" style="margin-bottom: 2%;">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>Vision</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>To make learning an enriched and delectable experience for students and making teaching effortless, yet interactive for teachers at every turn to enable schools to realize their educational mission and vision with an unprecedented degree of precision thus, be a respected publisher that values diversity, nurtures talent, rewards success, and honors its responsibilities.</p>
+                                </div>
+                            </div>
+                            <div class="panel-body inprdservice">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>Mission</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>To provide one-stop education solution in K-12 segment by meeting the needs of people with content that promotes quality education. Our mission aims at providing exceptional services in all fields of our work and to follow through our promises. We will strive to deliver individualized solutions to all our client's publishing and digitization needs and add value to our clients' business. Our staff is focused on providing great service and forming lasting relationships with our clients. We will be judged not only by our words but by our actions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="legacy" class="tab-pane fade  @legacy">
+                            <div class="panel-body inprdservice" style="margin-bottom: 2%;">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>Legacy</h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <p><img src="~/img/aboutus/LEGACY.png" width="2122" height="2365" alt="" class="img-responsive img-thumbnail"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="leadership" class="tab-pane fade @leadership">
+                            <div class="panel-body inprdservice">
+                                <div class="col-md-12 inprdservicehead">
+                                    <h4>Leadership</h4>
+                                </div>
+                                <div class="panel-body" style="padding-left: 0; padding-right:0;">
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/RAKESHTYAGI.png" class="img-responsive img-thumbnail" alt="Rakesh Tyagi">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Rakesh Tyagi<br><span style="font-size:12px;">(Managing Director)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>An astute professional and visionary with an infinite and insatiable thirst for knowledge. He has the knack of perfection which uninterruptedly drives him to learn and improve every single second. His acquaintance with the Industry dynamics and core competencies has empowered us to augment the infrastructure and organizational delivery efficiency required by the users. It is under his dynamic and philanthropist leadership that Prachi has become a respected name in educational publishing segment.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/MUKESHTYAGI.png" class="img-responsive img-thumbnail" alt="Mukesh Tyagi">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Mukesh Tyagi<br><span style="font-size:12px;">(Chairman, Director)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>A seasoned go getter who has spent all his professional experience in building reader base (consumers, users) and business sales strength. He is adept at handling sales & marketing across all domains and verticals, driving operations, managing large projects and teams across geographies which has helped him to develop keen understanding of customer needs. It is his business acumen which drives our project to success.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/AkshayTyagi.png" class="img-responsive img-thumbnail" alt="Akshay Tyagi">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Akshay Tyagi<br><span style="font-size:12px;">(VP-International Business)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>An affable personality brimmed with prolific attitude, his knack of adding zest to the team and straight forward approach is an asset to all of us that keeps the business in-line and on the right side of the balance sheet. He is the passionate strategist with all the excels, targets and not to mention deadlines.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/BhanupratapTyagi.png" class="img-responsive img-thumbnail" alt="Bhanu pratap Tyagi">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Bhanu Pratap Tyagi<br><span style="font-size:12px;">(CIO Prachi Group)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>An articulate and young professional, who exudes exuberance and impregnable confidence in process improvement and smooth undertaking of digital offerings. He is a quick learner and avid facilitator who brings fresh insight into market outreach, product management and customer experience.</p>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/DrDKSharma.png" class="img-responsive img-thumbnail" alt="Dr. D.K. Sharma">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Dr. D.K. Sharma<br><span style="font-size:12px;">(Academic Consultant)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>A voracious reader and exceptional writer having perfect erudition and suavity. He helmed the Agra Hindi institute for 20 years. He comes with an unrivalled knowledge base, a spirited dynamism, obsession for excellence, an oceanic mine of knowledge, great passion for innovation and perpetual learning.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="content">
+                                            <img src="~/img/aboutus/SandeepTyagi.png" class="img-responsive img-thumbnail" alt="Sandeep Tyagi">
+                                            <h4 style="border:solid 1px #e3e3e3; border-left:solid 3px #ff0000;padding: 3px 8px;color: #000000;text-transform: uppercase; margin: 0;">Sandeep Tyagi<br><span style="font-size:12px;">(General Manager)</span></h4>
+                                            <div class="content-overlay"></div>
+                                            <div class="content-details fadeIn-top">
+                                                <p>He is an inspiring team leader and mentor who invoke best out of the team every time. He has the track record of customer centricity, passion for excellence and tenacity in execution. He handles key accounts, plays an important role in strengthening existing customer base. His competence to ensure that customer is satisfied and engaged emanates from his innate trait around being genuinely caring about people.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+
+    <style>
+        .content {
+            position: relative;
+            margin-bottom: 5%;
+            overflow: hidden;
+        }
+
+            .content .content-overlay {
+                background: rgba(255, 255, 255, 0.8);
+                position: absolute;
+                height: 99%;
+                width: 100%;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                opacity: 0;
+                -webkit-transition: all 0.4s ease-in-out 0s;
+                -moz-transition: all 0.4s ease-in-out 0s;
+                transition: all 0.4s ease-in-out 0s;
+            }
+
+            .content:hover .content-overlay {
+                opacity: 1;
+            }
+
+        .content-image {
+            width: 100%;
+        }
+
+        .content-details {
+            position: absolute;
+            text-align: center;
+            padding-left: 1em;
+            padding-right: 1em;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            opacity: 0;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            -webkit-transition: all 0.3s ease-in-out 0s;
+            -moz-transition: all 0.3s ease-in-out 0s;
+            transition: all 0.3s ease-in-out 0s;
+        }
+
+        .content:hover .content-details {
+            top: 50%;
+            left: 50%;
+            opacity: 1;
+        }
+
+        .content-details p {
+            color: #000000;
+            font-size: 13px;
+        }
+
+        .fadeIn-top {
+            top: 20%;
+        }
+    </style>
+}

@@ -1,0 +1,136 @@
+﻿@using System.Linq;
+@model PrachiIndia.Sql.Order
+
+@{
+    ViewBag.Title = "PaymentDetails";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+    var CustomerInformation = (PrachiIndia.Portal.Models.ContactUs)ViewBag.CustomerInformation;
+    var total = 0M;
+    var totalDiscount = 0;
+}
+<style type="text/css">
+    .wrapper {
+        margin-top: 0px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12" style="margin-bottom:1%;">
+        <div class="row">
+            <div class="col-md-5">
+                <h4 class="text-left">Billing Information</h4>
+                <table>
+                    <tr><td valign="top" align="left"><strong>Name</strong></td>  <td width="10" valign="top" align="center"><strong>:</strong></td>  <td valign="top" align="left">@CustomerInformation.Name</td></tr>
+                    <tr><td valign="top" align="left"><strong>Email</strong></td> <td valign="top" align="center"><strong>:</strong></td>  <td valign="top" align="left">@CustomerInformation.Email</td></tr>
+                    <tr><td valign="top" align="left"><strong>Mobile</strong></td>  <td valign="top" align="center"><strong>:</strong></td> <td valign="top" align="left">@CustomerInformation.ContactNo</td></tr>
+                    <tr><td valign="top" align="left"><strong>Address</strong></td><td valign="top" align="center"><strong>:</strong></td><td valign="top" align="left">@Html.Raw(CustomerInformation.Message)</td></tr>
+                </table>
+
+            </div>
+            <div class="col-md-3">
+                &nbsp;
+            </div>
+            <div class="col-md-4">
+                <h4 class="text-left">Payment Summary</h4>
+                <table>
+                    <tr><td valign="top" align="left"><strong>Invoice No#</strong></td>  <td width="10" valign="top" align="center"><strong>:</strong></td>  <td valign="top" align="left">@Model.TransactionId</td></tr>
+                    <tr><td valign="top" align="left"><strong>Invoice Date</strong></td> <td valign="top" align="center"><strong>:</strong></td>  <td valign="top" align="left">@Model.CreatedDate.Value.ToString("dd-MMM-yyyy")</td></tr>
+                    <tr><td valign="top" align="left"><strong>Invoice Amount</strong></td>  <td valign="top" align="center"><strong>:</strong></td> <td valign="top" align="left">@Model.TotalAmount</td></tr>
+                    <tr>
+                        <td valign="top" align="left"><strong>Status</strong></td>
+                        <td valign="top" align="center"><strong>:</strong></td>
+                        <td valign="top" align="left" style="font-size:18px;">
+                            @if (Model.Status == 1)
+                            {
+                                <span class="label label-success">Success</span>
+                            }
+                            else if (Model.Status == 2)
+                            {
+                                <span class="label label-danger">Failed</span>
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("PaymentDetails", "PaymentInfo", FormMethod.Get))
+                                {
+
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    <input type="hidden" name="update" value="True" />
+                                    <button class="btn btn-info" title="Click to verify the status">Pending</button>
+                                }
+                            }
+
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center">Order Summary</h4>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>SrNo#</th>
+                            <th></th>
+                            <th>Subject</th>
+                            <th>Title</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    @if (Model != null && Model.OrderProducts != null && Model.OrderProducts.Any())
+                    {
+                        var context = new PrachiIndia.Sql.dbPrachiIndia_PortalEntities();
+                        var i = 1;
+
+                        <tbody>
+                            @foreach (var item in Model.OrderProducts)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>
+                                        <img src="~/ModuleFiles/Items/@item.tblCataLog.Image" width="80" />
+                                    </td>
+                                    <td>@item.tblCataLog.MasterSubject.Title</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.Discount</td>
+                                    <td>
+                                        @{ var discount = item.Discount ?? 0;
+                                            var subtotal = item.Price ?? 0 - discount;
+                                            totalDiscount = totalDiscount + discount;
+                                            total = total + subtotal;
+                                        }
+                                        <span>@subtotal</span>
+                                    </td>
+
+
+                                </tr>
+                                                i = i + 1;
+                                            }
+
+                        </tbody>
+                                            }
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="6"></td>
+                            <td><strong>Total Discount:</strong></td>
+                            <td>@totalDiscount</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"></td>
+
+                            <td><strong>Total Amount:</strong></td>
+                            <td>@total</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@model List<PrachiIndia.Portal.Models.MyEbookLibrary>
+@{
+    ViewBag.Title = "MyLibrary";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+@Html.Partial("_Settings")
+<div class="col-md-9">
+    <div class="accountset">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p style="margin:0;padding: 2px 0;"><b>My Ebook Library</b></p>
+</div>
+            <div class="panel-body">
+                <div class="table-responsive" id="printableArea">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="bg-success">
+                                <th>#</th>
+                                <th>Thumb</th>
+                                <th>Board</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Title</th>
+
+                            </tr>
+                        </thead>
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 1;
+                        <tbody style="text-align: center;">
+                            @foreach (var item in Model)
+                                {
+                        <tr>
+                            <td>@i</td>
+                            <td><img src="~/ModuleFiles/Items/@item.Image" style="max-width:60px;" /></td>
+                            <td>
+                                @item.Board
+                            </td>
+                            <td>
+                                @item.Classes
+                            </td>
+                            <td>
+                                @item.Subect
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                        </tr>
+                                    i = i + 1;
+                                }
+
+                        </tbody>
+                        }
+                        else
+                        {
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <h4 class="text-center">No book found!</h4>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
+}

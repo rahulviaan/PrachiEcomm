@@ -1,0 +1,162 @@
+﻿
+p.t_fixed_header_scroll_inner {
+    height: 200px;
+    width: 100%;
+}
+div.t_fixed_header_scroll_outer {
+    height: 150px;
+    left: 0;
+    overflow: hidden;
+    top: 0;
+    visibility: hidden;
+    width: 200px;
+}
+div.t_fixed_header {
+    margin: 0;
+    position: relative;
+    width: 100%;
+}
+div.t_fixed_header * {
+    margin: 0;
+    padding: 0;
+}
+div.t_fixed_header table.head {
+    position: relative;
+}
+div.t_fixed_header table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    table-layout: fixed;
+    width: 100%;
+}
+div.t_fixed_header table.headtable td.fillScrollbar {
+    font-size: 0;
+    text-overflow: inherit;
+}
+div.t_fixed_header tr th, div.t_fixed_header tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+div.t_fixed_header.t_fixed_header_wrap tr th, div.t_fixed_header.t_fixed_header_wrap tr td {
+    white-space: normal;
+}
+div.t_fixed_header div.body {
+    overflow-x: auto;
+    padding: 0;
+    width: 100%;
+}
+div.t_fixed_header_main_wrapper {
+    overflow: hidden;
+    position: relative;
+}
+div.t_fixed_header_main_wrapper_child {
+    position: relative;
+    width: 100%;
+}
+div.t_fixed_header_main_wrapper.ui {
+    border-style: solid;
+    border-width: 1px;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+div.t_fixed_header_main_wrapper.ui div.t_fixed_header_caption {
+    border-style: solid;
+    border-width: 0 0 1px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5px;
+    text-align: center;
+    display:none;/* Avanish Kumar Singh remove if you want to show fixheader*/
+}
+
+
+ 
+div.t_fixed_header_main_wrapper.ui div.t_fixed_header_caption.toggle {
+    border-width: 0;
+}
+div.t_fixed_header div.headtable {
+    border: 0 none;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+div.t_fixed_header.ui .body {
+    background-image: none;
+    border-style: solid;
+    border-width: 1px 0 0;
+}
+div.t_fixed_header.ui .headtable th {
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    padding: 5px;
+    text-align: center;
+}
+div.t_fixed_header.ui .headtable .hover {
+    cursor: pointer;
+    height: 16px;
+}
+div.t_fixed_header.ui .headtable th span.ui-resize {
+    background: none repeat scroll 0 0 transparent;
+    cursor: col-resize;
+    display: inline;
+    float: right;
+    height: 20px;
+    margin: -3px -5px -5px 0;
+    width: 5px;
+    z-index: 10000;
+}
+div.t_fixed_header.ui div.ui-resize-ghost {
+    border: medium none;
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 2px;
+}
+div.t_fixed_header.ui .body tr {
+    border: 0 none;
+}
+div.t_fixed_header.ui .body td {
+    line-height: 15px;
+    padding: 5px;
+    text-align: left;
+}
+div.t_fixed_header.ui .body tr td {
+    background: none repeat scroll 0 0 transparent;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+}
+div.t_fixed_header.ui .body tr:last-child td {
+    border-bottom-width: 0;
+}
+div.t_fixed_header.ui.default .headtable th:last-child, div.t_fixed_header.ui.default .body td:last-child {
+    border-right-width: 0;
+}
+div.t_fixed_header.ui .body td.last_td, div.t_fixed_header.ui .headtable th.last_td {
+    border-right-width: 0;
+}
+div.t_fixed_header_main_wrapper.ui div.pager {
+    background-image: none;
+    border-width: 0;
+    overflow: hidden;
+    padding: 4px 2px 2px 3px;
+}
+div.t_fixed_header_main_wrapper.ui div.pager .button {
+    cursor: pointer;
+    float: right;
+    padding: 4px 0;
+}
+div.t_fixed_header_main_wrapper.ui div.pager .button.noborder {
+    border-right-width: 0;
+}
+div.t_fixed_header_main_wrapper.ui div.pager .button span {
+    margin: 0 4px;
+}
+div.t_fixed_header_main_wrapper.ui div.pager div.page_infos {
+    float: right;
+    font-weight: normal;
+    height: 27px;
+    line-height: 27px;
+    margin-right: 10px;
+}

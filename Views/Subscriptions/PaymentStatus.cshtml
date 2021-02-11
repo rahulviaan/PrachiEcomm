@@ -1,0 +1,167 @@
+﻿@model PrachiIndia.Portal.Models.Response
+@{
+    ViewBag.Title = "PaymentStatus";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+    var customer = ViewBag.customer;
+}
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <a id="cmd" href="#" class="btn"><i class="fa fa-file-pdf-o fa-3" style="float:right" aria-hidden="true"></i></a>
+        <div id="target">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4">
+                        <div class="panel-body" style="border:solid 1px #cccccc; box-shadow:1px 1px 3px #cccccc;">
+                            <h4 style="color:#ae0910;">STATUS: @Model.Status</h4>
+                            <p><strong style="text-decoration: underline;text-transform: uppercase;">ORDERED BY</strong></p>
+                            <div class="col-md-3"><p>COMPANY:</p></div>
+                            <div class="col-md-9"><p><a href="http://PublicationDivision.com/">Prach [India] Pvt. Ltd.</a></p></div>
+                            <div class="col-md-3"><p>Website:</p></div>
+                            <div class="col-md-9"><p><a href="http://PublicationDivision.com/">www.PrachiIndia.com</a></p></div>
+                            <div class="col-md-3"><p>Email:</p></div>
+                            <div class="col-md-9"><p><a href="">info@PrachiIndia.com</a></p></div>
+                            <div class="col-md-3"><p>Address:</p></div>
+                            <div class="col-md-9"><p>309/10, ALLIED HOUSE INDER LOK,DELHI-110035</p></div>
+                            <div class="col-md-3"><p>Contact:</p></div>
+                            <div class="col-md-9"><p>+ 91-11-47320666(8 Lines)</p></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="panel-body" style="border:solid 1px #cccccc; box-shadow:1px 1px 3px #cccccc;">
+                            @{
+                                var orderno = Model.TransactionId;
+                                <h4 style="text-transform: uppercase;color:#ae0910;">Order#: @orderno</h4>
+                                <p>Date: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+                            }
+                            <p> <strong style="text-decoration: underline;text-transform: uppercase;">BILLING ADDRESS</strong></p>
+
+                            <div class="col-md-3"><p>Name:</p></div>
+                            <div class="col-md-9"><p>@Model.CustomerName.ToUpper()</p></div>
+                            <div class="col-md-3"><p>Email:</p></div>
+                            <div class="col-md-9"><p>@customer.Email</p></div>
+                            <div class="col-md-3"><p>Address:</p></div>
+                            <div class="col-md-9"><p>@customer.Address</p></div>
+                            <div class="col-md-3"><p>Country:</p></div>
+                            <div class="col-md-9"><p>@customer.Country</p></div>
+                            <div class="col-md-3"><p>State:</p></div>
+                            <div class="col-md-9"><p>@customer.State</p></div>
+                            <div class="col-md-3"><p>City:</p></div>
+                            <div class="col-md-9"><p>@customer.City</p></div>
+                            <div class="col-md-3"><p>Pincode:</p></div>
+                            <div class="col-md-9"><p>@customer.PinCode</p></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            @if (Model != null && Model.Products != null && Model.Products.Any())
+                            {
+                                <thead style="text-align: center;background-color: #337ab7;color: #ffffff;">
+                                    <tr>
+                                        <th>Suscription Name</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th>Discount</th>
+                                        <th>Subtotal</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                    @{
+                                        decimal sum = 0;
+                                        decimal totalDiscount = 0;
+                                        var flag = "";
+                                        foreach (var obj in Model.Products)
+                                        {
+                                            var discount = obj.Discount * obj.Quantity;
+                                            var price = (Convert.ToDecimal(obj.Price)) * obj.Quantity;
+                                            var subtotal = price - discount;
+                                            totalDiscount += discount;
+                                            sum += subtotal;
+                                            flag = obj.Flag;
+                                            <tr>
+                                                <td align="left">@obj.Title</td>
+                                                <td align="right"><i class="fa fa-inr"></i>&nbsp;@obj.Price</td>
+                                                <td align="right">@obj.Quantity</td>
+                                                <td align="right"><i class="fa fa-inr"></i>&nbsp;@discount</td>
+                                                <td align="right"><i class="fa fa-inr">&nbsp;@subtotal</i></td>
+                                            </tr>
+                                        }
+                                        if (sum <= 0)
+                                        {
+                                            <tr>
+                                                @if (flag == "success")
+                                                {
+                                                    <td colspan="4" align="center"><span>Your Cart is Empty!!!</span></td>
+                                                }
+                                                @*<td colspan="4" align="center"><span>Your Cart is Empty!!!</span></td>*@
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="4" align="right" style="text-align:right"><strong> Total Discount: </strong></td>
+                                            <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@totalDiscount</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" align="right" style="text-align:right"><strong> Total Amount: </strong></td>
+                                            <td align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@sum</strong></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="6" align="center"><span>Your Cart is Empty!!!</span></td>
+                                            </tr>
+                                        }
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="bs-example-tooltips">
+            @if (Model.Status == "SUCCESS" || Model.Status == "FAILURE")
+            {
+
+                <a class="btn btn-primary" href="@Url.Action("Index", "Catalogue")">Continue Shopping</a>
+            }
+
+        </div>
+
+    </div>
+                                        }
+@section scripts{
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script>
+        $(function () {
+
+            var specialElementHandlers = {
+                '#editor': function (element, renderer) {
+                    return true;
+                }
+            };
+            $('#cmd').click(function () {
+                var doc = new jsPDF();
+                doc.fromHTML($('#target').html(), 18, 18, {
+                    'width': 200, 'elementHandlers': specialElementHandlers
+                });
+                doc.save('sample-file.pdf');
+            });
+        });
+        function Mainpage() {
+            var url = "/Home/index";
+            window.location.href = url;
+        }
+    </script>
+
+}

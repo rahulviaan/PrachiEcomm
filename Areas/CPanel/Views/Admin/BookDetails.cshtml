@@ -1,0 +1,162 @@
+﻿@model  PrachiIndia.Portal.Areas.CPanel.Models.BookModel
+@{
+    ViewBag.Title = "BookDetails";
+}
+
+<div class="col-md-12">
+    <div class="panel-body inprdservice">
+        <div class="col-md-12 inprdservicehead">
+            <div class="panel-header"><h4 class="card-title">Book Details</h4></div>
+        </div>
+        <a href='@Url.Action("ManageChapters","Books",new {Area="TestHour",id=Model.Id})' title="Add Questions" class="text-center text-success pull-right"><i class="fa fa-plus"></i> <b>Questions</b></a> &nbsp;
+        <div class="panel-body">
+            <div class="col-md-12">
+                @*<h5><strong>Title:</strong> @Model.Title - @Model.Class</h5>*@
+                <div class="col-md-12">
+                    <table class="table detailborder">
+                        <tr>
+                            <td width="10%"><strong>Subject</strong></td>
+                            <td width="5%"><strong>:</strong></td>
+                            <td width="*">@Model.Subject</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Series</strong></td>
+                            <td><strong>:</strong></td>
+                            <td>@Model.Series</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Author</strong></td>
+                            <td><strong>:</strong></td>
+                            <td>@Model.Author</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ISBN</strong></td>
+                            <td><strong>:</strong></td>
+                            <td>@Model.ISBN</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Price</strong></td>
+                            <td><strong>:</strong></td>
+                            <td><i class="fa fa-inr"></i>&nbsp;@Model.Price</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="title">Chapters(@Model.Chapters.Count())</h2>
+                    <a href="@Url.Action("ManageChapter", "Admin", new { bookId = Model.Id })" id="btnAddChapter" class="pull-right"><i class="fa fa-plus btn-large"></i></a>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr><th>Sr No#</th><th>Title</th><th>From Page</th><th>To Page</th><th>Action</th></tr>
+                        </thead>
+                        @if (Model.Chapters != null && Model.Chapters.Any())
+                        {
+
+                            <tbody>
+                                @{int count = 0;
+                                    foreach (var chapter in Model.Chapters)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(count + 1)
+                                            </td>
+                                            <td>
+                                                @chapter.Title
+                                            </td>
+                                            <td>@chapter.FromPage</td>
+                                            <td>@chapter.ToPage</td>
+                                            <td>
+                                                <a href="@Url.Action("ManageChapter", "Admin", new { bookId = Model.Id, chapterId = chapter.Id })" title="Edit Content" class="text-center text-success"><i class="fa fa-pencil"></i></a> &nbsp;
+                                                &nbsp;<a href="@Url.Action("ContentList", "Admin", new {bookId=chapter.BookId, Id = chapter.Id })" title="Manage Contents" class="text-center text-success"><i class="fa fa-list-ul"></i></a>&nbsp;
+
+                                                @if (chapter.Status == 1)
+                                                {
+                                                    <input type="checkbox" checked="checked" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@chapter.Id,this)" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@chapter.Id,this)" />
+                                                }
+                                                <a href="@Url.Action("Index", "Question",new {Area = "TestHour",bookId = Model.Id, chapterId = chapter.Id })" title="Add Question" class="text-center text-success"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button id="btnSyn" title="Sync ReadEdge" class="text-primary" onclick="syncChapter(@chapter.Id, @Model.Id)"><i class="fa fa-refresh"></i></button>&nbsp;
+                                            </td>
+
+                                        </tr>
+                                        count = count + 1;
+                                    }
+
+                                }
+                            </tbody>
+
+                        }
+                        else
+                        {
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <h4 class="text-center">No chapters found!</h4>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script>
+    function ActiveInactive(ID, object) {
+        var ckb = $(object).is(':checked');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/DeleteChapter",
+            data: { ChapterID: ID, Flag: ckb },
+            success: function (data) {
+                if (data == 'true')
+                    toastr.success("Chapter Activated Successfully", '', { timeOut: 5000 })
+                else
+                    toastr.success("Chapter Deactivated Successfully", '', { timeOut: 5000 })
+            },
+            error: function () {
+                alert("Error occured!!")
+            }
+        });
+
+    }
+
+    function syncChapter(ChapterId, BookId) {
+        if (confirm(" Are you sure to sync with Readedge ?")) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/SyncChapterReadEdge",
+                data: { ChapterId: ChapterId, BookId: BookId },
+                success: function (data) {
+                    if (data == 'true')
+                        toastr.success("Chapter sync with ReadEdge Successfully", '', { timeOut: 5000 })
+                    else
+                        toastr.error("Some issue please try later.", '', { timeOut: 5000 })
+                },
+                error: function () {
+                    alert("Error occured!!")
+                }
+            });
+        }
+        else { return; }
+
+    }
+</script>

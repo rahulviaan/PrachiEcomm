@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+
+</style>
+@Html.Partial("_Settings")
+<div class="col-md-9">
+    @using (Html.BeginForm("_EditUserProfile", "Userdetail", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+        @Html.AntiForgeryToken()
+        foreach (var item in @ViewData["Profile"] as IEnumerable<PrachiIndia.Sql.AspNetUser>)
+        {
+            <div id="profiles">
+                <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+                    <a href="#" id="EditProfile">Edit Profile</a>
+                    <br>
+                    <p class="text-info"> @DateTime.Now.ToString("dddd, dd MMMM yyyy hh:mm tt")  </p>
+                    @Html.Partial("_EditUserProfile", item)
+                </div>
+                <div class="col-md-9">
+                    <div class="profile-content">
+                        <div class="col-xs-12 col-sm-12 ">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">@item.FirstName</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="~/img/no-profile-img.gif" class="img-circle img-responsive"> </div>
+                                        <div class="col-md-9 col-lg-9 ">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>UserName:</td>
+                                                        <td>@item.UserName</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email:</td>
+                                                        <td>@item.Email</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address</td>
+                                                        <td>@item.Address</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                    <tr>
+                                                        <td>Country</td>
+                                                        <td>@item.Country</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>State</td>
+                                                        <td>@item.State</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>City</td>
+                                                        <td>@item.City</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Phone Number</td>
+                                                        <td>
+                                                            @item.PhoneNumber
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/js/notify.min.js"></script>
+    <script>
+        //change here for remove validation start here by deepak:19/10/2016
+        $(document).ready(function () {
+            $(".mycart").hide();
+        });
+        //$(document).ready(function () {
+        //    $(".dropdown").hover(
+        //       function () {
+        //           $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+        //           $(this).toggleClass('open');
+        //       },
+        //       function () {
+        //           $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+        //           $(this).toggleClass('open');
+        //       }
+        //   );
+        //    $(".check").css("display", "none");
+        //});
+        function clearvalidation() {
+            $('.field-validation-error').each(function () {
+                $(this).html("");
+            })
+        }
+        $("#EditProfile").click(function () {
+            $('#EditAddress').modal('show');
+        });
+
+        //change here for remove validation End here by deepak:19/10/2016
+    </script>
+    @*added for address edit pop up for country state and city start here by deepak:19/10/2016*@
+    <script>
+        $(function () {
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                $.getJSON('@Url.Action("GetSate", "Userdetail")', { id: BId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#StateId").empty();
+                    $('#StateId').html(items);
+                });
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Userdetail")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    @*added for address edit pop up for country state and city end here by deepak:19/10/2016*@
+
+
+}
+
+

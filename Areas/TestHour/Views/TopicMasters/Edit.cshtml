@@ -1,0 +1,129 @@
+﻿@model PrachiIndia.Sql.TopicMaster
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>TopicMaster</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.Label("Class", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ClassID, null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ClassID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookID, "BookID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("BookID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Chapter", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CHAPTERID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CHAPTERID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TOPIC, null,new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TOPIC, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.STATUS)
+                    @Html.ValidationMessageFor(model => model.STATUS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
+            <img src="~/Content/tinymce/skins/lightgray/img/Loader1.gif" width="64" height="64" /><br>Loading..
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    $("#ClassID").on("change", function () {
+        $("#wait").css("display", "block");
+        var ddlBook = $("#BookID");
+        var ClassID = $("#ClassID").val();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetBookByClass", "TopicMasters",new { Area= "TestHour"})",
+            data: { 'ClassID': ClassID },
+            success: function (response) {
+                ddlBook.empty().append('<option selected="selected">Please select</option>');
+                $.each(response, function () {
+                    ddlBook.append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+                $("#wait").css("display", "none");
+            },
+            failure: function (response) {
+                alert(response.responseText);
+                $("#wait").css("display", "none");
+            },
+            error: function (response) {
+                alert(response.responseText);
+                $("#wait").css("display", "none");
+            }
+        });
+    })
+
+    $("#BookID").on("change", function () {
+        $("#wait").css("display", "block");
+        var ddlChapter = $("#CHAPTERID");
+        var BookID = $("#BookID").val();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetChapterByBook", "TopicMasters",new { Area= "TestHour"})",
+            data: { 'BookId': BookID },
+            success: function (response) {
+                ddlChapter.empty().append('<option selected="selected">Please select</option>');
+                $.each(response, function () {
+                    ddlChapter.append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+                $("#wait").css("display", "none");
+            },
+            failure: function (response) {
+                alert(response.responseText);
+                $("#wait").css("display", "none");
+            },
+            error: function (response) {
+                alert(response.responseText);
+                $("#wait").css("display", "none");
+            }
+        });
+    })
+
+</script>

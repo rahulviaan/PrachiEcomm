@@ -1,0 +1,117 @@
+﻿
+<html>
+
+<body>
+
+    <div class="col-md-12" style="padding:0">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        @*<input type="text" id="id-date-picker-1" name="fromdate" class="form-control date-picker" data-date-format='dd/mm/yyyy' placeholder="From Date">*@
+                        <input type="text" id="id-date-picker-1" data-date-format='dd/mm/yyyy' name="fromdate" class="form-control date-picker" placeholder="From Date">
+
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input type="text" id="id-date-picker-2" name="todate" data-date-format='dd/mm/yyyy' class="form-control date-picker" placeholder="To Date">
+
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-md-4 form-group">
+                    <input type="text" id="txtsearch" name="txtsearch" class="form-control" placeholder="Order Number">
+                </div>
+
+                <div class="col-md-4 form-group">
+
+                    <button type="submit" id="btnshw1" class="btn btn-primary">Search</button>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div style="text-align:center;display:none" id="loaderDiv1">
+            <img src="~/Content/tinymce/skins/lightgray/img/Loader1.gif" />
+        </div>
+
+
+        <div id="resultdiv1">
+
+
+        </div>
+    </div>
+</body>
+</html>
+<link rel="stylesheet" href="~/dist/css/bootstrap-datepicker3.min.css" />
+<script src="~/dist/js/date-time/bootstrap-datepicker.min.js"></script>
+
+
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $('#order-details2').DataTable({
+    //        dom: 'Bfrtip',
+    //        buttons: [
+    //            'copyHtml5',
+    //            'excelHtml5',
+    //            'csvHtml5',
+    //            'pdfHtml5'
+    //        ]
+    //    });
+
+    //});
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            dateFormat: 'dd-mm-yy'
+        }).attr('readonly', 'true');
+
+        $("#btnshw1").on("click", function () {
+            $("#loaderDiv1").show();
+            var searchtext = "2";
+            var FromDate = $("#id-date-picker-1").val();
+            var ToDate = $("#id-date-picker-2").val();
+            var OrderNo = $("#txtsearch").val();
+            $.ajax({
+                type: "Post",
+                url: "/Report/Report/GetBookOrderReport_User?Type=" + searchtext + "&ToDate=" + ToDate + "&FromDate=" + FromDate + "&OrderNo=" + OrderNo,
+                //url: "/Report/Report/GetBookOrderReport",
+                //data:{Type:Type,FromDate:FromDate,ToDate:ToDate,OrderNo:OrderNo},
+                contentType: "html",
+                success: function (response) {
+                    $("#loaderDiv1").hide();
+                    $("#resultdiv1").html(response);
+
+                    $("#order-details4").DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'csvHtml5',
+                            'pdfHtml5'
+                        ]
+                    });
+                }
+            })
+        })
+    });
+
+
+
+
+</script>
+

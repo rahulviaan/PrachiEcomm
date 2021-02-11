@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+<div class="col-md-3">
+    <div class="profile-sidebar">
+        <div class="btn btn-primary" style="margin-bottom:20px;">
+            <h4 class="text-left"> My Account</h4>
+        </div>
+        <div>
+            @*<div class="settings" style="border:none;">
+                <p class="subheading">Orders</p>
+                <ul class="accountSettings">
+                    <li><a href="@Url.Action("UserCartHistory","CartHistory")" id="MycartHistory"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;My Orders </a></li>
+                    <li><a href="@Url.Action("UserSubscriptionHistory", "CartHistory")" id="MySubscription"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;My Subscription </a></li>
+                </ul>
+            </div>*@
+            <div class="settings" style="border-top: 1px solid #ccc;">
+                <p style="margin:0;padding:0;line-height:24px;margin-top:-5px;">Personal Information</p>
+                <ul class="accountSettings">
+                    <li><a href="@Url.Action("UserProfile","Userdetail")" id="Profileusers"><i class="fa fa-user "></i>Profile Settings</a></li>
+                    <li><a href="@Url.Action("ChangePassword","Userdetail")" id="ChangePwd"><i class="icon-history"></i><i class="glyphicon glyphicon-user"></i>Change Password</a></li>
+                    @*<li><a href="#" id="AddresID"><i class="glyphicon glyphicon-home"></i>Address </a> </li>*@
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+
+</div>
+

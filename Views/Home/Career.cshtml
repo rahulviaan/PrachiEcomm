@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Career";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+@*<section class="headdingimg">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0">
+                <div class="col-md-12 headtitle">
+                    <h2>Career</h2>
+                </div>
+            </div>
+        </div>
+    </section>*@
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>Career</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li>Career</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="career" style="padding-bottom:10px">
+    <div class="container">
+
+        <div class="clearfix"></div>
+        <div class="panel-body">
+            <div class="col-md-10 col-md-offset-1" style="border:solid 1px #cccccc; float:left;">
+                <div class="panel-body">
+                    <div class="col-md-7 inprdservicehead">
+                        <h4>Come Join Us</h4>
+                        <div class="panel-body">
+                            <p>We are always looking out for talented individuals who are ambitious, who love challenges and who are passionate to excel! Come and join our fast growing team of professional and help us in creating a better future.</p>
+                        </div>
+                        <h4>At Prachi Group you will</h4>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Bring out the best in you</li>
+                                <li>You will get ready for new challenges</li>
+                                <li>Work on leading edge technologies</li>
+                                <li>Work in an open and positive environment that encourages growth</li>
+                                <li>Put your career on the fast-track</li>
+                            </ul>
+                            <p>Got it all, Join our team of experts! </p>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="panel-body inprdservice">
+                            <div class="col-md-12 inprdservicehead">
+                                <h4>Post Your Updated Resume</h4>
+                            </div>
+
+                            <div class="col-md-12">
+                                <form action="/" accept-charset="UTF-8" method="post" name="search-theme-form" id="contactForm" class="panel-body tabctr">
+                                    <div class="row formsubmit">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="firstname">Skills <span class="required">*</span></label>
+                                                @*<input class="form-control" name="skills" required="required" type="text">*@
+                                                <select class="form-control">
+                                                    <option>--Select--</option>
+                                                    <option>Sales / Marketing</option>
+                                                    <option>HR Management</option>
+                                                    <option>Production</option>
+                                                    <option>Information Technologies (IT)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="firstname">Name <span class="required">*</span></label>
+                                                <input class="form-control alphaonly" name="yourName" required="required" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="firstname">E-mail <span class="required">*</span></label>
+                                                <input class="form-control" name="email" required="required" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="lastname">Contact No. <span class="required">*</span></label>
+                                                <input name="yourcontact" class="alphaonly1 form-control" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="firstname">Location <span class="required">*</span></label>
+                                                <input class="form-control" name="yourName" required="required" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="firstname">Total Relevant work Experience <span class="required">*</span></label>
+                                                <input class="form-control" name="Experience" required="required" type="text">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="subject">Upload Your Resume <span class="required">*</span></label>
+                                                <input class="form-control error" name="my_file" style="padding: 0px 0px 0px 5px;" required="required" type="file">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="message">Message</label>
+                                                <textarea class="form-control" name="yourMsg" required="required"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 text-center">
+                                            <div class="form-group">
+                                                <input value="SUBMIT" name="submit" class="btn btn-primary" type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+
+@section scripts{
+    @*<link href="~/Content/js/collaps/demo.css" rel="stylesheet" />
+        <script src="~/Content/js/collaps/jquery-1.8.1.js"></script>
+        <script src="~/Content/js/collaps/jquery.collapse.js"></script>
+        <script src="~/Content/js/collaps/jquery.collapse_storage.js"></script>*@
+@*<script src="~/Content/js/career-form.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".myBtn").click(function () {
+                $("#booksmodal").modal();
+            });
+
+            $("#css3-animated-example").collapse({
+                accordion: true,
+                persist: true,
+                open: function () {
+                    this.addClass("open");
+                    this.css({ height: this.children().outerHeight() });
+                },
+                close: function () {
+                    this.css({ height: "0px" });
+                    this.removeClass("open");
+                }
+            });
+            $('.alphaonly').bind('keyup blur', function () {
+                var node = $(this);
+                node.val(node.val().replace(/[^a-z ]/g, ''));
+            });
+            $('.alphaonly1').bind('keyup blur', function () {
+                var node = $(this);
+                node.val(node.val().replace(/[^0-9 ]/g, ''));
+            });
+            });
+    </script>
+
+
+}
+
+

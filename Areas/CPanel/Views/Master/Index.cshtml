@@ -1,0 +1,27 @@
+﻿@model List<PrachiIndia.Sql.AspNetUser>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2> Manager Users</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive table-bordered">
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.FirstName</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.ChapterModel
+@{
+    ViewBag.Title = "ManageChapter";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+<div class="col-md-6 col-md-offset-3 inprdservice">
+    <div class="col-md-12 inprdservicehead" style="margin-bottom:0;">
+        <div class="panel-header">
+            <h4 class="card-title">Book: @ViewBag.BookName</h4> <br />
+            <div class="panel-header">
+                <h4 class="card-title">Chapter :  @Model.Title</h4>
+            </div>
+            <span class="pull-right"><a class="btn btn-sm" title="Subject List" href="@Url.Action("BookDetails","Admin",new {Area="CPanel",Id = Model.BookId })"><i class="fa fa-list fa-2x"></i></a></span>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive panel-body">
+                @Html.HiddenFor(t => t.Id)
+                @Html.HiddenFor(t => t.BookId)
+                <div class="form-group row">
+
+                    <div class="col-md-12">
+                        <label class="control-label">Topic</label>
+                        @Html.DropDownListFor(t => t.OrderNo, ViewBag.Topic as SelectList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <div class="col-md-12">
+                        <label class="control-label">Type</label>
+                        @Html.DropDownListFor(t => t.OrderNo, ViewBag.QuesionType as SelectList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <div class="col-md-12">
+                        <label class="control-label">Type</label>
+                        @Html.DropDownListFor(t => t.OrderNo, ViewBag.QuesionCatagory as SelectList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Description</label>
+                        @Html.TextAreaFor(t => t.Descreption, new { @class = "form-control" })
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")

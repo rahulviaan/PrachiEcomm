@@ -1,0 +1,109 @@
+﻿@model PrachiIndia.Sql.mst_subscription
+@{
+    ViewBag.Title = "subscription";
+    //Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+<style>
+    body {
+        background-color: #eee;
+    }
+
+    *[role="form"] {
+        max-width: 530px;
+        padding: 15px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 0.3em;
+    }
+
+        *[role="form"] h2 {
+            margin-left: 5em;
+            margin-bottom: 1em;
+        }
+</style>
+@*<div class="container">*@
+@using (Html.BeginForm("subscription", "Subscription", FormMethod.Post, new { @class = "example" }))
+{
+
+    <div class="col-md-12" style="margin-bottom:1%;">
+        <div class="panel-body inprdservice">
+            <div class="col-md-12 inprdservicehead">
+                <div class="panel-header"><h4 class="card-title">Subscription Plan</h4></div>
+            </div>
+            <div class="panel-body">
+                <div class="form-group col-md-4">
+                    <label for="firstName" class="control-label">PlanName</label>
+                    @Html.TextBoxFor(m => m.PlanName, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="email" class="control-label">Suscription</label>
+                    @Html.DropDownListFor(m => m.SubscriptionType, ViewData["Subscription"] as IEnumerable<SelectListItem>, "-Select Subscription-", new { @id = "SubscriptionId", @class = "form-control" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="email" class="control-label">Plan Time</label>
+                    @Html.TextBoxFor(m => m.PlanTime, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="password" class="control-label">Price</label>
+                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="password" class="control-label ">Start Date</label>
+                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control date-picker" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="birthDate" class="control-label">Class</label>
+                    @Html.DropDownListFor(m => m.ClassId, ViewData["list"] as IEnumerable<SelectListItem>, "-Select Class-", new { @id = "ClassId", @class = "form-control" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="birthDate" class="control-label">Board</label>
+                    @Html.DropDownListFor(m => m.BoardId, ViewData["Board"] as IEnumerable<SelectListItem>, "-Select Board-", new { @id = "BoardId", @class = "form-control" })
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+}
+@*</div>*@
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/dist/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script>
+        $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true
+        });
+        $(document).ready(function () {
+            $(".dropdown").hover(
+               function () {
+                   $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                   $(this).toggleClass('open');
+               },
+               function () {
+                   $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                   $(this).toggleClass('open');
+               }
+           );
+            $(".navbar-right").hide();
+        });
+        function Mainpage() {
+            var url = "Admin/index";
+            window.location.href = url;
+        }
+    </script>
+
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PrachiIndia.Sql.Country>
+
+@{
+    ViewBag.Title = "CountryMasterList";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Create New", "CountryMaster")
+</p>
+<div class="table-responsive panel-body">
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayName("SNo")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryCode)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+
+            <th>Action</th>
+        </tr>
+       
+        @{
+            int Count = 0;
+
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @(Count + 1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountryCode)
+                    </td>
+
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Status)*@
+                        @if (item.Status == true)
+                        {
+                            @Html.Label("Active", item.Status);
+                        }
+                        else
+                        {
+                            @Html.Label("InActive", item.Status);
+                        }
+                    </td>
+
+                    <td>
+                        <a title="Edit" class="text-primary" href="@Url.Action("CountryMasterEdit", "Admin", new {Countryid = item.CountryId  })"><i class="fa fa-pencil"></i></a>
+                    </td>
+                </tr>
+                Count = Count + 1;
+            }
+
+        }
+    </table>
+    </div>
+

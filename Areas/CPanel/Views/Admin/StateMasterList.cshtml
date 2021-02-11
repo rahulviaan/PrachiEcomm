@@ -1,0 +1,68 @@
+﻿@model IEnumerable<PrachiIndia.Sql.State>
+
+@{
+    ViewBag.Title = "StateMasterList";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">State Master List</h4></div>
+        <div class="panel-body">
+
+            <p>
+                @Html.ActionLink("Create New", "StateMaster", null, new { @class = "btn btn-info" })
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            @Html.Label("SNo")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StateName)
+                        </th>
+                        <th>
+                            @Html.Label("Status")
+                        </th>
+                        <th>Action</th>
+                    </tr>
+
+                    @{
+                        int Count = 0;
+
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @(Count + 1)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StateName)
+                                </td>
+
+                                <td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        @Html.Label("Active", item.IsActive);
+                                    }
+                                    else
+                                    {
+                                        @Html.Label("InActive", item.IsActive);
+                                    }
+                                </td>
+                                <td>
+                                    <a title="Edit" class="text-primary" href="@Url.Action("StateMasterEdit", "Admin", new { StateId = item.StaeteId })"><i class="fa fa-pencil"></i></a>&nbsp;
+                                </td>
+                            </tr>
+                            Count = Count + 1;
+                        }
+                    }
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

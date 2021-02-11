@@ -1,0 +1,77 @@
+﻿@model List<PrachiIndia.Portal.Areas.Marketing.Models.MarketingModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="row" style="margin-bottom:20px;">
+    @using (Html.BeginForm("Index", "Marketing", FormMethod.Get))
+            {
+        <div class="input-group col-md-4">
+            <input type="text" class="form-control" name="serach" placeholder="School Name" />
+
+        </div>
+        <div class="input-group col-md-4">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Schools </h2>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>SrNo#</th>
+                            <th>School Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>DeviceCount</th>
+                            <th>Area</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 0;
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i = i + 1;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Mobile</td>
+                                    <td>@item.DeviceCount</td>
+                                    <td>@item.Area</td>
+                                    <td  width="150">
+                                        <a href="@Url.Action("SchoolDetail","Marketing",new { Id=item.Id})">Details</a>
+                                        &nbsp;|&nbsp;
+                                        <a href="@Url.Action("ManageSchool","Marketing",new { Id=item.Id})">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <h3>No records found.</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+            </div></div>
+        </div>
+    </div>
+</div>

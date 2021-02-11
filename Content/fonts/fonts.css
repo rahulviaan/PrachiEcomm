@@ -1,0 +1,36 @@
+﻿@font-face {
+    font-family: 'Poppins-Bold';
+    src: url('Poppins-Bold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.eot') format('embedded-opentype');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.svg') format('svg');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Poppins-Regular';
+    src: url('Poppins-Regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Poppins-SemiBold';
+    src: url('Poppins-SemiBold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Poppins-SemiBold';
+    src: url('Poppins-SemiBold.otf') format('opentype');
+}

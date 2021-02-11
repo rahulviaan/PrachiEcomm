@@ -1,0 +1,266 @@
+﻿@model IEnumerable<PrachiIndia.Sql.mst_subscription>
+@{
+    //ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+    ViewBag.Title = "Subscription Plan";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+<style>
+    body {
+        margin-top: 20px;
+    }
+
+    .panel {
+        text-align: center;
+    }
+
+        .panel:hover {
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(130, 130, 130, 0.35);
+        }
+
+    .panel-body {
+        padding: 0px;
+        text-align: center;
+    }
+
+    .the-price {
+        background-color: rgba(220,220,220,.17);
+        box-shadow: 0 1px 0 #dcdcdc, inset 0 1px 0 #fff;
+        padding: 20px;
+        margin: 0;
+    }
+
+        .the-price h1 {
+            line-height: 1em;
+            padding: 0;
+            margin: 0;
+        }
+
+    .subscript {
+        font-size: 25px;
+    }
+
+    /* CSS-only ribbon styles    */
+    .cnrflash {
+        /*Position correctly within container*/
+        position: absolute;
+        top: -9px;
+        right: 4px;
+        z-index: 1; /*Set overflow to hidden, to mask inner square*/
+        overflow: hidden; /*Set size and add subtle rounding  		to soften edges*/
+        width: 100px;
+        height: 100px;
+        border-radius: 3px 5px 3px 0;
+    }
+
+    .cnrflash-inner {
+        /*Set position, make larger then 			container and rotate 45 degrees*/
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 145px;
+        height: 145px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -o-transform: rotate(45deg); /* Opera */
+        -moz-transform: rotate(45deg); /* Firefox */
+        -webkit-transform: rotate(45deg); /* Safari and Chrome */
+        -webkit-transform-origin: 100% 100%; /*Purely decorative effects to add texture and stuff*/ /* Safari and Chrome */
+        -ms-transform-origin: 100% 100%; /* IE 9 */
+        -o-transform-origin: 100% 100%; /* Opera */
+        -moz-transform-origin: 100% 100%; /* Firefox */
+        background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.1) 50%), linear-gradient(0deg, transparent 0%, rgba(1,1,1,.2) 50%);
+        background-size: 4px,auto, auto,auto;
+        background-color: #aa0101;
+        box-shadow: 0 3px 3px 0 rgba(1,1,1,.5), 0 1px 0 0 rgba(1,1,1,.5), inset 0 -1px 8px 0 rgba(255,255,255,.3), inset 0 -1px 0 0 rgba(255,255,255,.2);
+    }
+
+        .cnrflash-inner:before, .cnrflash-inner:after {
+            /*Use the border triangle trick to make  				it look like the ribbon wraps round it's 				container*/
+            content: " ";
+            display: block;
+            position: absolute;
+            bottom: -16px;
+            width: 0;
+            height: 0;
+            border: 8px solid #800000;
+        }
+
+        .cnrflash-inner:before {
+            left: 1px;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+        }
+
+        .cnrflash-inner:after {
+            right: 0;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+        }
+
+    .cnrflash-label {
+        /*Make the label look nice*/
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
+        color: #fff;
+        text-shadow: 0 1px 1px rgba(1,1,1,.8);
+        font-size: 0.95em;
+        font-weight: bold;
+        text-align: center;
+    }
+    .pricemenu {
+        font-size:30px;
+    }
+    .duration {
+        font-size:16px;
+    }
+</style>
+<div class="container" style="margin-top:5%;">
+    @using (Html.BeginForm("Index", "Subscriptions", FormMethod.Post, new { @class = "example" }))
+    {
+        <div class="row">
+           
+                @foreach (var item in Model)
+                {
+
+
+                    <div class="col-md-3" style="margin-bottom:1%;">
+                        <div class="panel-body inprdservice">
+                            <div class="col-md-12 inprdservicehead">
+                                <p><b>@Html.Label("PlanName", item.PlanName, new { })</b></p>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <p class="pricemenu">
+                                    <span class="fa fa-inr"></span> @item.Amount
+                                    </p>
+                                <p class="duration">
+                                    @if (item.SubscriptionType == "1")
+                                    {
+                                        <span>@item.PlanTime<span> / Year</span></span>
+                                    }
+                                    else
+                                    {
+                                        <span>@item.PlanTime<span> / Month</span></span>
+                                    }
+                                </p>
+                                <p>@Html.Hidden("SubscriptionI", item.SubscriptionI)
+                                <small>1 month FREE trial</small></p>
+                                @if (Request.IsAuthenticated) { 
+                                <p class="text-center"><a href="#" id="Register_@item.SubscriptionI" onclick="RegisterSubscription(@item.SubscriptionI)" class="btn btn-success" role="button">Suscribe</a></p>
+                                }
+                                else
+                                {
+                                    <p class="text-center"><a href="#" id="Register_@item.SubscriptionI" onclick="RegisterSubscription(@item.SubscriptionI)" class="btn btn-success" role="button">Sign Up</a></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+           
+        </div>
+    }
+
+    @*<a href="~/Views/Subscriptions/_EditAdress.cshtml">~/Views/Subscriptions/_EditAdress.cshtml</a>*@
+    @Html.Partial("~/Views/Subscriptions/_EditAdress.cshtml", new PrachiIndia.Portal.Models.RegisterViewModel());
+    @*@Html.Partial("_EditAdress", Model);*@
+
+</div>
+@section scripts{
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<link href="~/Content/css/style.css" rel="stylesheet" />
+    @*<script>
+            $(document).ready(function () {
+
+            });
+
+        </script>*@
+    @*added for address edit pop up for country state and city start here by deepak:19/10/2016*@
+    <script>
+
+        function RegisterSubscription(id) {
+            var IsAutheticated = '@Request.IsAuthenticated';
+            if (IsAutheticated == 'False') {
+                var val = $("#SubscriptionI").val();
+                $("#SubscriptionId").val(val);
+                $('#EditAddress').modal('show');
+            }
+            else {
+                foo(id);
+                @*$.post('@Url.Action("_EditAdress", "Subscriptions")', { ids: id },
+                  function (returnedData) {
+                      alert(returnedData);
+                  });*@
+            }
+        }
+        function foo(id) {
+            var url = '@Url.Action("_EditAdress", "Subscriptions", new { ids = "__id__" })';
+            window.location.href = url.replace('__id__', id);
+        }
+        $(function () {
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#StateId").empty();
+                    $('#StateId').html(items);
+                });
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    <script>
+        $(document).ready(function () {
+            var IsAutheticated = '@Request.IsAuthenticated';
+            if (IsAutheticated == 'False') {
+                $(".navbar-right").hide();
+            }
+            else {
+
+            }
+        });
+        function Mainpage() {
+            var url = "/Home/index";
+            window.location.href = url;
+        }
+    </script>
+    @*added for address edit pop up for country state and city end here by deepak:19/10/2016*@
+
+}

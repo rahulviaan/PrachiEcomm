@@ -1,0 +1,70 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.Book_Migration
+@{
+    ViewBag.Title = "BookMigration";
+    // Layout = "~/Areas/CPanel/Views/_ViewStart.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var message = '@ViewBag.Message';
+        if (message == '') {
+            $("#message").css("display", "none")
+        }
+
+        else {
+            $("#message").css("display : inline");
+        }
+    });
+    function Submit() {
+        $("#message").css("display : inline");
+        return true;
+    }
+
+</script>
+
+@{
+    ViewBag.Title = "FileUpload";
+}
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Book Migration</h4></div>
+        <div class="panel-body">
+            @using (@Html.BeginForm("FileUpload", "BookMigration", FormMethod.Post, new { @id = "form1", @enctype = "multipart/form-data" }))
+            {
+
+                <div class="panel-body">
+                    <div id="message" class="form-group col-md-12" style="color:#ff0000;">
+                        @Html.Raw(ViewBag.Message)
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group col-md-6">
+                        <label>Upload Document: <span class="field-validation-valid" data-valmsg-for="SearchText" data-valmsg-replace="true"></span></label><br>
+                        <label method="post" class="form-control">
+                            <input type="file" name="file_Uploader" size="40">
+                        </label>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <br />
+                        <input type="submit" id="bttn_Upload" value="Upload" onclick="Submit();" class="btn btn-primary" />
+                    </div>
+                    <div class="form-group col-md-5 text-left button_top_padding">
+                        <a href="/CPanel/BookMigration/DownloadFile" style="font-size:48px;"><i class="fa fa-download"></i></a>
+                    </div>
+
+                </div>
+
+            }
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+

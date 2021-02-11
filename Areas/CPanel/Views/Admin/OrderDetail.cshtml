@@ -1,0 +1,227 @@
+﻿@model List<PrachiIndia.Portal.Models.OrderTrackVm>
+@using PrachiIndia.Web.Areas.Model;
+@{
+    ViewBag.Title = "OrderDetail";
+    //Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+    var customer = ViewBag.Customer;
+    // var customer = ViewBag.customer;
+}
+@using (Html.BeginForm("dispatchOrder", "Admin", FormMethod.Post))
+{
+
+    <div class="panel-body inprdservice">
+        <div class="col-md-12 inprdservicehead" style="margin-bottom:0;">
+            <div class="panel-header"><h4 class="card-title">Online Order Details<span class="pull-right" onclick="printDiv('printableArea')" style="cursor:pointer; float: right;padding-right: 1%;font-size:16px;"><i class="fa fa-print" aria-hidden="true"></i></span></h4></div>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-12" style="padding:0px">
+                <div class="table-responsive" id="printableArea">
+                    <div class="col-md-6" style="width:50%; float:left;">
+                        <p style="text-transform: uppercase;margin-bottom: 3px;">&nbsp;</p>
+
+                        <table class="table detailborder">
+                            <tr>
+                                <td width="20%"  align="right"><b>Company</b></td>
+                                <td width="5%">:</td>
+                                <td width="*">Prachi [India] Pvt. Ltd.</td>
+                            </tr>
+                            <tr>
+                                <td  align="right"><b>Website</b></td>
+                                <td>:</td>
+                                <td>www.prachiindia.com</td>
+                            </tr>
+                            <tr>
+                                <td  align="right"><b>E-mail</b></td>
+                                <td>:</td>
+                                <td>info@prachiindia.com</td>
+                            </tr>
+                            <tr>
+                                <td  align="right"><b>Contact No #</b></td>
+                                <td>:</td>
+                                <td>+ 91-11-47320666(8 Lines)</td>
+                            </tr>
+                            <tr>
+                                <td  align="right"><b>Address</b></td>
+                                <td>:</td>
+                                <td>
+                                    309/10, ALLIED HOUSE<br />
+                                    INDER LOK,DELHI-110035
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+                    </div>
+
+                    <div class="col-md-6" style="width:50%; float:left; margin-bottom:1%;">
+                        @if (customer != null)
+                        {
+                            <p style="position:absolute;right: 0;font-size: 10px;">Receipt Date : @DateTime.Now.ToString("dd-MM-yyyy")</p>
+                            <p style="text-transform: uppercase;margin-bottom: 3px;margin-left:100px;"><b>BILLING DETAIL</b></p>
+                            <table class="table detailborder">
+                                <tr>
+                                    <td width="25%" align="right"><b>Order No #</b></td>
+                                    <td width="5%">:</td>
+                                    <td width="70%">@Model.First().TransactionId</td>
+                                </tr>
+                                <tr>
+                                    <td width="25%"  align="right"><b>Order Date</b></td>
+                                    <td width="5%">:</td>
+                                    <td width="70%">
+                                        @{
+                                            try
+                                            {
+                                                var orderDate = Convert.ToDateTime(Model.First().date).AddMinutes(330);
+                                                <span>@orderDate.ToString("dd-MM-yyyy")&nbsp;@orderDate.ToString("hh:mm tt")</span>
+                                            }
+                                            catch
+                                            {
+                                                <span>@Model.First().date</span>
+                                            }
+
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>Name</b></td>
+                                    <td>:</td>
+                                    <td>@customer.FirstName.ToUpper()</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>E-mail</b></td>
+                                    <td>:</td>
+                                    <td>@customer.Email</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>Contact No #</b></td>
+                                    <td>:</td>
+                                    <td>@customer.PhoneNumber</td>
+                                </tr>
+                                <tr>
+                                    <td align="right"><b>Address</b></td>
+                                    <td>:</td>
+                                    <td>@customer.Address, @customer.City, <br />@customer.State - @customer.PinCode, (@customer.Country)</td>
+                                </tr>
+
+                            </table>
+                                            }
+                    </div>
+                    <div class="table-responsive panel-body">
+                        <table class="table table-bordered">
+
+                            <thead class="clsheader">
+                                <tr>
+
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Class</th>
+                                    <th>Board</th>
+                                    <th align="right" style="text-align:right">Price</th>
+                                    <th align="right" style="text-align:right">Quantity</th>
+                                    <th align="right" style="text-align:right">Discount</th>
+                                    <th align="right" style="text-align:right">Tax</th>
+                                    <th align="right" style="text-align:right">Subtotal</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="text-align: center;">
+                                @{
+                                    decimal sum = 0;
+                                    decimal totalDiscount = 0;
+                                    decimal totalTax = 0;
+                                    var flag = "";
+                                    foreach (var obj in Model)
+                                    {
+                                        //  var discount = Convert.ToDecimal("0.00") * Convert.ToInt32(obj.Quantity);
+                                        var price = (Convert.ToDecimal(obj.price)) * Convert.ToInt32(obj.Quantity);
+                                        var subtotal = price - obj.Discount;
+                                        totalDiscount += obj.Discount;
+                                        totalTax += obj.TaxPrice;
+                                        sum += subtotal;
+                                        <tr>
+                                            <td align="left">@obj.Title<br />@obj.Remark</td>
+
+                                            <td align="left">
+                                                @if (obj.Book == PrachiIndia.Portal.Framework.BookType.Both)
+                                                {
+                                                    <span>Both</span>
+                                                }
+                                                else if (obj.Book == PrachiIndia.Portal.Framework.BookType.PBook)
+                                                {
+                                                    <span>PBook</span>
+                                                }
+                                                else if (obj.Book == PrachiIndia.Portal.Framework.BookType.EBook)
+                                                {
+                                                    <span>EBook</span>
+                                                }
+                                            </td>
+
+                                            <td align="left">@obj.classs</td>
+                                            <td align="left">@obj.Board</td>
+                                            <td align="right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", obj.price)</td>
+                                            <td align="right">@obj.Quantity</td>
+                                            <td align="right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", obj.Discount)</td>
+                                            <td align="right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", obj.TaxPrice)</td>
+                                            <td align="right"><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", subtotal)</td>
+
+                                            @Html.Hidden("OrderId", obj.OrderId)
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="7" align="right" style="text-align:right"><strong> Total Discount: </strong></td>
+                                        <td colspan="2" align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", totalDiscount)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7" align="right" style="text-align:right"><strong> Subtotal: </strong></td>
+                                        <td colspan="2" align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", sum)</strong></td>
+                                    </tr>
+                                     <tr>
+                                        <td colspan="7" align="right" style="text-align:right"><strong> Total Tax: </strong></td>
+                                        <td colspan="2" align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", totalTax)</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7" align="right" style="text-align:right"><strong> Total Amount: </strong></td>
+                                        <td colspan="2" align="right" style="text-align:right"><strong><i class="fa fa-inr"></i>&nbsp;@String.Format("{0:0.00}", (sum + totalTax))</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+                                    }
+@section scripts{
+    <style>
+        .clsheader tr th {
+            color: #ffffff !important;
+            background-color: #50597a !important;
+        }
+    </style>
+
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+        $(document).ready(function () {
+            $(".navbar-right").hide();
+        });
+        //$(document)
+    </script>
+}
+
+

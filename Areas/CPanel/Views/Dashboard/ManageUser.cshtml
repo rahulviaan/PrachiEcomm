@@ -1,0 +1,127 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<PrachiIndia.Sql.AspNetUser>
+@{
+    ViewBag.Title = "ManageUser";
+}
+<div class="row">
+    <div class="col-md-5">
+        @Html.DropDownList("StateId", ViewBag.Countries as List<SelectListItem>, new { @class = "form-control" })
+    </div>
+    <div class="col-md-5">
+        <select id="CityId" class="form-control">
+            <option value="0">Please select</option>
+        </select>
+
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-default" id="btnFilter">
+            <i class="fa fa-search-plus"></i>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-6">
+
+
+        <div class="panel panel-default" style="border-top:none;">
+            <div class="panel-heading">
+                <h1>Manage Users</h1>
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                           
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblBody">
+                        @if (Model != null && Model.Any())
+                        {
+                          
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                  
+                                    <td>@item.FirstName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.PhoneNumber</td>
+                                    <td>@item.Address</td>
+                                </tr>
+                            
+                            }
+                        }
+                    </tbody>
+                </table>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                @Html.PagedListPager(Model, page => Url.Action("ManageUser",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var StateId = $('select#StateId option:selected').val();
+            var CityId = $('select#CityId option:selected').val();
+            // FillGrid(StateId, CityId);
+            $('#btnFilter').on('click', function () {
+                var StateId = $('select#StateId option:selected').val();
+                var CityId = $('select#CityId option:selected').val();
+                FillGrid(StateId, CityId);
+            });
+
+            $('#StateId').on('change', function () {
+                var StateId = $(this).val();
+                $('#CityId').html();
+                $.ajax({
+                    type: "POST",
+                    data: { stateId: StateId },
+                    url: '@Url.Action("GetCities", "Dashboard", new {area= "CPanel" })',
+                    success: function (items) {
+                        $('#CityId').append('<option value="0">Please select</option>');
+                        $.each(items, function (i, d) {
+                            // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                            $('#CityId').append('<option value="' + d.CityId + '">' + d.CityName + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+
+        function FillGrid(StateId, CityId) {
+            $("#tblBody").html(' <tr><td colspan="10"><div class="progress"> <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Please wait..     </div>  </div></td></tr>');
+            var isTbody = "";
+            var tbl = "";
+            var tHeader = "";
+            $.ajax({
+                type: "POST",
+                data: { stateId: StateId, cityId: CityId },
+                url: '@Url.Action("GetUsers", "Dashboard", new {area= "CPanel" })',
+                success: function (items) {
+                    var trRecord = "";
+                    $.each(items, function (i, item) {
+                        var srNo = parseInt(i + 1);
+
+                        //console.log(item);
+                        trRecord = trRecord + "<tr>";
+                        trRecord = trRecord + "<td>" + srNo + "</td>";
+                        trRecord = trRecord + "<td>" + item.CompleteName + "</td>";
+                        trRecord = trRecord + "<td>" + item.Email + "</td>";
+                        trRecord = trRecord + "<td>" + item.PhoneNumber + "</td>";
+
+                        trRecord = trRecord + "<td>" + item.Address + ", " + item.City + ", " + item.State + ", " + item.Country + ", " + "</td>";
+                        trRecord = trRecord + "</tr>";
+                    });
+                    $("#tblBody").html(trRecord);
+                }
+            });
+        }
+    </script>
+}

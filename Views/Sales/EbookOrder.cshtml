@@ -1,0 +1,64 @@
+﻿@model List<PrachiIndia.Sql.tblCataLog>
+@{
+    ViewBag.Title = "EbookOrder";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2>Order Details</h2>
+
+            </div>
+            <div class="panel-body">
+                @*<div class="form-horizontal">
+                        <div class="col-md-12">
+                            <label>School name: @aspNetUser.CompleteName</label>
+                            <br />
+                            <label>Email: @aspNetUser.Email</label>
+                            <br />
+                            <label>Address: @aspNetUser.Address, @aspNetUser.City</label>
+                        </div>
+                    </div>*@
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Author</th>
+
+                        </tr>
+                    </thead>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td width="100">
+                               
+                                    <img src="~/ModuleFiles/Items/@item.Image" height="70" />
+                                </td>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Author
+                            </td>
+
+                        </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><h4 class="text-center">No record found.</h4></td>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

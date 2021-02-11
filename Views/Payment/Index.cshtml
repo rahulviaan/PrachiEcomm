@@ -1,0 +1,403 @@
+﻿@model PrachiIndia.Sql.AspNetUser
+@{
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+<style>
+    .clickable {
+        cursor: pointer;
+    }
+
+    .panel-heading span {
+        margin-top: -20px;
+        font-size: 15px;
+    }
+
+    .field-validation-error {
+        color: red;
+        font-size: 13px;
+    }
+</style>
+<section class="detailsbook">
+    <div class="container wrapper">
+        <div class="row cart-body">
+            @if (ViewBag.isHtml != null)
+            {
+                @Html.Raw(ViewBag.isHtml)
+            }
+            @using (Html.BeginForm("Index", "Payment", FormMethod.Post, new { id = "loginabc" }))
+            {
+                <div class="panel-body" style="margin-top: 2%">
+                    <div class="col-md-3" style="padding: 0;">
+                        <div style="background-color:#f7f7f9; border:solid 1px #ededed; width:100%; float:left; height:auto; font-size:12px;">
+                            <div class="col-md-12">
+                                <h4>Billing Address</h4>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4"> @Html.LabelFor(x => x.FirstName, new { @id = "abc", @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.FirstName, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4">@Html.LabelFor(x => x.Email, new { @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.Email, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4">@Html.LabelFor(x => x.PhoneNumber, new { @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.PhoneNumber, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4">@Html.LabelFor(x => x.Country, new { @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.Country, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-xs-4 col-sm-4 col-md-4">@Html.LabelFor(x => x.State, new { @class = "form" })</div>
+                                <div class="col-xs-8 col-sm-8 col-md-8">@Html.DisplayFor(x => x.State, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-xs-4 col-sm-4 col-md-4">@Html.LabelFor(x => x.City, new { @class = "form" })</div>
+                                <div class="col-xs-8 col-sm-8 col-md-8">@Html.DisplayFor(x => x.City, new { @class = "form" })</div>
+                            </div>
+                            @*<div class="col-md-12" style="padding: 0px 0px 5px;">
+                                    <div class="col-md-4"> @Html.LabelFor(x => x.PhoneNumber, new { @class = "form" })</div>
+                                    <div class="col-md-8"> @Html.DisplayFor(x => x.PhoneNumber, new { @class = "form" })</div>
+                                </div>*@
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4">@Html.LabelFor(x => x.Address, new { @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.Address, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                <div class="col-md-4"> @Html.LabelFor(x => x.PinCode, new { @class = "form" })</div>
+                                <div class="col-md-8">@Html.DisplayFor(x => x.PinCode, new { @class = "form" })</div>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <p><a href="#" id="edit" title="Edit Address" style="padding: 3px 4px; background-color: rgb(40, 96, 144); border: 1px solid rgb(40, 96, 144); color: rgb(255, 255, 255);"><span class="fa fa-edit"></span> Edit</a></p>
+                            </div>
+                        </div>
+                        <!--SHIPPING METHOD END-->
+                        @*<div style="background-color:#f7f7f9; border:solid 1px #ededed; width:100%; float:left; height:auto; font-size:12px;">
+
+                                <div class="col-md-12">
+                                    <h4>Shipping Address</h4>
+                                </div>
+                                @{
+                                    var shippingAddress = Session["Shipping"] as IEnumerable<PrachiIndia.Sql.AspNetUser>;
+                                    foreach (var item in shippingAddress)
+                                    {
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4"> @Html.Label("Name", "Name", new { @id = "abc", @class = "form" })</div>
+                                            <div class="col-md-8">
+                                                @item.UserName
+                                        </div>
+                                    </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4">@Html.Label("Email", "Email", new { @class = "form" })</div>
+                                            <div class="col-md-8">@Html.Display("Email", item.Email, new { @class = "form" })</div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4">@Html.Label("Phone", "Phone", new { @class = "form" })</div>
+                                            <div class="col-md-8">
+                                                @item.PhoneNumber
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4">@Html.Label("Country", "Country", new { @class = "form" })</div>
+                                            <div class="col-md-8">
+                                                @item.Country
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-xs-4 col-sm-4 col-md-4">@Html.Label("States", "State", new { @class = "form" })</div>
+                                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                                @item.State
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-xs-4 col-sm-4 col-md-4">@Html.Label("City", "City", new { @class = "form" })</div>
+                                            <div class="col-xs-8 col-sm-8 col-md-8">
+                                                @item.City
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4">@Html.Label("Address", "Address", new { @class = "form" })</div>
+                                            <div class="col-md-8">@Html.Display("Address", item.Address, new { @class = "form" })</div>
+                                        </div>
+                                        <div class="col-md-12" style="padding: 0px 0px 5px;">
+                                            <div class="col-md-4"> @Html.Label("PinCode", "PinCode", new { @class = "form" })</div>
+                                            <div class="col-md-8">@Html.Display("PinCode", item.PinCode, new { @class = "form" })</div>
+                                        </div>
+                                        <div class="col-md-12 text-right">
+                                            <p><a href="#" id="editShipping" title="Edit Address" style="padding: 3px 4px; background-color: rgb(40, 96, 144); border: 1px solid rgb(40, 96, 144); color: rgb(255, 255, 255);"><span class="fa fa-edit"></span> Edit Shipping</a></p>
+                                        </div>
+                                    }
+                                }
+                            </div>*@
+                    </div>
+                    <div class="col-md-9">
+                        <div style="background-color:#ffffff; border:solid 1px #ededed; width:100%; float:left; height:auto;">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th class="text-center">Type</th>
+                                                        <th class="text-right">Price</th>
+                                                        <th class="text-center">Quantity</th>
+                                                        <th class="text-right">Total Discount</th>
+                                                        <th class="text-right">Subtotal</th>
+                                                        <th class="text-right">Tax</th>
+                                                        <th class="text-right">Total</th>
+                                                        <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bindcartproduct"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row" style="display:none">
+                                    <div class="col-md-5">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-7 form-horizontal">
+                                        <label class="col-md-6 control-label"><strong>Payment Method:</strong></label>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label><input type="radio" name="paymentMethod" value="@PrachiIndia.Portal.Framework.PGType.Domestic" checked="checked">@PrachiIndia.Portal.Framework.PGType.Domestic</label>
+                                                <label><input type="radio" name="paymentMethod" value="@PrachiIndia.Portal.Framework.PGType.International">@PrachiIndia.Portal.Framework.PGType.International</label>
+                                                <br />
+                                                @Html.ValidationMessage("paymentMethod")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button type="button" id="btnShoppingcart" style="width:auto" class="btn btn-primary active"><span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping</button>
+                                        <button type="submit" style="width:auto" class="btn btn-success active"> Place Order<span class="glyphicon glyphicon-play"></span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @Html.Partial("_EditAdress", Model)
+        </div>
+    </div>
+</section>
+@*}*@
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Content/js/notify.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            BindCart();
+            $(".navbar-right").hide();
+        });
+        $("#btnShoppingcart").click(function () {
+            var url = "/Catalogue/index";
+            window.location.href = url;
+        });
+
+    </script>
+    <script>
+        $(document).on('click', '.panel-heading span.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+
+        });
+        function BindCart() {
+            
+            var html = "";
+            var total = 0.00;
+            var count = 0;
+            var elems = [];
+            var QueryString =@Request.QueryString["id"]
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', { id: QueryString }, function (dataVal) {
+                var abc = JSON.stringify(dataVal.Title);
+
+                $.each(dataVal, function (i, item) {
+                    //var itemPrice = parseFloat(item.Price);
+                    var price = 0;
+                    if (item.IsSolution) {
+                        price = parseInt(item.Quantity) * parseFloat(item.SolutionPrice);
+                    }
+                    else {
+                        price = parseInt(item.Quantity) * parseFloat(item.Price);
+                    }
+
+                    //var price = parseInt(item.Quantity) * itemPrice;
+
+                    //var discount = parseInt(item.Price) * parseFloat(item.Discount / 100) * parseInt(item.Quantity);
+                    var discount = item.Discount*parseInt(item.Quantity)
+                    var subtotal = price - discount;
+                    //console.log(item.TaxRate);
+                    var taxAmount = (subtotal * parseFloat(item.TaxRate)) / 100;
+                    var totalAmount = subtotal + taxAmount;
+                    total = total + totalAmount;
+                    html = html + '<tr>';
+                    html = html + '<td width="25%">';
+                    html = html + '<div class="media">';
+                    html = html + '<a class="pull-left prdcticon" href="#"> <img class="media-object" src="' + item.Image + '"> </a>';
+                    html = html + '<div class="media-body">';
+                    html = html + '<h6 class="media-heading">' + item.Title + '</h6>';
+                    html = html + '</div>';
+                    html = html + '</div>';
+                    html = html + '</td>';
+
+                    if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.Both.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">Both</td>'
+                    }
+                    else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">EBook</td>'
+                    }
+                    else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()" && !item.IsSolution) {
+                        html = html + '<td width="10%" class="text-center">PBook</td>'
+                    }
+                    else if (item.IsSolution) {
+
+                        html = html + '<td width="10%" class="text-center">Solution</td>'
+                    }
+                    html = html + '<td width="12%" class="text-right"><i class="fa fa-inr" style="padding-right:5px;" />' + price.toFixed(2) + '</td>';
+                    html = html + '<td width="10%" class="text-center">';
+                    if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()" && item.IsSolution) {
+                        html = html + '<i class="text-center" style="padding-right:5px;" />' + item.Quantity
+                    }
+                    else {
+                        html = html + '<input class="qty" id="Qunt_' + item.Id + '"  type="text" style="width:50%; text-align:center;" onchange = "UpdateQuntiy(' + item.Id + ');" value="' + item.Quantity + '"/>'
+                    }
+                    html = html + '</td>';
+
+                    html = html + '<td width="10%" class="text-right"><i class="fa fa-inr" style="padding-right:5px;" />' + discount.toFixed(2); + '</td>';
+                    html = html + '<td width="13%" class="text-right"><i class="fa fa-inr" style="padding-right:5px;" />' + subtotal.toFixed(2) + '</td>';
+                    html = html + '<td width="10%" class="text-right"><i class="fa fa-inr" style="padding-right:5px;" />' + taxAmount.toFixed(2) + '</td>';
+                    html = html + '<td width="15%" class="text-right"><i class="fa fa-inr" style="padding-right:5px;" />' + totalAmount.toFixed(2) + '</td>';
+                    html = html + '<td width="10%" class="text-right">';
+                    html = html + '<span > <a onclick="RemoveAddCart(' + item.Id + ')" class="fa fa-trash" title="Remove" href="#" style="font-size: 21px;"></a></span>';
+                    html = html + '</td>';
+                    html = html + '</tr>';
+                });
+                html = html + '<tr>';
+                html = html + '<td>&nbsp;</td>';
+                html = html + '<td>&nbsp;</td>';
+                html = html + '<td colspan="4">&nbsp;</td>';
+                html = html + '<td class="text-right"><strong>Total</strong></td>';
+                html = html + ' <td class="text-right"><strong> <i class="fa fa-inr" style="padding-right:5px;"/>' + total.toFixed(2) + '</strong></td>';
+                html = html + ' <td>&nbsp;</td>';
+                html = html + '</tr>';
+                $("#bindcartproduct").empty();
+                $("#bindcartproduct").append(html);
+            });
+        }
+        function RemoveAddCart(id) {
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveCart", "Catalogue")', { Id: id }, function (dataVal) {
+                    BindCart();
+                });
+            } else {
+            }
+        }
+        function UpdateQuntiy(id) {
+            var Quantity = $("#Qunt_" + id).val();
+            if ($.isNumeric(Quantity) && Quantity > 0) {
+                $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                    BindCart();
+                });
+            } else {
+                $.notify("Enter Onely Number", "error");
+                BindCart();
+            }
+        }
+        function clearvalidation() {
+            $('.field-validation-error').each(function () {
+                $(this).html("");
+            })
+        }
+        $("#edit").click(function () {
+            $('#EditAddress').modal('show');
+        });
+
+
+    </script>
+    <script>
+        $(function () {
+            var cid = $('#CountryId').val();
+            if (cid == 86) {
+                $('#divOther').css("display", "none")
+                $('#divIndia').css("display", "block")
+            }
+            else if (cid == 0) {
+                $('#divIndia').css("display", "none");
+                $('#divOther').css("display", "none");
+            }
+            else {
+                $('#divIndia').css("display", "none");
+                $('#divOther').css("display", "block");
+            }
+            $('#CountryId').change(function () {
+                var BId = $(this).val();
+               // alert(BId);
+                if (BId == 0) {
+                    $('#divIndia').css("display", "none");
+                    $('#divOther').css("display", "none");
+                }
+                else if (BId != 86) {
+                    $('#divIndia').css("display", "none");
+                    $('#divOther').css("display", "block");
+                }
+                else {
+                    $('#divOther').css("display", "none")
+                    $('#divIndia').css("display", "block")
+                    $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                        var items = '<option>Select</option>';
+                        $.each(dataVal, function (i, district) {
+                            items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                        });
+                        $("#StateId").empty();
+                        $('#StateId').html(items);
+                    });
+
+                }
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    @*added for address edit pop up for country state and city end here by deepak:19/10/2016*@
+
+
+}

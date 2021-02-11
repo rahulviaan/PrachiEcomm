@@ -1,0 +1,90 @@
+﻿@using PrachiIndia.Sql;
+@model Tuple<List<TopicMaster>,int,string>
+
+<div>
+
+
+            <div>
+                @Html.Hidden("Chapter", Model.Item2)
+                @Html.Hidden("bookid",Model.Item3)
+                @Html.DisplayName("Topic")
+                @Html.TextBox("TOPIC", new { @class = "form-control", @placeholder = "Title" }) <br />
+                <br />
+                <br />
+                <a href="#" id="btnSubmit" class="btn btn-success btn-block">
+                <span>Save</span>
+                </a>
+            </div>
+
+
+
+
+    @*<div class="table-responsive ">
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int count = 1;}
+                @foreach (var item in Model.Item1)
+                {
+                <tr>
+                    <th scope="row">@count</th>
+                    <td>@item.TOPIC</td>
+                </tr>
+                    count = count + 1;
+                }
+            </tbody>
+        </table>
+    </div>*@
+
+    @*<div style="text-align:center;display:none" id="loaderDiv">
+        <img src="~/img/Loader.gif" width="150" />
+    </div>*@
+
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+            var Validate = true;
+            var topic = $("#TOPIC").val();
+            var bookid = $("#bookid").val();
+            
+            if (topic=="")
+            {
+                Validate = false;
+                return false;
+            }
+
+            if (Validate) {
+                $("#loaderDiv").show();
+
+                var Chapterid = $("#Chapter").val();
+                $.ajax({
+
+                    type: "POST",
+                    url: "/QuestionCatagory/Topic",
+                    data: { Id: Chapterid, Topic: topic, bookid: bookid },
+                    success: function () {
+                        $("#loaderDiv").hide();
+                        $("#myModal").modal("hide");
+                        window.location.href = "/QuestionCatagory/Index";
+
+                    }
+
+                })
+            }
+            })
+
+
+    })
+
+
+</script>

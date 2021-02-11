@@ -1,0 +1,5 @@
+﻿ First Add Properties in IdentityModels
+ Change DefaultConnection in Web Config
+PM> Enable-Migrations 
+PM> Add-Migration 
+PM> Update-Database 

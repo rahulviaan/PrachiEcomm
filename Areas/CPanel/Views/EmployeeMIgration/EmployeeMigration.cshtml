@@ -1,0 +1,81 @@
+﻿@model PrachiIndia.Portal.Areas.CPanel.Models.Book_Migration
+@using PrachiIndia.Portal.Areas.CPanel.Controllers;
+@{
+    ViewBag.Title = "Employee Migration";
+    // Layout = "~/Areas/CPanel/Views/_ViewStart.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var message = '@ViewBag.Message';
+        if (message == '') {
+            $("#message").css("display", "none")
+        }
+
+        else {
+            $("#message").css("display : inline");
+        }
+    });
+    function Submit () {
+        $("#message").css("display : inline");
+        return true;
+    }
+
+</script>
+
+@{
+    ViewBag.Title = "FileUpload";
+}
+
+<div class="p10">
+    <div class="panel clearfix">
+
+        <div class="panel-heading">
+            <span class="panel-title">Employee Migration</span>
+        </div>
+
+
+        @using (@Html.BeginForm("FileUpload", "EmployeeMigration", FormMethod.Post, new { @id = "form1", @enctype = "multipart/form-data" }))
+        {
+
+            <div class="panel-body">
+                <div class="form-group col-md-4">
+                    <label>Employee Type</label>
+                    <select class="form-control" id="StudentGender" name="Type">
+                        <option value="1">Sales</option>
+                        <option value="2">Marketing</option>
+                    </select>
+                  
+                </div>
+
+                <div class="clearfix"></div>
+                <div class="form-group col-md-4">
+                    <div id="message" class="form-group col-md-12" style="color:#ff0000;">
+                        @Html.Raw(ViewBag.Message)
+                    </div>
+                    <label>Upload Document: <span class="field-validation-valid" data-valmsg-for="SearchText" data-valmsg-replace="true"></span></label><br>
+                    <label method="post" class="form-control">
+                        <input type="file" name="file_Uploader" size="40">
+                    </label>
+                </div>
+
+                <div class="form-group col-md-4">
+
+                    <input type="submit" id="bttn_Upload" value="Upload" onclick="Submit();" class="btn btn-primary" />
+
+                </div>
+                <div class="form-group col-md-2 text-right button_top_padding">
+                    <a href="/CPanel/BookMigration/DownloadFile" style="font-size:48px;"><i class="fa fa-download"></i></a>
+                </div>
+
+            </div>
+
+        }
+
+    </div>
+</div>
+

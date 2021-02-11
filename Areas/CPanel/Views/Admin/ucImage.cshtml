@@ -1,0 +1,92 @@
+﻿@model PrachiIndia.Web.Areas.Model.MasterSubject
+@{
+
+    Layout = null;
+    var i = Model.Id;
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmImage", id = "frmImage", }))
+{
+
+
+    <input type="hidden" id="hdnid" value="@Model.Id" />
+    <input type="hidden" id="hdnTitle" value="@Model.Title" />
+    <input type="hidden" id="hdnFileName" />
+    <div class="row">
+        <div class="col-lg-12">
+            <form method="post" enctype="multipart/form-data">
+                @Html.LabelFor(m => m.Image)
+                <input type="file" name="file" id="file" />
+            </form>
+            @Html.HiddenFor(m => m.Image)
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+            $(function () {
+             
+
+                $("#file").change(function () {
+                   
+                    Upload();
+                });
+                function Upload() {
+
+                    var data = new FormData();
+                    var files = $("#file").get(0).files;
+                    if (files.length > 0) { data.append("Images", files[0]); }
+                    else {
+                        common.showNotification('warning', 'Please select file to upload.', 'top', 'right');
+                        return false;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Upload", "Admin", new {area= "CPanel" })',
+                        processData: false,
+                        data: data,
+                        dataType: 'json',
+                        contentType: false,
+                        success: function (data) {
+                            $("#hdnFileName").val(data);
+                        },
+                        error: function (error) {
+                            alert("errror");
+                        }
+                    });
+                }                
+            });
+
+
+    @*$(document).on("submit", "#frmImage", function (e) {
+        var Id = $("#hdnid").val();
+        var Folder = $("#hdnTitle").val();
+        var FileName = $("#hdnFileName").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpoladImageFile", "Admin", new {area= "CPanel" })',
+            data: { Id: Id, Folder: Folder, FileName: FileName },
+            success: function (data) {
+                HidePopup();
+                alert(data);
+                if (data == "0") {
+                    $.toaster({ priority: 'danger', title: 'Error', message: ' Error ! Please try again.' });
+                }
+                else {
+                    $.toaster({ priority: 'success', title: 'Upload Image ', message: " successfully." });
+                    if ($("#ac_" + Id).html();
+                        //$("#ac_" + _Id).removeClass("btn btn-success glyphicon glyphicon-ok");
+                        //$("#ac_" + _Id).addClass("btn btn-warning glyphicon glyphicon-remove");
+                    }
+                    else {
+                        //$("#ac_" + _Id).removeClass("btn btn-warning glyphicon glyphicon-remove");
+                        //$("#ac_" + _Id).addClass("btn btn-success glyphicon glyphicon-ok")
+                    }
+                }
+               // setTimeout(function () { bootbox.hideAll(); }, 2000);
+                return false;
+            }
+        });
+        return false;
+    })*@
+    
+</script>

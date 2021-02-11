@@ -1,0 +1,68 @@
+﻿@model List<PrachiIndia.Portal.Models.SalesModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 content-header text-right">
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Sales</li>
+        </ol>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Schools</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive table-bordered">
+                    <thead class="bg-primary">
+                        <tr>
+                            <th>SrNo#</th>
+                            <th>School Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>DeviceCount</th>
+                            <th>Area</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 0;
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i = i + 1;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Mobile</td>
+                                    <td>@item.DeviceCount</td>
+                                    <td>@item.Area</td>
+                                    <td>
+                                        <a href="@Url.Action("SchoolDetail","Sales",new { Id=item.Id})">Details</a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <h3>No records found.</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

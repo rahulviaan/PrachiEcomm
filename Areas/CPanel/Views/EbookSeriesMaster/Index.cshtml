@@ -1,0 +1,185 @@
+﻿@model IEnumerable<PrachiIndia.Portal.Areas.CPanel.Models.EbookSeries>
+@{
+    ViewBag.Title = "Prachi India Pvt Ltd";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+
+
+<!--Beyong Section-->
+@Html.TextBox("Title", "", new { @class = "form-control", @placeholder = "Search here" })
+<section class="beyong-section style-two">
+    <div class="auto-container">
+        <div class="beyong-tabs">
+            <div class="tabs-content">
+                <div class="row clearfix">
+                    <!--Content Column-->
+                    <div class="content-column col-lg-12 col-md-12 col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table text table-bordered">
+                                <thead style="background-color:#ee2d50;color:#ffffff;">
+                                    <tr>
+                                        <th>Name of Series (class)</th>
+                                        <th class="text-center">Board</th>
+                                        <th class="text-center">Audio voice over</th>
+                                        <th class="text-center">Lesson Plans</th>
+                                        <th class="text-center">Work - Sheets</th>
+                                        <th class="text-center">Work - Sheets Solutions</th>
+                                        <th class="text-center">Book Solutions</th>
+                                        <th class="text-center">Test Hour</th>
+                                        <th class="text-center">Test Hour Solutions</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ebooktable">
+                                   @{Html.RenderPartial("_ebookSeries", Model);}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="blog-single">
+                            <div class="inner-box">
+                                <div class="lower-content">
+                                    <div class="text">
+                                        <blockquote>
+                                            <div class="blockquote-text"><span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> </span> Book solutions for Bhasha Sanchay class 1 and 2 not available.</div>
+                                            <div class="blockquote-text"><span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> </span> Book solutions for Bhasha Sarthi class 1 and 2 not available.</div>
+                                            <div class="blockquote-text"><span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> </span> Book solutions for ICSE Mathematics class 1 to 5 not available.</div>
+                                            <div class="blockquote-text"><span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i></span> Animation Available</div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<a href="#" class="btn btn-primary" onclick="AddEditebookSeries(0)" data-toggle="modal" data-target="#myModal1">New</a>
+<div class="modal fade" id="myModal1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Add/Edit e-bookSeries</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete e-bookSeries</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure ? You want to delete this. </h4>
+
+                <div style="text-align:center;display:none" id="loaderDiv">
+                    <img src="~/Content/tinymce/skins/lightgray/img/Loader1.gif" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-success" onclick="DeleteeBookSeries()">Confirm</button>
+            </div>
+
+        </div>
+
+    </div>
+    <input type="hidden" id="ebookSeriesID" />
+</div>
+
+<!--End Beyong Section-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        //$("#Title").keyup(function () {
+        //    var searchtext = $(this).val();
+        //    $.ajax({
+        //        type: "Post",
+        //        url: "/EbookSeriesMaster/GetSearchRecord?SearchText=" + searchtext,
+        //        contentType: "html",
+        //        success: function (response) {
+        //            $("#ebooktable").html(response);
+        //        }
+        //    })
+        //})
+    });
+
+    var AddEditebookSeries = function (Id) {
+        var url = "/EbookSeriesMaster/AddEditebookSeries?Id=" + Id;
+        //$("#myModalBodyDiv1").load(url, function () {
+        //    alert("");
+        //    $("#myModal1").modal("show");
+        //})
+        //$("#myModal1").modal("show");
+       // $("#myModal1").modal("hide");
+
+        $("#myModalBodyDiv1").html("<div style='text-align:center;display:none' id='loader'><img src='/img/Loader.gif' width='150' /></div>");
+        $("#loader").show();
+        var url = "/EbookSeriesMaster/AddEditebookSeries?Id=" + Id;
+        $.ajax({
+            type: "Get",
+            url: url,
+            success: function (response) {
+                $("#myModalBodyDiv1").html(response);
+                $("#loader").hide();
+                $("#myModal1").modal("show");
+            }
+        })
+    }
+
+    var DeleteQuestion = function (Id) {
+        var url = "/Delete_eBookSeries/DeleteQuestion?Id=" + Id;
+
+        $.ajax({
+            type: "Post",
+            url: url,
+            success: function (response) {
+                $("#ebooktable").html(response);
+                $("#_" + Id).remove();
+            }
+        })
+    }
+
+    var ConfirmDelete = function (TopicID) {
+        $("#ebookSeriesID").val(TopicID);
+        jQuery("#myModal").modal('show');
+
+    }
+
+    var DeleteeBookSeries = function () {
+
+        $("#loaderDiv").show();
+
+        var ebookSeriesID = $("#ebookSeriesID").val();
+        $.ajax({
+
+            type: "POST",
+            url: "/EbookSeriesMaster/Delete_eBookSeries",
+            data: { ID: ebookSeriesID },
+            success: function (result) {
+                $("#loaderDiv").hide();
+                $("#myModal").modal('hide');
+                $("#row_" + ebookSeriesID).remove();
+                //window.location.href = "/CPanel/EbookSeriesMaster/index";
+            }
+        });
+
+    }
+</script>

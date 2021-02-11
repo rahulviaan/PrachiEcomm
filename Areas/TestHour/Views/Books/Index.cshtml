@@ -1,0 +1,88 @@
+﻿@model PrachiIndia.Web.Areas.Model.Books
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="col-md-12 row">
+    <div class="panel panel-default inprdservice">
+        <div class="panel-heading inprdservicehead"><h4 class="card-title">Books</h4></div>
+        <div class="panel-body inprdservice">
+           
+            @using (Ajax.BeginForm("GetBooks", "Books", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divbook", LoadingElementId = "progress", InsertionMode = InsertionMode.Replace }))
+            {
+                <div class="panel-body">
+                    <div class="col-md-6 form-group">
+                        @Html.Label("Board")
+                        @Html.DropDownListFor(model => model.idBoard, (SelectList)ViewBag.Boards, "--Select Board--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        @Html.Label("Class")
+                        @Html.DropDownListFor(model => model.idClass, (SelectList)ViewBag.Class, "--Select Class--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        @Html.LabelFor(m => m.idSubject)
+                        @Html.DropDownListFor(model => model.idSubject, (SelectList)ViewBag.Subjects, "--Select Subject--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        @Html.LabelFor(m => m.idSeries)
+                        @Html.DropDownListFor(model => model.idSeries, (SelectList)ViewBag.Series, "--Select Series--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="form-group" style="margin-top:2%">
+                            @Html.TextBoxFor(model => model.BookTitle, new { @class = "form-control", placeholder = "Search by Title" })
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div class="form-group" style="margin-top:2%">
+                            <input type="submit" class="btn btn-primary" id="btnsubmit" value="Submit" />
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-12" id="divbook">
+
+            </div>
+            <div id="progress" class="modal" style="background: rgba(255, 255, 255, 0.7);">
+                <div class="text-center" style="position:absolute;width: 100%;top: 50%;">
+                    <img src="~/Content/tinymce/skins/lightgray/img/loader.gif" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12" style="margin-bottom:1%;">
+    
+</div>
+@Scripts.Render("~/bundles/jqueryUnobtrusive")
+<script src="~/Content/js/common.js"></script>
+<script src="~/Scripts/jquery.toaster.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="~/Content/Dashboard/css/toastr.min.css" rel="stylesheet" />
+<script>
+    $("#idSubject").on("change", function () {
+        var idSubject = $("#idSubject option:selected").val() == "" ? 0 : $("#idSubject option:selected").val();
+        $("#idSeries").html("");
+        alert(idSubject)
+        var isoption = '<option value="">--Select Series--';
+        $.ajax({
+            type: "POST",
+            data: { idSubject: idSubject },
+            url: '@Url.Action("GetSeries", "Books", new {area= "TestHour" })',
+            success: function (data) {
+
+                $.each(data, function (i, item) {
+                    isoption += '<option value="' + item.Id + '">' + item.Title + '</option>';
+                });
+                if (data.length > 0) {
+                    $("#idSeries").append(isoption);
+                    $("#idSeries").focus();
+                }
+                else {
+                    $("#idSeries").focus();
+                }
+            }
+        });
+        return false;
+    });     
+</script>

@@ -1,0 +1,125 @@
+﻿
+@model PrachiIndia.Portal.Areas.CPanel.Models.EbookSeries
+
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(m => m.Id)
+        <div class="container">
+            <div class="col-md-12 form-group">
+                <label>Series</label>
+                @*<input type="text" class="form-control" />*@
+                @Html.TextBoxFor(x => x.Series, new { @class = "form-control" })
+            </div>
+            <div class="col-md-12 form-group">
+                <label>Subject</label>
+                @Html.DropDownListFor(x => x.Subject, ViewBag.Subjects as SelectList, new { @class = "form-control" })
+            </div>
+            <div class="col-md-12 form-group">
+                <label>Board</label><br />
+
+                <div>
+                    <select id="multiselect" name="Boards" multiple="multiple">
+                        @if (ViewBag.Boards != null)
+                        {
+                            foreach (var item in ViewBag.Boards)
+                            {
+                                if (item.Text != null)
+                                {
+                                    if (Model.Boards.Contains(item.Value))
+                                    {
+                                        <option value="@item.Value" selected="selected">
+                                            @item.Text
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Value">
+                                            @item.Text
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 form-group">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                @*@Html.CheckBoxFor(m => m.Audio)*@
+                                <th>@Html.CheckBoxFor(m => m.Audio)<span>Audio</span></th>
+                                <th>@Html.CheckBoxFor(m => m.LessonPlan)<span>LessonPlan</span></th>
+                                <th>@Html.CheckBoxFor(m => m.WorkSheet)<span>WorkSheet</span></th>
+                                <th>@Html.CheckBoxFor(m => m.WorkSheetSolution)<span>WorkSheetSolution</span></th>
+                                <th>@Html.CheckBoxFor(m => m.BookSolution)<span>BookSolution</span></th>
+                                <th>@Html.CheckBoxFor(m => m.TestHour)<span>TestHour</span></th>
+                                <th>@Html.CheckBoxFor(m => m.TestHourSolution)<span>TestHourSolution</span></th>
+                                <th>@Html.CheckBoxFor(m => m.SingleStar) <span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> </span></th>
+                                <th>@Html.CheckBoxFor(m => m.DoubleStar)<span class="bookstar"><i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i></span></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <a href="#" id="btnSubmit" class="btn btn-success btn-block">
+            @if (Model.Id > 0)
+            {<span>Update</span> }
+            else
+            {<span>Save</span>}
+        </a>
+
+    </form>
+
+    <div style="text-align:center;display:none" id="loaderDiv">
+        <img src="~/img/Loader.gif" width="150" />
+    </div>
+
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#multiselect').multiselect({
+            buttonWidth: '160px',
+            includeSelectAllOption: true,
+            nonSelectedText: 'Select an Option'
+        });
+
+        $("#btnSubmit").click(function () {
+            var Validate = true;
+            if (!$("#myForm").valid()) {
+                Validate = false;
+                return false;
+            }
+
+            if (Validate) {
+                $("#loaderDiv").show();
+
+                var myformdata = $("#myForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/CPanel/EbookSeriesMaster/Index",
+                    data: myformdata,
+                    success: function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "/CPanel/EbookSeriesMaster/PartialResult",
+                            success: function (data) {
+                                $("#ebooktable").html(data);
+                                $("#loaderDiv").hide();
+                                $("#myModal1").modal("hide");
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>

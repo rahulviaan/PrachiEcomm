@@ -1,0 +1,2844 @@
+﻿@model PrachiIndia.Portal.Models.LoginViewModel
+@using Microsoft.AspNet.Identity
+@*PrachiIndia.Web.Models.LoginViewModel*@
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+
+}
+<link href="~/Content/css/bootstrap.min.css.map" rel="stylesheet" />
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<link href="~/Content/css/bootstrap-slider.css" rel="stylesheet" />
+<style type="text/css">
+    /*.indicator {
+        position: absolute;
+        z-index: 1;
+        right: 33px;
+    }*/
+    .items {
+        margin: 10px;
+        padding: 16px;
+        border: 1px solid silver;
+        /*text-align: center;*/
+        max-height: 360px;
+        overflow: hidden;
+    }
+
+        .items .image img {
+            margin: 5px auto;
+        }
+
+        .items .caption {
+            min-height: 150px;
+        }
+
+            .items .caption .price {
+                max-height: 80px;
+                overflow: hidden;
+            }
+
+            .items .caption h4 {
+                font-size: 12px;
+                line-height: 18px;
+                padding-bottom: 0;
+                margin-bottom: 5px;
+            }
+
+                .items .caption h4 a {
+                    color: #333;
+                }
+
+                    .items .caption h4 a:hover {
+                        color: #000;
+                    }
+
+    .lable {
+        background: url(~/img/logo.png) no-repeat 6px center;
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background: rgba( 0, 0, 0, .4 ) url('https://www.prachiindia.com/img/FhHRx.gif') 50% 50% no-repeat;
+    }
+
+    .modals {
+        display: none;
+        /*position: fixed;*/
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 5%;
+        width: 10%;
+        margin-left: 350px;
+        margin-top: 20%;
+        margin-bottom: 30px;
+        position: absolute;
+        background: rgba( 255, 255, 255, .8 ) url('https://www.prachiindia.com/img/FhHRx.gif') 50% 50% no-repeat;
+    }
+
+
+
+    .filter-summary {
+        margin: 10px 0 5px;
+    }
+
+        .filter-summary .filter {
+            margin-right: 10px;
+            float: left;
+        }
+
+    /*Bootstarp Css For Filter Search start here Added By Deepak:30_08_2016*/
+    .behclick-panel .list-group {
+        margin-bottom: 0px;
+    }
+
+    .behclick-panel .list-group-item:first-child {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+    .behclick-panel .list-group-item {
+        border-right: 0px;
+        border-left: 0px;
+    }
+
+        .behclick-panel .list-group-item:last-child {
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+    .behclick-panel .list-group-item {
+        padding: 5px;
+    }
+
+    .behclick-panel .panel-heading {
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-bottom: 1px solid darkslategrey;
+    }
+
+        .behclick-panel .panel-heading:last-child {
+        }
+
+    .behclick-panel {
+        border-radius: 0px;
+        border-right: 0px;
+        border-left: 0px;
+        border-bottom: 0px;
+        box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+    }
+
+        .behclick-panel .radio, .checkbox {
+            margin: 0px;
+            padding-left: 10px;
+        }
+
+        .behclick-panel .panel-title > a, .panel-title > small, .panel-title > .small, .panel-title > small > a, .panel-title > .small > a {
+            outline: none;
+        }
+
+        .behclick-panel .panel-body > .panel-heading {
+            padding: 10px 10px;
+        }
+
+        .behclick-panel .panel-body {
+            padding: 0px;
+        }
+
+        .behclick-panel a:link {
+            text-decoration: none;
+        }
+
+        .behclick-panel a:visited {
+            text-decoration: none;
+        }
+
+        .behclick-panel a:hover {
+            text-decoration: none;
+        }
+
+        .behclick-panel a:active {
+            text-decoration: none;
+        }
+    /*Bootstarp Css For Filter Search End here Added By Deepak:30_08_2016*/
+
+    /*Bootstrap Css For Grid View And List View start here Added By Deepak :31_08_2016*/
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .thumbnail {
+        margin-bottom: 20px;
+        padding: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+    }
+
+    .item.list-group-item {
+        float: none;
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+
+        .item.list-group-item:nth-of-type(odd):hover, .item.list-group-item:hover {
+            background: #428bca;
+        }
+
+        .item.list-group-item .list-group-image {
+            margin-right: 10px;
+        }
+
+        .item.list-group-item .thumbnail {
+            margin-bottom: 0px;
+        }
+
+        .item.list-group-item .caption {
+            padding: 9px 9px 0px 9px;
+        }
+
+        .item.list-group-item:nth-of-type(odd) {
+            background: #eeeeee;
+        }
+
+        .item.list-group-item:before, .item.list-group-item:after {
+            display: table;
+            content: " ";
+        }
+
+        .item.list-group-item img {
+            float: left;
+        }
+
+        .item.list-group-item:after {
+            clear: both;
+        }
+
+    .list-group-item-text {
+        margin: 0 0 11px;
+    }
+    /*this is for Grid view and List View start here  */
+    .btn {
+        height: auto;
+        width: auto;
+    }
+    /*this is for Grid view and List View End here  */
+    /*Bootstrap Css For Grid View And List View End here Added By Deepak :31_08_2016*/
+    /*Bootstrap Css For BreadCrum start here Added By Deepak:07_09_2016*/
+    hr {
+        height: 4px;
+        margin-left: 15px;
+        margin-bottom: -3px;
+    }
+
+    .hr-warning {
+        background-image: -webkit-linear-gradient(left, rgba(210,105,30,.8), rgba(210,105,30,.6), rgba(0,0,0,0));
+    }
+
+    .hr-success {
+        background-image: -webkit-linear-gradient(left, rgba(15,157,88,.8), rgba(15, 157, 88,.6), rgba(0,0,0,0));
+    }
+
+    .hr-primary {
+        background-image: -webkit-linear-gradient(left, rgba(66,133,244,.8), rgba(66, 133, 244,.6), rgba(0,0,0,0));
+    }
+
+    .hr-danger {
+        background-image: -webkit-linear-gradient(left, rgba(244,67,54,.8), rgba(244,67,54,.6), rgba(0,0,0,0));
+    }
+
+    .breadcrumb {
+        background: rgba(245, 245, 245, 0);
+        border: 0px solid rgba(245, 245, 245, 1);
+        border-radius: 25px;
+        display: block;
+    }
+
+    .btn-bread {
+        margin-top: 10px;
+        font-size: 12px;
+        border-radius: 3px;
+    }
+
+    .slider .tooltip.top {
+        top: -20px;
+    }
+
+    .ui-widget-header {
+        border: 1px solid #e90202 !important;
+        background: #e90202 50% 50% repeat-x !important;
+        color: #fff;
+        font-weight: bold;
+    }
+    /**/
+</style>
+<style>
+    .login-dialog .modal-dialog {
+        width: 300px;
+    }
+
+    .login-dialog .modals-dialog {
+        width: 300px;
+    }
+
+    .panel-heading {
+        width: 100%;
+        float: left;
+        height: auto;
+    }
+
+    .indicator {
+        position: relative;
+        z-index: -5;
+    }
+
+    .tabulatbtn {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+<style>
+    .scroll-top-wrapper {
+        position: fixed;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        text-align: center;
+        z-index: 99999999;
+        background-color: #777777;
+        color: #eeeeee;
+        width: 50px;
+        height: 48px;
+        line-height: 48px;
+        right: 30px;
+        bottom: 30px;
+        padding-top: 2px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+        .scroll-top-wrapper:hover {
+            background-color: #888888;
+        }
+
+        .scroll-top-wrapper.show {
+            visibility: visible;
+            cursor: pointer;
+            opacity: 1.0;
+        }
+
+        .scroll-top-wrapper i.fa {
+            line-height: inherit;
+        }
+
+    .sortlist input {
+        height: 35px;
+        line-height: 179px;
+        width: 122px;
+        float: right;
+        margin-left: 4px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    ::-webkit-scrollbar-track-piece {
+        /*background-color: #0A4C95;*/
+        background-color: darkgrey;
+    }
+
+    ::-webkit-scrollbar-thumb:vertical {
+        height: 10px;
+        background-color: gray;
+    }
+
+    .elem-demo {
+        width: 100px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-left: 50%;
+        margin-top: 20%;
+        z-index: 000;
+    }
+</style>
+<style type="text/css">
+    .loader {
+        display: none;
+        position: absolute;
+        left: 35%;
+        top: 99.5%;
+        z-index: 1;
+        width: 80px;
+        height: 80px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+    /* Add animation to "page content" */
+    .animate-bottom {
+        position: relative;
+        -webkit-animation-name: animatebottom;
+        -webkit-animation-duration: 1s;
+        animation-name: animatebottom;
+        animation-duration: 1s;
+    }
+
+    body {
+        font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    }
+
+    .row {
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    .panel-heading span {
+        margin-top: -20px;
+        font-size: 15px;
+    }
+
+    .tabulatbtn {
+        text-decoration: none;
+        border: none;
+        width: 100%;
+        float: left;
+        text-align: left;
+        background-color: #fcfcfc;
+        padding: 7px 2px;
+        border-bottom: solid 1px #dddddd;
+    }
+</style>
+
+<link href="~/Content/css/bootstrap-dialog.min.css" rel="stylesheet" />
+<script src="~/Content/js/bootstrap-dialog.min.js"></script>
+<link href="~/Content/css/bootstrap-slider.css" rel="stylesheet" />
+<script src="~/Content/js/bootstrap-slider.js"></script>
+<link href="~/Content/new1.css" rel="stylesheet" />
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+@using (Html.BeginForm())
+{
+    @Html.Hidden("CurrentDisplay");
+    @Html.Hidden("TotalDisplay");
+    <section class="detailsbook">
+        <div class="">
+            <ol class="breadcrumb bread-warning" id="breadcrumb"></ol>
+        </div>
+
+        <div class="col-md-3">
+            <div class="bookportaleft">
+                <div id="sitemaps">
+                    <div class="list-group">
+                        <div class="panel-heading" id="SubHeading">
+                            <button type="button" data-toggle="collapse" id="ASubCategory" data-target="#collapse2" class="a tabulatbtn">
+                                SUBJECT
+                                <i class="indicator fa fa-minus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="collapse2" class="panel-collapse collapse in">
+                            <div class="filter-group" id="divSubject">
+                            </div>
+                        </div>
+                        <div id="seriesdiv">
+                            <div class="panel-heading" id="SubHeading">
+                                <button type="button" data-toggle="collapse" id="SeriesCategory" data-target="#collapse4" class="a tabulatbtn">
+                                    <span>Series (0)</span> <span class="text-right"><i class="indicator fa fa-plus pull-right" aria-hidden="true"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="collapse4" class="panel-collapse collapse">
+                            <div class="filter-group" id="divSeries">
+
+                            </div>
+                        </div>
+
+                        <div id="divboard">
+                            <div class="panel-heading" id="BoardHeading">
+                                <button type="button" data-toggle="collapse" id="boardheader" data-target="#collapse1" class="a tabulatbtn">
+                                    BOARD <i class="indicator fa fa-plus" aria-hidden="true"></i>
+                                </button>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <div id="collapse1" class="panel-collapse collapse">
+                                <div class="filter-group" id="divBoard">
+                                </div>
+                            </div>
+
+                        </div>
+                        @*Bootstarp Filter Search Start Here Added By deepak:30_08_2016*@
+                        <div id="divclass">
+                            <div class="panel-heading " id="ClHeading">
+                                <button type="button" data-toggle="collapse" id="classheader" data-target="#collapse0" class="a tabulatbtn">
+                                    CLASS <i class="indicator fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div id="collapse0" class="panel-collapse collapse">
+                                <div class="filter-group" id="divClass">
+                                </div>
+                            </div>
+                        </div>
+                        @*Bootstarp Filter Search End Here Added By deepak:30_08_2016*@
+                        <div id="collapse4" class="panel-collapse collapse in col-md-12" style="margin-top:3%;">
+                            <div class="Slider">
+                                <div data-role="rangeslider">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse in col-md-12">
+                            <div class="valueLabel">
+                                PRICE RANGE :
+                                <p class="pricerange">
+                                    <label for="amount" id="pricevalue">
+                                        <b>
+                                            <span id="sliderValuemin" style="font-weight: bold;text-indent: 1em;"><i class="fa fa-inr"></i> 0.00</span><span style="margin-left:10px"> To </span>
+                                            <span id="sildervaluemax" style="font-weight: bold;text-indent: 1em;"><i class="fa fa-inr"></i> 1000.00</span>
+                                        </b>
+                                    </label>
+                                    @*<input type="text" style="border: 0;   background-color: transparent;color: #1bbeb4;vertical-align: top;    font-size: 1.2em;width: 50%; display:none;" readonly="" id="amount">*@
+                                </p>
+                            </div>
+                            <input id="ex2" style="width:100%;" type="text" class="span2" value="" onchange="FillterClass(0)" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[10,1000]" /> @*<b>Max Prace €1000</b>*@
+
+                        </div>
+                        @* Changes End Here *@
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<Changes>*@
+        <div class="col-md-9 bookportalright">
+
+            <div class="col-md-12" style="padding:1% 0;">
+                <div class="col-md-4" style="padding:0px;">
+                    <div itemprop="name" class="queried-for" id="CountItem">
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group add-on">
+                        @*onkeypress="AutocompleteSearch()"*@
+                        <input class="form-control" placeholder="Subject,series base search " name="autocomplete" id="autocomplete" width="100" type="text">
+                        <div class="input-group-btn">
+                            <button class="btn btnsearchico" type="submit" style="visibility:hidden"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 text-right">
+                    <span>&nbsp &nbsp</span>
+                    <span>Sort : </span>
+                    <a title="low to high price" class="btn shortinbtn" onclick="HieghPrice('high')" id="sort" href="#" data-original-title="Sort ascending">
+                        <span class="fa fa-inr"></span>
+                        <i class="fa fa-sort-numeric-asc"></i>
+                    </a>
+                </div>
+            </div>
+            <input type="hidden" id="hdnprice" value="" />
+            <input type="hidden" id="hdnlistgrid" value="" />
+            <input type="hidden" id="hdnaddcart" value="" />
+            <input type="hidden" id="hdnMenuId" value="" />
+            <input type="hidden" id="hdnsujectid" value="" />
+            <input type="hidden" id="hdnBoardId" value="" />
+            <input type="hidden" id="hdnclassId" value="" />
+            <input type="hidden" id="hdnsubjectcount" value="" />
+            <input type="hidden" id="hdnboardcount" value="" />
+            <input type="hidden" id="hdnclasscount" value="" />
+            <input type="hidden" id="hdnseriescount" value="" />
+
+            <ol id="breadcrumbs"></ol>
+
+            <div id="FilterCheck" class="filter-summary">
+
+            </div>
+            <div class="row" id="items">
+
+            </div>
+            <div class="loader"></div>
+        </div>
+
+        <div class="scroll-top-wrapper ">
+            <span class="scroll-top-inner">
+                <i class="fa fa-arrow-up"></i>
+            </span>
+        </div>
+    </section>
+
+}
+@*this Part we using for Login Popup Start Here By Deepak:15_09_2016*@
+
+<div class="hide">
+    <div id="dialog" title="Prachi Books">
+        <p>Please select the Print Book & E-Book</p>
+    </div>
+</div>
+@*//this Part we using for Login Popup End Here By Deepak:15_09_2016*@
+@section scripts{
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
+        $("#btnCheckOut").click(function(){
+            var url = "/Payment/index";
+            window.location.href = url;
+        });
+
+        $(document).ready(function(){
+            //for button title success:
+            $('[data-toggle="tooltip"]').tooltip();
+            //
+            $(function(){
+
+                $(document).on( 'scroll', function(){
+
+                    if ($(window).scrollTop() > 100) {
+                        $('.scroll-top-wrapper').addClass('show');
+                    } else {
+                        $('.scroll-top-wrapper').removeClass('show');
+                    }
+                });
+
+                $('.scroll-top-wrapper').on('click', scrollToTop);
+            });
+
+            function scrollToTop() {
+                verticalOffset = typeof(verticalOffset) != 'undefined' ? verticalOffset : 0;
+                element = $('body');
+                offset = element.offset();
+                offsetTop = offset.top;
+                $('html, body').animate({scrollTop: offsetTop}, 500, 'linear');
+            }
+
+        });
+
+        var pageSize = 12;
+        var pageIndex = 0;
+        $(function () {
+
+            $("#imgSpinner").hide();
+            var parentId = '@System.Configuration.ConfigurationManager.AppSettings["DefultCategory"]';// 0;/// GetQueryStringParams('Id');
+            $("#hdnMenuId").val(parentId);
+            var BoardId = {};
+            var SubjectId = {};
+            var ClassId = {};
+            var Series = {};
+            var parentId = $("#hdnMenuId").val();
+            var iitem = $("#hdnprice").val();
+
+            //SubjectId[0]="29";
+            var model = {
+                MinPrice: null,
+                MaxPrice: null,
+                Board: BoardId,
+                Class: ClassId,
+                subject: SubjectId,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                Short: iitem,
+                parentId: parentId,
+                Series: Series
+            };
+
+          
+
+            //Added window scroll for for list start here:26_08_2016
+            $(document).ready(function () {
+                //changes start here 03/10/2016
+
+                var success = @((TempData["BookId"] != null).ToString().ToLower());
+                if (success == true) {
+                    var tempdataval = '@TempData["BookId"]';
+                    addcart(tempdataval);
+                    showcartpopup();
+                }
+                //changes End here 03/10/2016
+                Getcart();
+                GetWishList();
+                // Retrieve the object from storage
+                var retrievedObject = localStorage.getItem('elems');
+                console.log(model);
+
+                if ("@ViewBag.isFutureTrack" !="Yes")
+                AjaxCall(model)
+                
+               
+                var count=0;
+                $(window).scroll(function () {
+                    if ($(window).scrollTop() == ($(document).height() - $(window).height())) {
+
+                        var iitem = $("#hdnprice").val();
+                        var parentId = $("#hdnMenuId").val();
+                        var item= FillterClassScroll(iitem);
+                        pageIndex= pageIndex+1;
+                        model = {
+                            MinPrice: null,
+                            MaxPrice: null,
+                            Board: item.Board,
+                            Class: item.Class,
+                            subject: item.subject,
+                            pageIndex:pageIndex,
+                            pageSize: pageSize,
+                            Short: iitem,
+                            parentId: parentId,
+                            Series: item.Series
+                        };
+                        count++;
+                        var currentDisplayedBooks= parseInt($("#CurrentDisplay").val());
+                        var TotalDisplayedBooks= parseInt($("#TotalDisplay").val());
+                        if(currentDisplayedBooks<TotalDisplayedBooks)
+                        {
+                            AjaxCall(model)
+                        }
+
+                    }
+                });
+            });
+            //
+            //Added a function for bind cart value to popup winbdow start here by deepak:25/10/2016
+            function showcartpopup(){
+                var html = '';
+                var html1='';
+                var total = 0;
+                var subtotal=0;
+                var count = 0;
+                var elems = [];
+                var counts=0;
+                $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                    if (dataVal != null && dataVal.length > 0) {
+                        count = dataVal.length;
+                        html=html+'<tr>';
+                        html=html+'<td>';
+                        html=html+'<center>';
+                        html=html+'<p><span class="h4">ITEM(s)</span></p>';
+                        html=html+'</center>';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                        $("#empty").css("display","none");
+                        $("#nunempty").css("display","block")
+                        $.each(dataVal, function (i, item) {
+                            var price = parseInt(item.Quantity) * parseFloat(item.Price);
+                            var discount = parseInt(item.Quantity) * parseFloat(item.Discount);
+                            subtotal = price - discount;
+                            total = total + subtotal;
+                            counts=counts+item.Quantity
+                            html=html+'<tr >';
+                            html=html+'<td>';
+                            html=html+'<div class="col-lg-2" id="">';
+                            html=html+'<center>';
+                            html=html+'<img alt="" class="img-responsive" src="'+item.Image+'">';
+                            html=html+'</center>';
+                            html=html+'</div><!-- col-lg-1 -->';
+                            html=html+'<div class="col-lg-7" id="">';
+                            html=html+'<ul class="list-inline">';
+                            html=html+'<li><span class="h5">'+item.Title+'</span></li>';
+                            html=html+'</ul>';
+                            html=html+'<ul class="list-inline">';
+                            html=html+'<li>';
+                            html=html+'</span>';
+                            html=html+'</li>';
+                            html=html+'<li class="line-through">';
+                            html=html+'<span class="">MRP:</span><span class="fa fa-inr">'+item.Price+'</span>';
+                            html=html+'</li>';
+                            html=html+'<li>';
+                            html=html+'<span class="">OFFER Rs.</span><span class="h5"><span class="fa fa-inr">'+discount+'</span></span>';
+                            html=html+'</li>';
+                            html=html+'</ul>';
+                            html=html+'</div>';
+                            html=html+'<div class="col-lg-3 text-right" id="">';
+                            html=html+'<table class="pull-right">';
+                            html=html+'<tbody>';
+                            html=html+'<tr class="">';
+                            html=html+'<td style="border: 0px; padding: 5px;" colspan="2" class="">';
+                            if(item.discount!=0){
+                                html=html+'<span class="fa fa-inr"><strong>'+subtotal+'</strong></span>';
+                            }
+                            html=html+'</td>';
+                            html=html+'</tr>';
+                            html=html+'<tr>';
+                            html=html+'<td style="border: 0px; width: 99%; text-align: right; padding: 5px;">Qty.</td>';
+                            html = html + '<td style="border: 0px; padding: 5px;">';//
+                            if (item.IsSolution) { html = html + '<i class="text-center" /> <span class="qty"><label>' + item.Quantity + '</label> </span>'; }
+                            else {
+                                html = html + '<input type="text"  value="' + item.Quantity + '" id="Qunts_' + item.Id + '" onchange="javascript:UpdateQuntiyPopup(' + item.Id + ');" style="text-align:center; width:30px; " class="">';
+                            }
+                            html=html+'<span id="errUpdateQTY2320"> </span>';
+                            html=html+'</td>';
+                            html=html+'</tr>';
+                            html=html+'<tr>';
+                            html=html+'<td style="border: 0px; padding: 5px;" colspan="2" class="">';
+                            html=html+'<span  class="pointer" id="delete2320">';
+                            html=html+'<span class="text-danger" style="cursor:pointer" onclick="javascript:RemoveAddCartpopup(' + item.Id + ','+item.ItemId+')"> Remove <i class="glyphicon glyphicon-remove-circle" />  </span>';
+                            html=html+'</span>';
+                            html=html+'';
+                            html=html+'<span class="small btn btn-danger pull-right" style="display: none;cursor:pointer;" id="delete12320"> <span class="h6"> Remove ? </span> </span>';
+                            html=html+'</td>';
+                            html=html+'</tr>';
+                            html=html+'</tbody>';
+                            html=html+'</table>';
+                            html=html+'</div><!-- col-lg-3 -->';
+                            html=html+'</td>';
+                            html=html+'</tr>';
+                        })
+                        html=html+'<tr>';
+                        html=html+'<td class="text-right text-uppercase">';
+                        html=html+'<ul class="list-inline">';
+                        html=html+'<li class="">You order</li>';
+                        html=html+'<li class=""></li>';
+                        html=html+'<li class="h5"><span class=""> Qty.<strong>( '+counts+' )</strong> </span></li>';
+                        html=html+'<li class=""></li>';
+                        html=html+'<li class="h5">Subtotal </li>';
+                        html=html+'<li class="h5"><span class="fa fa-inr"><strong>'+total+'</strong></span></li>';
+                        html=html+'</ul>';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                        html1=html1+'';
+                        html1=html1+'<div class="col-lg-12 panel panel-default" id="">';
+                        html1=html1+'<table class="table table-bordered">';
+                        html1=html1+'<tbody>';
+                        html1=html1+'<tr>';
+                        html1=html1+'<td colspan="2">';
+                        html1=html1+'<p>';
+                        html1=html1+'<span class="text-uppercase h4"> Order Summary</span>';
+                        html1=html1+'</p>';
+                        html1=html1+'</td>';
+                        html1=html1+'</tr>';
+                        $.each(dataVal, function (i, items) {
+                            var price = parseInt(items.Quantity) * parseFloat(items.Price);
+                            var discount = parseInt(items.Quantity) * parseFloat(items.Discount);
+                            subtotal = price - discount;
+                            total = total + subtotal;
+                            html1=html1+'<tr class="">';
+                            html1=html1+'<td>';
+                            html1=html1+'<span class="">Item('+items.Title+') Qty.</span>';
+                            html1=html1+'<span class="spttlitems h5">('+items.Quantity+')</span>';
+                            html1=html1+'<input type="hidden" value="1" id="txtttlItems">';
+                            html1=html1+'<span class="pull-right">Subtotal</span>';
+                            html1=html1+'</td>';
+                            html1=html1+'<td class="text-right">';
+                            html1=html1+'<span class="h5"><span class="fa fa-inr">'+subtotal+'<span></span>';
+                            html1=html1+'</td>';
+                            html1=html1+'</tr>';
+                        });
+                        html1=html1+'</tbody>';
+                        html1=html1+'</table>';
+                        html1=html1+'<p><input type="button" onclick="javascript:GetCartInfo();"  value="Checkout to confirm" id="" class="btn btn-success btn-lg"></p>';
+                        html1=html1+'';
+                        html1=html1+'<!-- <p><input type="button" class="btn btn-primary" id="" value=" Continue Shop More !!!! Earn more   "  data-dismiss="modal" onclick="javascript:jsCartClose();" /></p> -->';
+                        html1=html1+'</div>';
+                        $("#tbodycart").append(html);
+                        $("#divtotal").append(html1);
+                        $('#Login').modal('show');
+                        $("#sign-up").css("display","none");
+                        $("#sign-in").css("display","none");
+                        $("#loginidfail").css("display","none");
+                        $("#Cartdetail").css("display","block");
+                    }
+                });
+            }
+
+            //Added a function for bind cart value to popup winbdow end here by deepak:25/10/2016
+
+            //Added window scroll for for list End here:26_08_2016table cartlist
+            //
+            $(document).on("click", ".AddToCart", function (e) {
+                var itemId = $(this).attr('data-id');
+                $.getJSON('@Url.Action("AddToCart", "Catalogue")', { id: itemId }, function (dataVal) {
+                });
+            });
+
+        });
+        function UpdateQuntiyPopup(id) {
+            var Quantity = $("#Qunts_" + id).val();
+            if ($.isNumeric(Quantity) && Quantity > 0) {
+                $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                    showcartt();
+                });
+            }
+            else{
+                $.notify("Enter Onely Number", "error");
+                showcartt();
+            }
+        }
+        function RemoveAddCartpopup(id,itemid) {
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveCart", "Catalogue")', { Id: id }, function (dataVal) {
+                    $("#cartcheck_"+itemid).removeClass("btn btn-success");
+                    $("#cartcheck_"+itemid).addClass("btn btn-primary");
+                    $("#cartcheck_"+itemid).attr("data-toggle", "tooltip")
+                    $("#cartcheck_"+itemid).attr("data-original-title", "")
+                    showcartt();
+                });
+            } else {
+            }
+        }
+        function GetCartInfo(){
+            GetCartDetail();
+            GetUserDetail();
+            $("#sign-up").css("display","none");
+            $("#sign-in").css("display","none");
+            $("#loginidfail").css("display","none");
+            $("#Cartdetail").css("display","none");
+            $("#Canfirm").css("display","block");
+        }
+        function GetCartDetail(){
+            var html = '';
+            var html1='';
+            var total = 0;
+            var subtotal=0;
+            var count = 0;
+            var elems = [];
+            var counts=0;
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                html=html+'';
+                html=html+'<table class="table table-bordered">';
+                html=html+'<tbody>';
+                html=html+'<tr>';
+                html=html+'<td colspan="2">';
+                html=html+'<p>';
+                html=html+'<span class="text-uppercase h4"> Order </span>';
+                html=html+'</p>';
+                html=html+'</td>';
+                html=html+'</tr>';
+                $.each(dataVal, function (i, items) {
+                    var price = parseInt(items.Quantity) * parseFloat(items.Price);
+                    var discount = parseInt(items.Quantity) * parseFloat(items.Discount);
+                    subtotal = price - discount;
+                    total = total + subtotal;
+                    counts=counts+items.Quantity
+                    html=html+'<tr>';
+                    html=html+'<td>';
+                    html=html+'<p>';
+                    html=html+'<span class="pull-left">Item('+items.Title+') - Qty.  <strong>'+items.Quantity+'</strong>  </span>';
+                    html=html+'<span class="pull-right">Subtotal</span>';
+                    html=html+'</p>';
+                    html=html+'</td>';
+                    html=html+'<td class="text-right">';
+                    html=html+'<p>';
+                    html=html+'<span class="h5"><span class="fa fa-inr">'+subtotal+'</span></span>';
+                    html=html+'</p>';
+                    html=html+'</td>';
+                    html=html+'</tr>';
+                    html=html+'<tr>';
+                    html=html+'<td>';
+                    html=html+'<p><span class="">Discount</span> <span class="text-primary"> <strong>offers !!!</strong> </span></p>';
+                    html=html+'</td>';
+                    html=html+'<td class="text-right">';
+                    html=html+'<p>';
+                    html=html+'<span class="spShipping h5"><span calass="fa fa-inr">'+discount+'</span></span>';
+                    html=html+'<input type="hidden" value="0" id="txtdiscount">';
+                    html=html+'</p>';
+                    html=html+'</td>';
+                    html=html+'</tr>';
+                })
+                html=html+'<tr>';
+                html=html+'<td>';
+                html=html+'<p><span class="">Shipping &amp; Delivery</span> <span class="text-primary"> <strong>FREE !!!</strong> </span></p>';
+                html=html+'</td>';
+                html=html+'<td class="text-right">';
+                html=html+'<p>';
+                html=html+'<span class="spShipping h5">0</span>';
+                html=html+'<input type="hidden" value="0" id="txtShipping">';
+                html=html+'</p>';
+                html=html+'</td>';
+                html=html+'</tr>';
+                html=html+'<tr>';
+                html=html+'<td class="text-right">';
+                html=html+'<p><span class=""> Amount Payable </span></p>';
+                html=html+'</td>';
+                html=html+'<td class="text-right">';
+                html=html+'<img width="0" height="0" alt="" class="hide" src="callback">';
+                html=html+'<p>';
+                html=html+'Rs. <strong><span id="spAmountPayable" class="h5"><span class="fa fa-inr">'+total+'</span></span> </strong>';
+                html=html+'<input type="hidden" value="'+total+'" id="txtAmountPayable">';
+                html=html+'</p>';
+                html=html+'</td>';
+                html=html+'</tr>';
+                html=html+'</tbody>';
+                html=html+'</table>';
+                html=html+'<center>';
+                html=html+'<div class="btn btn-success text-uppercase btn-lg" id="">';
+                html=html+'<span class="h6 text-uppercase" onclick="GetCartCinfirmInfo();">Confirm &amp; Place order</span>';
+                html=html+'</div>';
+                html=html+'<p><span class="small">You will not be able to update your cart after placing order. </span></p>';
+                html=html+'</center>';
+                $("#ConfirmOrder").empty();
+                $("#ConfirmOrder").append(html);
+            });
+        }
+        function GetUserDetail(){
+            var html = '';
+            $.getJSON('@Url.Action("GetCartUserInfo", "Catalogue")', {}, function (dataVal) {
+
+                var data=JSON.stringify(dataVal);
+
+                var data1= JSON.parse(data);
+
+                if(dataVal!=null){
+                    html=html+'<div style="border: 2px dashed #aaa;" class="col-lg-12">';
+                    html=html+'<div class="form-group col-lg-12">';
+                    html=html+'<p><span class="text-uppercase h4">Deliver to this address</span></p>';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Name" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.Name+'" class="form-control" id="txtShippingName">';
+                    html=html+'<span id="errShippingName" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'<div class="form-group col-lg-12">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Address" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.Address+'" class="form-control" id="txtShippingAddress">';
+                    html=html+'<span id="errShippingAddress" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'<div class="form-group col-lg-4">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Country" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.Country+'" class="form-control" id="txtShippingCity">';
+                    html=html+'<span id="errShippingCity" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'';
+                    html=html+'<div class="form-group col-lg-4">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter City" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.City+'" class="form-control" id="txtShippingCity">';
+                    html=html+'<span id="errShippingCity" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'';
+                    html=html+'<div class="form-group col-lg-4">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter State" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.State+'" class="form-control" id="txtShippingState">';
+                    html=html+'<span id="errShippingState" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'';
+                    html=html+'<div class="form-group col-lg-4">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Pincode" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.Pincode+'" class="form-control" id="txtShippingPincode">';
+                    html=html+'<span id="errShippingPincode" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'<div class="form-group col-lg-6">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Phone" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.PhoneNumber+'" class="form-control" id="txtShippingPhone">';
+                    html=html+'<span id="errShippingPhone" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'<div class="form-group col-lg-6">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Enter Email" onkeyup="javascript:jsCheckoutValidate();" value="'+data1.Email+'" class="form-control" id="txtShippingEmail">';
+                    html=html+'<span id="errShippingEmail" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'<div class="form-group col-lg-12">';
+                    html=html+'<div class="input-group">';
+                    html=html+'<input type="text" placeholder="Specific Instructions / Landmark" value="" class="form-control" id="txtRemark">';
+                    html=html+'<span id="errRemark" class="input-group-addon text-warning"></span>';
+                    html=html+'</div>';
+                    html=html+'</div><!-- form-group -->';
+                    html=html+'</div><!-- col-lg-12 panel pane-default -->';
+                    html=html+'<div class="form-group col-lg-12 panel panel-default">';
+                    html=html+'<p><span class="text-uppercase h4"> My Bill Account Address </span></p>';
+                    html=html+'<ul class="list-inline">';
+                    html=html+'<li><strong>Name:</strong>'+data1.Name+'</li>';
+                    html=html+'<li><strong>Address:</strong>'+data1.Address+'</li>';
+                    html=html+'<li><strong>City:</strong>'+data1.City+'</li>';
+                    html=html+'<li><strong>State:</strong>'+data1.State+'</li>';
+                    html=html+'<li><strong>State:</strong>'+data1.Country+'</li>';
+                    html=html+'<li><strong>Pincode:</strong>'+data1.Pincode+'</li>';
+                    html=html+'<li><strong>Phone:</strong>'+data1.PhoneNumber+'</li>';
+                    html=html+'<li><strong>Email:</strong>'+data1.Email+'</li>';
+                    html=html+'</ul>';
+                    html=html+'</div>';
+                    // });
+                    $("#CanfirmUser").empty();
+                    $("#CanfirmUser").append(html);
+                }
+
+            });
+
+        }
+        function showcartt(){
+            var html = '';
+            var html1='';
+            var total = 0;
+            var subtotal=0;
+            var count = 0;
+            var elems = [];
+            var counts=0;
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                if (dataVal != null && dataVal.length > 0) {
+                    count = dataVal.length;
+                    html=html+'<tr>';
+                    html=html+'<td>';
+                    html=html+'<center>';
+                    html=html+'<p><span class="h4">ITEM(s)</span></p>';
+                    html=html+'</center>';
+                    html=html+'</td>';
+                    html=html+'</tr>';
+                    $("#empty").css("display","none");
+                    $("#nunempty").css("display","block")
+                    $.each(dataVal, function (i, item) {
+                        var price = parseInt(item.Quantity) * parseFloat(item.Price);
+                        var discount = parseInt(item.Quantity) * parseFloat(item.Discount);
+                        subtotal = price - discount;
+                        total = total + subtotal;
+                        counts=counts+item.Quantity
+                        html=html+'<tr >';
+                        html=html+'<td>';
+                        html=html+'<div class="col-lg-2" id="">';
+                        html=html+'<center>';
+                        html=html+'<img alt="" class="img-responsive" src="'+item.Image+'">';
+                        html=html+'</center>';
+                        html=html+'</div><!-- col-lg-1 -->';
+                        html=html+'<div class="col-lg-7" id="">';
+                        html=html+'<ul class="list-inline">';
+                        html=html+'<li><span class="h5">'+item.Title+'</span></li>';
+                        html=html+'</ul>';
+                        html=html+'<ul class="list-inline">';
+                        html=html+'<li>';
+                        html=html+'<span class="h4">';
+                        html=html+'<span class="text-center ">';
+                        html=html+'10% <span class="h6">OFF</span>';
+                        html=html+'</span>';
+                        html=html+'</span>';
+                        html=html+'</li>';
+                        html=html+'<li class="line-through">';
+                        html=html+'<span class="">MRP:</span>'+item.Classname+'';
+                        html=html+'</li>';
+                        html=html+'<li class="line-through">';
+                        html=html+'<span class="">MRP:</span>'+item.BoardName+'';
+                        html=html+'</li>';
+                        html=html+'<li class="line-through">';
+                        html=html+'<span class="">MRP:</span>'+item.Price+'';
+                        html=html+'</li>';
+                        html=html+'<li>';
+                        html=html+'<span class="">OFFER Rs.</span><span class="h5">00.00</span>';
+                        html=html+'</li>';
+                        html=html+'</ul>';
+                        html=html+'</div>';
+                        html=html+'<div class="col-lg-3 text-right" id="">';
+                        html=html+'<table class="pull-right">';
+                        html=html+'<tbody>';
+                        html=html+'<tr class="">';
+                        html=html+'<td style="border: 0px; padding: 5px;" colspan="2" class="">';
+                        html=html+'Rs. <span class=""><strong>'+subtotal+'</strong></span>';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                        html=html+'<tr>';
+                        html=html+'<td style="border: 0px; width: 99%; text-align: right; padding: 5px;">Qty.</td>';
+                        html=html+'<td style="border: 0px; padding: 5px;">';//
+                        html=html+'<input type="text"  value="'+item.Quantity+'" id="Qunts_'+item.Id+'" onchange="javascript:UpdateQuntiyPopup('+item.Id+');" style="text-align:center; width:30px; " class="">';
+                        html=html+'<span id="errUpdateQTY2320"> </span>';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                        html=html+'<tr>';
+                        html=html+'<td style="border: 0px; padding: 5px;" colspan="2" class="">';
+                        html=html+'<span  class="pointer" id="delete2320">';
+                        html=html+'<span class="text-danger"  style="cursor:pointer" onclick="javascript:RemoveAddCartpopup(' + item.Id + ','+item.ItemId+')"> Remove <i class="glyphicon glyphicon-remove-circle" />  </span>';
+                        html=html+'</span>';
+                        html=html+'';
+                        html=html+'<span class="small btn btn-danger pull-right" style="display: none;" id="delete12320"> <span class="h6"> Remove ? </span> </span>';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                        html=html+'</tbody>';
+                        html=html+'</table>';
+                        html=html+'</div><!-- col-lg-3 -->';
+                        html=html+'</td>';
+                        html=html+'</tr>';
+                    })
+                    html=html+'<tr>';
+                    html=html+'<td class="text-right text-uppercase">';
+                    html=html+'<ul class="list-inline">';
+                    html=html+'<li class="">You order</li>';
+                    html=html+'<li class=""></li>';
+                    html=html+'<li class="h5"><span class=""> Qty.<strong>( '+counts+' )</strong> </span></li>';
+                    html=html+'<li class=""></li>';
+                    html=html+'<li class="h5">Subtotal </li>';
+                    html=html+'<li class="h5"><span class="">Rs. <strong>'+total+'</strong></span></li>';
+                    html=html+'</ul>';
+                    html=html+'</td>';
+                    html=html+'</tr>';
+                    html1=html1+'';
+                    html1=html1+'<div class="col-lg-12 panel panel-default" id="">';
+                    html1=html1+'<table class="table table-bordered">';
+                    html1=html1+'<tbody>';
+                    html1=html1+'<tr>';
+                    html1=html1+'<td colspan="2">';
+                    html1=html1+'<p>';
+                    html1=html1+'<span class="text-uppercase h4"> Order Summary</span>';
+                    html1=html1+'<span class="pull-right"> <a  href="#"> Update cart </a> </span>';
+                    html1=html1+'</p>';
+                    html1=html1+'</td>';
+                    html1=html1+'</tr>';
+
+
+                    $.each(dataVal, function (i, items) {
+                        var price = parseInt(items.Quantity) * parseFloat(items.Price);
+                        var discount = parseInt(items.Quantity) * parseFloat(items.Discount);
+                        subtotal = price - discount;
+                        total = total + subtotal;
+                        html1=html1+'<tr class="">';
+                        html1=html1+'<td>';
+                        html1=html1+'<span class="">Item('+items.Title+') Qty.</span>';
+                        html1=html1+'<span class="spttlitems h5">('+items.Quantity+')</span>';
+                        html1=html1+'<input type="hidden" value="1" id="txtttlItems">';
+                        html1=html1+'<span class="pull-right">Subtotal</span>';
+                        html1=html1+'</td>';
+                        html1=html1+'<td class="text-right">';
+                        html1=html1+'<span class="h5">'+subtotal+'</span>';
+                        html1=html1+'</td>';
+                        html1=html1+'</tr>';
+                    });
+
+
+                    html1=html1+'</tbody>';
+                    html1=html1+'</table>';
+
+                    html1=html1+'<p><input type="button" onclick="javascript:GetCartInfo();"  value="Checkout to confirm" id="" class="btn btn-success btn-lg"></p>';
+                    html1=html1+'';
+
+                    html1=html1+'<!-- <p><input type="button" class="btn btn-primary" id="" value=" Continue Shop More !!!! Earn more   "  data-dismiss="modal" onclick="javascript:jsCartClose();" /></p> -->';
+
+                    html1=html1+'</div><!-- panel -->';
+                    html1=html1+'<p>';
+                    html1=html1+'</p><ul class="list-inline text-uppercase">';
+                    html1=html1+'';
+                    html1=html1+'<li class=""> You <strong>Save</strong> Rs. <strong>00.00 </strong></li>';
+                    html1=html1+'<li class=""><i class="glyphicon glyphicon-plus-sign" width="16" height="16" /></li>';
+                    html1=html1+'<li class=""> <span class=""><strong>FREE</strong></span> Shipping </li>';
+                    html1=html1+'<li class=""> </li>';
+                    html1=html1+'<li class=""><i class="glyphicon glyphicon-plus-sign" width="16" height="16" />  </li>';
+                    html1=html1+'<li class=""> <span class="">5% <strong>cashback*</strong> points </span></li>';
+                    html1=html1+'</ul>';
+                    html1=html1+'<p></p>';
+
+                    //
+                    $("#tbodycart").empty();
+                    $("#divtotal").empty();
+                    $("#tbodycart").append(html);
+                    $("#divtotal").append(html1);
+                    //
+                }
+            });
+        }
+        function GetCartCinfirmInfo(){
+            UpdateToUserAddressBook();
+            GetPaymentDetail();
+
+        }
+        function UpdateToUserAddressBook(){
+            var name=$("#txtShippingName").val();
+            var address=$("#txtShippingAddress").val();
+            var city=$("#txtShippingCity").val();
+            var country=$("#txtShippingCountry").val();
+            var Email=$("#txtShippingEmail").val();
+            var state=$("#txtShippingState").val();
+            var pincode=$("#txtShippingPincode").val();
+            var phoneno=$("#txtShippingPhone").val();
+            var model = {
+                Name:name,
+                Address: address,
+                City: city,
+                State: state,
+                Country: country,
+                Email: Email,
+                PhoneNo:phoneno,
+                PinCode:pincode
+            };
+
+            $.getJSON('@Url.Action("AddUserAddress", "Catalogue")',model, function (dataVal) {
+
+            });
+        }
+        function GetPaymentDetail(){
+            GetBilingAddres();//work start here
+            GetInvoiceDetail();
+            $("#sign-up").css("display","none");
+            $("#sign-in").css("display","none");
+            $("#loginidfail").css("display","none");
+            $("#Cartdetail").css("display","none");
+            $("#Canfirm").css("display","none");
+            $("#Payment").css("display","block");
+        }
+        function   GetBilingAddres(){
+            var html="";
+            html=html+'';
+            $.getJSON('@Url.Action("GetUserBillingAddress", "Catalogue")', {}, function (dataVal) {
+                var data=JSON.stringify(dataVal);
+                var data1= JSON.parse(data);
+
+                html=html+'<div style="min-height: 430px;" class="col-lg-12  panel panel-default">';
+                html=html+'<table class="table">';
+                html=html+'<tbody>';
+                html=html+'<tr>';
+                html=html+'<td>';
+                html=html+'<p><span class="h4 text-uppercase">  Deliver to  </span></p>';
+                html=html+'<ul class="list-inline">';
+                html=html+'<li><strong>Name:</strong> '+data1.FirstName+'</li>';
+                html=html+'<li><strong>Address:</strong> '+data1.City+'</li>';
+                html=html+'<li><strong>State:</strong> '+data1.State+'</li>';
+                html=html+'<li><strong>State:</strong> '+data1.Country+'</li>';
+                html=html+'<li><strong>City:</strong> '+data1.Address+'</li>';
+                html=html+'<li><strong>Pincode:</strong>'+data1.PinCode+'</li>';
+                html=html+'<li><strong>Phone:</strong> '+data1.PhoneNumber+'</li>';
+                html=html+'<li><strong>Email:</strong>'+data1.Email+'</li>';
+                html=html+'</ul>';
+                html=html+'</td>';
+                html=html+'</tr>';
+                html=html+'<!--  -->';
+                html=html+'</tbody>';
+                html=html+'</table>';
+                html=html+'<p><span class="">Your order will be shipped and delivered in 3-4 working days. </span></p>';
+                html=html+'</div>';
+                $("#UserbilingAddress").empty();
+                $("#UserbilingAddress").append(html);
+            });
+        }
+        function GetInvoiceDetail(){
+            $.getJSON('@Url.Action("GetInvoiceDetails", "Catalogue")', {}, function (dataVal) {
+                var html = '';
+                var total = 0.00;
+                var count = 0;
+                var discount=0;
+                var price=0.00;
+                var prices=0.00;
+                var elems = [];
+                var htmls='';
+                if (dataVal != null && dataVal.length > 0) {
+                    $("#empty").css("display","none");
+                    $("#nunempty").css("display","block")
+                    $.each(dataVal, function (i, item) {
+                        price = (parseInt(item.Quantity) * parseFloat(item.Price));
+                        discount =discount+ parseInt(item.Quantity) * parseFloat(item.Discount);
+                        var subtotal = price - discount;
+                        prices=prices+price;
+                        total = total + subtotal;
+                        count=count+item.Quantity;
+                    })
+                    html=html+'';
+                    html=html+'<div style="min-height: 430px;" class="col-lg-12  panel panel-default" id="">';
+                    html=html+'<table class="table">';
+                    html=html+'<tbody>';
+                    html=html+'<tr>';
+                    html=html+'<td colspan="2">';
+                    html=html+'<p><span class="h4 text-uppercase">  Order </span></p>';
+                    html=html+'<p>';
+                    html=html+'<span class="pull-left">Invoice:  <strong>1527</strong> </span>';
+                    html=html+'<span class="pull-right">Amount Payable: <span class="fa fa-inr"> <strong>'+total+'</span></strong> </span>';
+                    html=html+'</p>';
+                    html=html+'</td>';
+                    html=html+'</tr>';
+                    html=html+'<!--  -->';
+                    html=html+'<tr>';
+                    html=html+'<td class="col-lg-10"><span class="">Items</span></td>';
+                    html=html+'<td class="text-right"><strong>'+count+'</strong></td>';
+                    html=html+'</tr>';
+                    html=html+'<!--  -->';
+                    html=html+'<tr>';
+                    html=html+'<td class="col-lg-10"><span class="">Amount</span></td>';
+                    html=html+'<td class="text-right"> <span class="fa fa-inr"><strong>'+prices+'</strong></span></td>';
+                    html=html+'</tr>';
+                    html=html+'<!--  -->';
+                    html=html+'<tr>';
+                    html=html+'<td class="col-lg-10"><span class="">Offer Discount</span></td>';
+                    html=html+'<td class="text-right"><span class="fa fa-inr"><strong>'+discount+'</strong></span></td>';
+                    html=html+'</tr>';
+                    html=html+'<!--  -->';
+                    html=html+'<tr>';
+                    html=html+'<td class="col-lg-10"><span class="">Amount Payable</span></td>';
+                    html=html+'<td class="text-right"><span class="fa fa-inr"><strong>'+total+'</strong></span></td>';
+                    html=html+'</tr>';
+                    html=html+'</tbody>';
+                    html=html+'</table>';
+                    html=html+'</div>';
+                    htmls=htmls+'<div class="col-lg-12 " id="">';
+                    htmls=htmls+'<span class="h4 text-uppercase">  Select a payment option </span>';
+                    htmls=htmls+'<p>';
+                    htmls=htmls+'<span class="">Invoice No.: <span class="h5">1527</span> </span>';
+                    htmls=htmls+'</p>';
+                    htmls=htmls+'<p>';
+                    htmls=htmls+'<span class="">Amount Payable: <span class="h5"><span class="fa fa-inr">'+total+'</span></span></span>';
+                    htmls=htmls+'</p>';
+                    htmls=htmls+'<a href="@Url.Action("PaymentDetail", "Payment")"  class="btn btn-lg btn-success h6">Pay Online</a>';//'<a herf="@Url.Action("Index", "Payment")" id="abc">pay online here</a>';
+                    htmls=htmls+' ';
+                    htmls=htmls+'<p></p>';
+                    htmls=htmls+'</div>';
+                    $("#Invoicediv").empty();
+                    $("#Invoicediv").append(html);
+                    $("#DivePayIT").empty();
+                    $("#DivePayIT").append(htmls);
+                }
+            });
+        }
+        function AjaxCall(model) {
+
+            var html = '';
+            var html1 = '';
+            var html2='';
+            $(".loader").css("display", "block");
+            $.getJSON('@Url.Action("GetItems", "Catalogue")', model, function (dataVal) {
+                var retrievedObject = localStorage.getItem('elems');
+                var discountPrice = 0.00;
+                var ediscountPrice =0.00;
+                var discount=0;
+                var DiscountedPrice = 0.00;
+                var eDiscountedPrice=0.00;
+                if (dataVal != null && dataVal.length > 0) {
+                    var prod=0;
+                    $.each(dataVal,function(i,item){
+
+                        if(prod<0){
+                            html= html+'<div class="col-md-12 prcdbooks">';
+                        }
+                        //console.log("BookId=" + item.Id + ", discount=" + item.Discount);
+                        var a = (parseFloat(item.Discount) / 100);
+                        var e = (parseFloat(item.EbookDiscount)/100);
+                        discountPrice = parseInt(item.itemprice) * (parseFloat(item.Discount) / 100);
+                        ediscountPrice = parseInt(item.ebookitemprice) * (parseFloat(item.EbookDiscount)/100);
+                        if(DiscountedPrice>=0)
+                        {
+                            discount=0
+                        }else{
+                            discount=((discountPrice*100)/parseInt(item.Discount));
+                        }
+                        DiscountedPrice = parseFloat(item.itemprice) - discountPrice;
+
+                        if (eDiscountedPrice >= 0) {
+                            ediscount = 0
+                        } else {
+                            ediscount = ((ediscountPrice * 100) / parseInt(item.eDiscount));
+                        }
+                        eDiscountedPrice = parseFloat(item.ebookitemprice) - ediscountPrice;
+
+
+                        if(prod<=3){
+                            html= html+'<div class="col-md-4 col-sm-4">';
+                            html= html+'<div class="portalbookdv">';
+                            html= html+'<div class="panel-body svpadding">';
+                            html= html+'<div class="col-md-12 text-center"><span class="wishlistico"><a href="#" id="w_'+item.Id+'" onclick="AddToWishList('+item.Id+')"><i id="wish_'+item.Id+'" class="fa fa-heart-o" style="color:#ff0000;"></i></a></span><div class="bookprdimg view view-first" style="cursor:pointer;"><img onclick="productdetais('+item.Id+')" src='+item.Image+' /></div></div>';
+                            html= html+'<div class="col-md-12 text-center dvpadding">';
+                            html= html+'<div class="col-md-12 text-center dvpadding booktitle"><h3 data-toggle="tooltip" class="tip-top" title="'+item.Title+'">'+item.Title+'</h3><p>' + item.Author + '</p></div>';
+                            html= html+'<div class="col-xs-12 col-sm-12 col-md-12 dvpadding isbnnum"><p>'+item.ISBN+'</p></div>';
+                            html= html+'<div class="col-xs-5 col-sm-5 col-md-5 dvpadding"><p><b>CLASS - ('+item.ClassId+')</b></p></div>';
+                            if(item.BoardId != null)
+                            {
+                                html= html+'<div class="col-xs-7 col-sm-7 col-md-7 text-center dvpadding"><span>'+item.BoardId+'</span></div>';
+                            }
+                            else
+                            {
+                                html= html+'<div class="col-md-12 text-center dvpadding"><span>&nbsp;</span></div>';
+
+
+                            }
+                            html=html+'<div class="clearfix"></div>';
+                            if(item.Price==1){
+                                html=html+'<div class="price-box">';
+                                html=html+'<div class="col-xs-4 col-sm-4 col-md-4" style="padding:0px;"><input type="checkbox" name="Pbook_'+item.Id+'" id="Pbook_'+item.Id+'" value="@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()"><label for="Pbook_'+item.Id+'">PBook</label></div>';
+
+                                html=html+'<div class="col-xs-8 col-sm-8 col-md-8 text-center dvpadding bookprice"><span class="regular-price" id="product-price-282">';
+                                html=html+'<span class="price">';
+                                html=html+'<span style="margin-right: 5px; color: rgb(186, 186, 186);">';
+                                if(a<=0){}
+                                else{
+                                    html=html+'<strike><span class="fa fa-inr pmargin-right"></span>';
+                                    if(item.itemprice>0)
+                                    {
+                                        html = html + '<span style="color:red">' +item.itemprice+'</span>'
+                                    }
+                                    else {
+                                        html=html+"In Press"
+                                    }
+                                }
+                                html=html+'</strike></span>';
+                                if(item.itemprice==""){
+                                    html=html+'<span class="fa fa-inr pmargin-right"></span>';
+                                    html=html+'0.00';
+                                    html=html+'</span>';
+                                }
+                                else{
+
+                                    if(item.itemprice>0)
+                                    {
+                                        html=html+'<span class="fa fa-inr pmargin-right"></span>';
+                                        html=html+DiscountedPrice+'.00';
+                                        html=html+'</span>';
+                                    }
+                                    else {
+                                        html=html+'<span class="fa fa-inr pmargin-right"></span>';
+                                        html=html+"In Press";
+                                        html=html+'</span>';
+                                    }
+
+                                }
+                                if (a <= 0) {
+                                    //html = html + '<span style="border: 1px solid #d8d8d8;padding:2px;margin-left:3px">' + item.Discount + '%</span>';
+                                }
+                                else{
+                                    html=html+'<span style="border: 1px solid #d8d8d8;padding:2px;margin-left:3px">'+item.Discount+'%</span>';
+                                }
+                                html=html+'</span></div>';
+                                html=html+'<div class="clearfix"></div>';
+
+                            }
+
+                            if(item.Ebook==1)
+                             {
+                                html=html+'<div class="col-xs-4 col-sm-4 col-md-4" style="padding:0px;"><input type="checkbox" name="Ebook_'+item.Id+'" id="Ebook_'+item.Id+'" value="@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()"><label for="Ebook_'+item.Id+'">EBook</label></div>';
+                                html=html+'<div class="col-xs-8 col-sm-8 col-md-8 text-center dvpadding bookprice"><span class="regular-price" id="product-price-282">';
+                                html=html+'<span class="price">';
+                                html = html + '<span style="margin-right: 5px; color: rgb(186, 186, 186);">';
+                                if (e <= 0) { }
+                                else {
+                                    html = html + '<strike><span class="fa fa-inr pmargin-right" ></span>';
+                                    if (item.ebookitemprice > 0) {
+                                        html = html + '<span style="color:red">'+item.ebookitemprice+'</span>'
+                                    }
+                                    else {
+                                        html = html + "In Press"
+                                    }
+                                }
+                                html = html + '</strike></span>';
+                                if (item.ebookitemprice == "") {
+                                    html = html + '<span class="fa fa-inr pmargin-right"></span>';
+                                    html = html + '0.00';
+                                    html = html + '</span>';
+                                }
+                                else {
+
+                                    if (item.ebookitemprice > 0) {
+                                        html = html + '<span class="fa fa-inr pmargin-right"></span>';
+                                        html = html + eDiscountedPrice + '.00';
+                                        html = html + '</span>';
+                                    }
+                                    else {
+                                        html = html + '<span class="fa fa-inr pmargin-right"></span>';
+                                        html = html + "In Press";
+                                        html = html + '</span>';
+                                    }
+
+                                }
+                                if (e <= 0) { }
+                                else {
+                                    html = html + '<span style="border: 1px solid #d8d8d8;padding:2px;margin-left:3px">' + item.EbookDiscount + '%</span>';
+                                }
+                                html = html + '</span></div>';
+                                html = html + '<div class="clearfix"></div>';
+                            }
+                            else {
+                                html=html+'<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0px;"><label for="Ebook_'+item.Id+'">&nbsp;</label></div>';
+
+                            }
+
+                            html=html+'</div>';
+                            ////here we check if we add some item to cart start here added by deepak:16_09_2016
+                            var condition= $.inArray(''+item.Id+'',JSON.parse(retrievedObject));
+                            if(condition==-1){
+                                if(item.itemprice>0)
+                                {
+                                    //btnCheckOut
+                                    html = html + '<div class="clearfix"></div><div class="col-md-12">';
+                                    html = html + '<a class="btn addcartbtn" id="cartcheck_'+item.Id+'" onclick="addcart(' + item.Id + ');" data-id="' + item.Id + '" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</a>';
+                                    html = html + '</div>';
+                                }
+                                else
+                                {
+                                    //btnCheckOut
+                                    html = html + '<div class="col-md-12">';
+                                    html = html + '<a class="btn addcartbtn" id="cartcheck_'+item.Id+'"  data-id="' + item.Id + '" style="background-color:red"><span class="glyphicon glyphicon-shopping-cart" ></span>Not for sale</a>';
+                                    html = html + '</div>';
+                                }
+
+                            }else{
+                                html = html + '<div  class="col-md-12">';
+                                html = html + '<a class="btn btn-success addcartbtn" id="cartcheck_'+item.Id+'" data-toggle="tooltip" title="Item already added in cart!" onclick="addcart(' + item.Id + ');" data-id="' + item.Id + '" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</a>';
+                                html = html + '</div>';
+                            }
+                            html= html+'</div>';
+                            html= html+'</div>';
+                            html= html+'</div>';
+                            html= html+'</div>';
+
+                        }
+                        if(prod==3){
+                            html= html+'</div>';
+                        }
+                        prod=prod++;
+                        if(prod>=3){
+                            prod=0;
+                        }
+                        //var result=(model.pageIndex+1)*pageSize;
+                        //html1 = '<span>Showing 1 – '+result+' Books of ' + item.count + ' Books</span>';
+
+                        //change desigen as avinish sir told 06-10-2016 End here
+                        var result=(model.pageIndex+1)*pageSize;
+                        $("#CurrentDisplay").val(result);
+                        $("#TotalDisplay").val(item.count);
+                        if(item.count>=result){
+                            html1 = '<em>Showing 1 – '+result+' Books of ' + item.count + ' Books</em>';
+                        }
+                        else{
+                            html1 = '<em>Showing 1 – '+item.count+' Books of ' + item.count + ' Books</em>';
+                        }
+                        // design Change end here by deepak :01_09_2016
+                    });
+                }
+                //else{
+                //    html='<img class="group list-group-image" src="/img/no-magento-product-found.jpg" alt="" style="width:100%" />';
+                //}
+
+                if(model.parentId>0){
+                    //$('#items').empty();//changes 06_02_2016
+                    if(model.pageIndex==0){
+                        $('#items').empty();
+                    }
+                    $(".loader").css("display", "block");
+                }
+                if(model.checksearch==0){
+                    if(model.pageIndex==0){
+                        $('#items').empty();
+                    }
+                    $(".loader").css("display", "block");
+                }
+
+                $('#items').append(html);
+                $("#CountItem").empty();
+                $("#CountItem").append(html1);
+                $(".loader").css("display", "none");
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
+        //Add Ebook Code Here By :Deepak
+        var Ebook = 0;
+        var k=0;
+        $('input[name=Ebook_'+k+']:checked').map(function () {
+            var title = $(this).attr('title');
+            if (title == undefined) {
+                title = 'Ebook:';
+            }
+            Ebook.push($(this).val());
+        });
+        var Pbook = 0;
+        var k=0;
+        $('input[name=Pbook_'+k+']:checked').map(function () {
+            var title = $(this).attr('title');
+            if (title == undefined) {
+                title = 'Pbook:';
+            }
+            Pbook.push($(this).val());
+        });
+        //Add Ebook Code Here By :Deepak
+        //Moving It To Master Js End here
+        // Added By Deepak For Bind Filter List Start Here :17_08_2016
+        $(document).ready(function () {
+            var MenuId = $("#hdnMenuId").val();
+            BindFilter(MenuId);
+            //This All Change Methode Use For Check All And Uncheck All Item Start Here:23_08_2016
+            $("#Subject0").change(function () {
+                pageIndex=0;
+                var condition = '';
+                condition = $(this).attr('data-cacheval');
+                if (condition == 'false') {
+                    $("input[name=filter]").prop("checked", true);
+                }
+                else {
+                    $("input[name=filter]").prop("checked", false);
+                }
+            });
+            $("#Board0").change(function () {
+                pageIndex=0;
+                var condition = '';
+                condition = $(this).attr('data-cacheval');
+                if (condition == 'false') {
+                    $("input[name=filter-manufB]").prop("checked", true);
+                }
+                else {
+                    $("input[name=filter-manufB]").prop("checked", false);
+                }
+            });
+            $("#Class0").change(function () {
+                pageIndex=0;
+                var condition = '';
+                condition = $(this).attr('data-cacheval');
+                if (condition == 'false') {
+                    $("input[name=filter-manufC]").prop("checked", true);
+                }
+                else {
+                    $("input[name=filter-manufC]").prop("checked", false);
+                }
+            });
+            //This All Change Methode Use For Check All And Uncheck All Item Start Here:23_08_2016
+
+            //Filter Button Click Start Here :17_08_2016
+        });
+        //
+        function BindFilter(id) {
+            var Category= $("#menu_"+id).text();
+            $("#seriesdiv").css("display","block");
+            $("#divboard").css("display","block");
+            $("#divclass").css("display","block");
+            if(Category=="Textbooks"||Category==""){
+                GetBrand(id);
+                GetClass();
+                GetBoard();
+            }
+            else{
+                $("#seriesdiv").css("display","none");
+                $("#divboard").css("display","none");
+                $("#divclass").css("display","none");
+                GetBrand(id);
+            }
+        }
+        function GetBrand(Id) {
+            var html = '';
+            var SubId = "";
+            $.getJSON('@Url.Action("GetSubJect", "Catalogue")', { ID: Id }, function (dataVal) {
+                var Data = JSON.stringify(dataVal);
+                if (dataVal != null && dataVal.length > 0) {
+                    $.each(dataVal, function (i, item) {
+                        html = html + ' <label class="checkbox" style="margin-left: 10px;font-size: 12px;">';
+                        html = html + '<input name="filter"  id="s' + item.Id + '" title="' + item.Title + '" type="checkbox" onchange="FillterClass(' + item.Id + ')" checked="false"  value="' + item.Id + '" ><label for="s' + item.Id + '">' + item.Title + '</label>';
+                        html = html + '</label>';
+                    })
+                    $("#hdnsubjectcount").val(dataVal.length);
+                    $("#ASubCategory").empty();
+                    $("#ASubCategory").append(' Subject ('+ dataVal.length+') <i class="indicator fa fa-minus pull-right" id="ASubCategorys"   aria-hidden="true"></i>');
+                    $("#divSubject").empty();
+                    $("#divSubject").append(html);
+                    $("input[name=filter]").prop("checked", false);
+                      
+                    if ("@ViewBag.isFutureTrack"=="Yes") {
+                        $("#s29").prop("checked", true);
+                        document.getElementById("s29").onchange();
+                    }
+                }
+            });
+            //$("#s29").trigger("onchange");
+            //var element = document.getElementById('s29');
+            //var event = new Event('onchange');
+            //element.dispatchEvent(event);
+        }
+        $("#ASubCategory").click(function(){
+            var cat =  $(this).children("i").attr("class");
+            var val=$("#hdnsubjectcount").val();
+            if(cat=="indicator fa fa-minus pull-right"){
+                $("#ASubCategory").empty();
+                $("#ASubCategory").prop( "aria-expanded", 'false' );
+                $("#ASubCategory").append('Subject ('+val+') <i class="indicator fa fa-plus pull-right" id="ASubCategorys" aria-hidden="true"></i>');
+            }
+            else{
+                $("#ASubCategory").empty();
+                $("#ASubCategory").addClass("collapsed");
+                $("#ASubCategory").prop( "aria-expanded", 'true' );
+                $("#ASubCategory").append(' Subject ('+ $("#hdnsubjectcount").val()+') <i class="indicator fa fa-minus pull-right" id="ASubCategorys" aria-hidden="true"></i>');
+            }
+            //do something with the sortcat
+        });
+        function GetClass() {
+            var html = '';
+            $.getJSON('@Url.Action("GetClass", "Catalogue")', {}, function (dataVal) {
+                var Data = JSON.stringify(dataVal);
+                if (dataVal != null && dataVal.length > 0) {
+                    $.each(dataVal, function (i, item) {
+                        html = html + ' <label class="checkbox" style="margin-left: 10px;font-size: 12px;">';
+                        html = html + '<input name="filter-manufC"  id="c' + item.Id + '" title="' + item.Title + '" type="checkbox" onchange="FillterClass(' + item.Id + ')" checked="false"  value="' + item.Id + '" > <label for="c' + item.Id + '">' + item.Title + '</label>';
+                        html = html + '</label>';
+                    })
+                    $("#hdnclasscount").val(dataVal.length);
+                    $("#classheader").empty();
+                    $("#classheader").append('Class ('+dataVal.length+') <i class="indicator fa fa-plus pull-right" aria-hidden="true"></i>');
+                    $("#divClass").empty();
+                    $("#divClass").append(html);
+                    $("input[name=filter-manufC]").prop("checked", false);
+                }
+            });
+        }
+        $("#classheader").click(function(){
+            var cat =  $(this).children("i").attr("class");
+            if(cat=="indicator fa fa-minus pull-right"){
+                $("#classheader").empty();
+                $("#classheader").append('Class ('+ $("#hdnclasscount").val()+') <i class="indicator fa fa-plus pull-right" aria-hidden="true"></i>');
+            }
+            else{
+                $("#classheader").empty();
+                $("#classheader").append('Class ('+ $("#hdnclasscount").val()+') <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+            }
+            //do something with the sortcat
+        });
+        function GetBoard() {
+            var html = '';
+            $.getJSON('@Url.Action("GetBoard", "Catalogue")', {}, function (dataVal) {
+                var Data = JSON.stringify(dataVal);
+                if (dataVal != null && dataVal.length > 0) {
+                    $.each(dataVal, function (i, item) {
+                        html = html + ' <label class="checkbox" style="margin-left:10px;font-size: 12px;">';
+                        html = html + '<input name="filter-manufB" title="' + item.Title + '"  id="b' + item.Id + '" type="checkbox" onchange="FillterClass(' + item.Id + ')" checked="false" value="' + item.Id + '" ><label for="b' + item.Id + '">' + item.Title + '</label>';
+                        html = html + '</label>';
+                    })
+                    $("#hdnboardcount").val(dataVal.length);
+                    $("#boardheader").empty();
+                    $("#boardheader").append('Board ('+dataVal.length+') <i class="indicator fa fa-plus pull-right" aria-hidden="true"></i>');
+                    $("#divBoard").empty();
+                    $("#divBoard").append(html);
+                    $("input[name=filter-manufB]").prop("checked", false);
+                }
+            });
+        }
+        $("#boardheader").click(function(){
+            var cat =  $(this).children("i").attr("class");
+
+            if(cat=="indicator fa fa-minus pull-right"){
+                $("#boardheader").empty();
+                $("#boardheader").append('Board ('+ $("#hdnboardcount").val()+') <i class="indicator fa fa-plus pull-right" aria-hidden="true"></i>');
+            }
+            else{
+                $("#boardheader").empty();
+                $("#boardheader").append('Board ('+ $("#hdnboardcount").val()+') <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+            }
+            //do something with the sortcat
+        });
+        //Series
+        function BindSerise(Id,seriesId) {
+            //alert("bind series");
+            var html = '';
+            var htmldesc='';
+            var htmlhed='';
+            var SeriesValue = [];
+            $('input[name=filters]:checked').map(function () {
+                // alert("checkbox");
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Series:';
+                }
+                SeriesValue.push($(this).val());
+            });
+            //$(".loader").css("display", "block");
+            if(Id!=null)
+            {
+                $.getJSON('@Url.Action("GetSeries", "Catalogue")', { ID: Id }, function (dataVal) {
+                    if(dataVal.length==0)
+                    {
+                        $("#divSeries").empty();
+                        $("#SeriesCategory").empty();
+                        $("#SeriesCategory").append('Series (0) <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+                        $("#hdnseriescount").val(0);
+                    }
+                    var abc=JSON.stringify(dataVal);
+                    if (dataVal != null && dataVal.length > 0) {
+                        var s=''
+                        $.each(dataVal, function (i, item) {
+
+                            if(item.SubjectName!=s){
+                                html=html+'<span id="'+item.SubjectId+'">'+item.SubjectName+'</span>'
+                            }
+                            s=item.SubjectName;
+                            html = html + ' <label class="checkbox" style="margin-left: 10px;font-size: 12px;">';
+                            if (Id == item.Id) {
+                                html = html + '<input name="filters"  id="s_' + item.Id + '" title="' + item.Title + '" type="checkbox" onchange="FillterClass(' + item.Id + ')" checked="true"  value="' + item.Id + '" ><label for="s_' + item.Id + '">' + item.Title + '</label>';
+                            }
+                            else {
+                                html = html + '<input name="filters"  id="s_' + item.Id + '" title="' + item.Title + '" type="checkbox" onchange="FillterClass(' + item.Id + ')" checked="false"  value="' + item.Id + '" ><label for="s_' + item.Id + '">' + item.Title + '</label>';
+                            }
+                            html = html + '</label>';
+                        })
+                        $("#hdnseriescount").val(dataVal.length);
+                        $("#SeriesCategory").empty();
+                        $("#SeriesCategory").append('Series ('+dataVal.length+') <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+                        $("#divSeries").empty();
+                        $("#divSeries").append(html);
+                        $("input[name=filters]").prop("checked", false);
+                        //for(i in SeriesValue){
+                        //    $("#s_" +SeriesValue[i]).prop("checked", true);
+                        //    alert("FillterClass-6");
+                        //    FillterClass(-1);
+                        //}
+
+                    }
+
+
+                });
+            }
+
+        }
+
+        $("#SeriesCategory").click(function(){
+            var cat =  $(this).children("i").attr("class");
+            if(cat=="indicator fa fa-minus"){
+                $("#SeriesCategory").empty();
+                $("#SeriesCategory").append('Series ('+ $("#hdnseriescount").val()+') <i class="indicator fa fa-plus pull-right" aria-hidden="true"></i>');
+            }
+            else{
+                $("#SeriesCategory").empty();
+                $("#SeriesCategory").append('Series ('+ $("#hdnseriescount").val()+') <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+            }
+            //do something with the sortcat
+        });
+        //change start here for slider
+        $(document).ready(function(){
+            $("#ex2").slider();
+            $("#ex2").on("slideStop", function(slideEvt){
+
+                var html="";
+                var toltip="";
+                $("#sliderValue").text(slideEvt.value);
+                html=  '<b><span id="sliderValuemin" style="font-weight: bold;text-indent: 1em;"><i class="fa fa-inr"></i> '+slideEvt.value[0]+'.00</span><span style="margin-left:10px;"><span style="margin-left:10px,"> To </span></span><span id="sildervaluemax" style="font-weight: bold;text-indent: 1em;"><i class="fa fa-inr"></i> '+slideEvt.value[1]+'.00</span> </b>';
+                toltip=''+slideEvt.value[0]+'.00 : '+slideEvt.value[1]+'.00'
+                $(".tooltip-inner").empty();
+                $(".tooltip-inner").append(toltip);
+                $("#pricevalue").empty();
+                $("#pricevalue").append(html);
+                FillterClass(0);
+            });
+        });
+        //Change End Here for Slider
+        function FillterClass(item) {
+           
+            GetWishList();
+            //For Auto Fillter Board Start Here Created By Deepak:23_08_2016
+            //$("#s_"+item).val
+            var Board = [];
+            var html = '';
+            var seriesSubjectValue = [];
+
+            $("#divSeries span").each(function(index, elem){
+                //alert($(this).attr('id')+"Add Series id");
+
+                seriesSubjectValue.push($(this).attr('id'));
+            });
+            var seriesSubjectId ={};
+            for (i in seriesSubjectValue) {
+                seriesSubjectId[i] = seriesSubjectValue[i];
+            }
+
+            $('input[name=filter-manufB]:checked').map(function () {
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Board:';
+                }
+                Board.push($(this).val());
+                html = html + ' <a href="#" class="login" id="BordClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleFilter(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+            });
+
+            BoardId = {};
+            for (i in Board) {
+                BoardId[i] = Board[i];
+            }
+            $("#hdnBoardId").val(BoardId);
+            //For Auto Fillter Board End Here Created By Deepak:23_08_2016
+            //For Auto Filter Of Subject Start Here Created By deepak:23_08_2016
+            var SubjectValue = [];
+
+            $('input[name=filter]:checked').map(function () {
+                //alert("subject");
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Subject:';
+                }
+                SubjectValue.push($(this).val());
+                html = html + ' <a href="#" class="login" id="SubjectClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleSubject(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+            });
+            SubjectId = {};
+            var Series = "";
+            for (i in SubjectValue) {
+                SubjectId[i] = SubjectValue[i];
+                Series = SubjectValue[i];
+
+            } //Series: Series
+            var lastEl = SubjectValue.pop();
+            var lastell=seriesSubjectValue.pop();
+
+            var SeriesValue = [];
+            if(lastEl==lastell){
+
+                $('input[name=filters]:checked').map(function () {
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Series:';
+                    }
+                    SeriesValue.push($(this).val());
+                    html = html + ' <a href="#" class="login" id="SeriesClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleSeries(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+
+                });
+            }
+            else{
+                var Series = {};
+                for (i in SeriesValue) {
+                    Series[i] = SeriesValue[i];
+                }
+                // alert("bind");
+                if(Series!=null)
+                {
+                    BindSerise(SubjectId,Series);
+                }
+
+            }
+
+            var Series = {};
+            for (i in SeriesValue) {
+                Series[i] = SeriesValue[i];
+            }
+
+            $("#hdnsujectid").val(SubjectId);
+
+            //series
+
+
+
+            //For Auto Filter Of Subject Start Here Created By deepak:23_08_2016
+            //For Class Fillter Wrok Start Here Created By Deepak:23_08_2016
+            var Class = [];
+            $('input[name=filter-manufC]:checked').map(function () {
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Class:';
+                }
+                Class.push($(this).val());
+                html = html + ' <a href="#" class="login" id="ClassClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleClass(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+            });
+            $("#FilterCheck").empty();
+            $("#FilterCheck").append(html);
+            ClassId = {};
+            for (i in Class) {
+                ClassId[i] = Class[i];
+            }
+            $("#hdnclassId").val(ClassId);
+            var Minprice = $("#sliderValuemin").text();
+            var MaxPrice = $("#sildervaluemax").text();
+            var parentId = $("#hdnMenuId").val();
+            //For Class Fillter Wrok End Here Created By Deepak:23_08_2016
+            var iitem = $("#hdnprice").val();
+
+            var model = {
+                MinPrice: Minprice,
+                MaxPrice: MaxPrice,
+                Board: BoardId,
+                Class: ClassId,
+                subject: SubjectId,
+                pageIndex: pageIndex=0,
+                pageSize: pageSize,
+                Short: iitem,
+                parentId: parentId,
+                Series: Series
+            };
+            $('#items').empty();
+            AjaxCall(model);
+
+
+        }
+        function FillterClassScroll(item) {
+            //For Auto Fillter Board Start Here Created By Deepak:23_08_2016
+            var Board = [];
+            var html = '';
+            $('input[name=filter-manufB]:checked').map(function () {
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Board:';
+                }
+                Board.push($(this).val());
+                html = html + ' <a href="#" class="login" id="BordClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleFilter(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+            });
+
+            BoardId = {};
+            for (i in Board) {
+                BoardId[i] = Board[i];
+            }
+            $("#hdnBoardId").val(BoardId);
+            //For Auto Fillter Board End Here Created By Deepak:23_08_2016
+            //For Auto Filter Of Subject Start Here Created By deepak:23_08_2016
+            var SubjectValue = [];
+
+            $('input[name=filter]:checked').map(function () {
+                // alert("hi hi");
+                var title = $(this).attr('title');
+                // alert(title);
+                if (title == undefined) {
+                    title = 'Subject:';
+                }
+                SubjectValue.push($(this).val());
+                html = html + ' <a href="#" class="login" id="SubjectClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleSubject(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+            });
+            SubjectId = {};
+            // var Series = "";
+            for (i in SubjectValue) {
+                SubjectId[i] = SubjectValue[i];
+                // Series = SubjectValue[i];
+            } //Series: Series
+            $("#hdnsujectid").val(SubjectId);
+            //series
+
+            var SeriesValue = [];
+            $('input[name=filters]:checked').map(function () {
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Series:';
+                }
+                SeriesValue.push($(this).val());
+                html = html + ' <a href="#" class="login" id="SeriesClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleSeries(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+
+            });
+            var Series = {};
+            for (i in SeriesValue) {
+                Series[i] = SeriesValue[i];
+            }
+            //For Auto Filter Of Subject Start Here Created By deepak:23_08_2016
+            //For Class Fillter Wrok Start Here Created By Deepak:23_08_2016
+            var Class = [];
+            $('input[name=filter-manufC]:checked').map(function () {
+                var title = $(this).attr('title');
+                if (title == undefined) {
+                    title = 'Class:';
+                }
+                Class.push($(this).val());
+                html = html + ' <a href="#" class="login" id="ClassClear' + $(this).val() + '" ><span class="badge">' + title + '<img src="../img/close_comment_button.png" onclick=CancleClass(' + $(this).val() + ') style=" width: 11px;height: 11px;margin-left: 10px; margin-top:-0.5px; margin-right: 2px;"  /></span></a>';
+
+            });
+            $("#FilterCheck").empty();
+            $("#FilterCheck").append(html);
+            ClassId = {};
+            for (i in Class) {
+                ClassId[i] = Class[i];
+            }
+            $("#hdnclassId").val(ClassId);
+            var Minprice = $("#sliderValuemin").text();//$("#price-min").val();
+            var MaxPrice = $("#sildervaluemax").text();//$("#price-max").val();
+            var parentId = $("#hdnMenuId").val();
+            //For Class Fillter Wrok End Here Created By Deepak:23_08_2016
+            var index=0;
+            var iitem = $("#hdnprice").val();
+            var model = {
+                MinPrice: Minprice,
+                MaxPrice: MaxPrice,
+                Board: BoardId,
+                Class: ClassId,
+                subject: SubjectId,
+                pageIndex: 0,
+                pageSize: pageSize,
+                Short: iitem,
+                parentId: parentId,
+                Series: Series
+            };
+            return model;
+        }
+        //Added By Deepak For  Bind Filter List Start Here :17_08_2016
+        //Added By Deepak For Display Fillter Lable and Uncheck CheckBox from Filter Lable start Here:26_08_2016
+        function CancleFilter(id) {
+            $('#b' + id).prop('checked', false);
+            $('#BordClear' + id).empty();
+            FillterClass(id);
+        }
+        function CancleSubject(id) {
+
+            $('#s' + id).prop('checked', false);
+            var a=0;
+            $('input[name=filter]:checked').map(function () {
+                a=a+1;
+            });
+            $('#SubjectClear' + id).empty();
+            if(a==0){
+                var sname=$("#"+id).text();
+                $('span:contains('+sname+')').nextAll('label').remove();
+                $("#"+id).remove();
+                $("#SeriesCategory").empty();
+                $("#SeriesCategory").append('Series (0) <i class="indicator fa fa-minus pull-right" aria-hidden="true"></i>');
+            }else{
+                var sname=$("#"+id).text();
+                $('span:contains('+sname+')').nextAll('label').remove();
+                $("#"+id).remove();
+            }
+            FillterClass(id);
+        }
+        function CancleClass(id) {
+
+            $('#c' + id).prop('checked', false);
+            $('#ClassClear' + id).empty();
+            $("#seriesdivdesc").hide();
+            FillterClass(id);
+        }
+        function CancleSeries(id){
+            //alert("CancleSeries");
+            $("#seriesdivdesc").hide();
+            $('#s_' + id).prop('checked', false);
+            $('#SeriesClear' + id).empty();
+            FillterClass(id);
+        }
+        //Added By Deepak For Display Fillter Lable and Uncheck CheckBox from Filter Lable End Here:26_08_2016
+        //Added This For Doing Shorting Created By Deepak satrt Here:27_08_2016
+        function overfn(link) {
+            if (link == 'h') {
+                $('.testh').css('border-bottom', '1px solid green');
+            }
+            else {
+                $('.testl').css('border-bottom', '1px solid green');
+            }
+        }
+        function Leavefn(link) {
+            if (link == 'h') {
+                $('.testh').css('border-bottom', '');
+            }
+            else {
+                $('.testl').css('border-bottom', '');
+            }
+
+        }
+        function HieghPrice(item) {
+            $("#hdnprice").val('');
+            var sortorder = $("#sort").attr('title');
+            var items = '';
+            if (sortorder == "low to high price") {
+                $("#sort").empty();
+                $("#sort").attr('title', 'high to low price');
+                $("#hdnprice").empty();
+                $('#sortlsts').empty();
+                $('#sortlsts').append('<option value="Match">Hiegh To Low</option>');
+                $("#sortlsts").css("disabled","true");
+                $("#hdnprice").val('high');
+                var html = '<span class="fa fa-inr"></span>';
+                html = html+' <i class="fa fa-sort-numeric-desc"></i>';
+                $("#sort").append(html);
+                items = 'high';
+            } else {
+                $("#sort").empty();
+                $("#hdnprice").empty();
+                $('#sortlsts').empty();
+                $('#sortlsts').append('<option value="Match">low to high price</option>');
+                $("#sortlsts").css("disabled","true");
+                $("#sort").attr('title', 'low to high price');
+                $("#hdnprice").val('Low');
+                var html = '<span class="fa fa-inr"></span>';
+                html = html+' <i class="fa fa-sort-numeric-asc"></i>';
+                $("#sort").append(html);
+                items = 'Low';
+            }
+            pageIndex = 0;
+            FillterClass(items);
+        }
+        //Added This For Doing Shorting Created By Deepak End Here:27_08_2016
+        //get QueryString From Landing Page start Here
+        function GetQueryStringParams(sParam) {
+            var sPageURL = window.location.search.substring(1);
+
+            var sURLVariables = sPageURL.split('&');
+
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        }
+        //get QueryString From Landing Page End Here
+
+
+    </script>
+
+
+
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Content/js/notify.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bindsubmenu();
+
+
+            $('.ac_click').click(function() {
+                $('.profileac').css("display","block");
+            });
+            $(document).click(function(){
+                $('.profileac').css("display","none"); //hide the button
+            });
+            $(document).click(function(){
+                $('.saopen').css("display","none"); //hide the button
+
+            });
+
+        });
+
+        function bindsubmenu() {
+            var html="";
+            $.getJSON('@Url.Action("GetSubMenu", "Catalogue")', function (dataVal) {
+                var Data = JSON.stringify(dataVal);
+                if (dataVal != null && dataVal.length > 0) {
+                    $.each(dataVal, function (i, item) {
+                        var id = item.Id;
+                        var Title=item.Title;
+                        html = html + '<li class="col-md-4"> <a href="#" id="menu_'+item.Id+'" onclick="ProductDetails('+id+')"><i class="fa fa-angle-right"></i> ' + item.Title + '</a></li>'
+                    })
+                    html = html + '</ul>'
+                    html = html + '</li>'
+                    $("#BookMenu").append(html);
+                }
+            });
+        }
+        function ProductDetails(Id) {
+            //alert(Id);
+            var title=$("#menu_"+Id).text();
+            var BoardId = {};
+            var SubjectId = {Id};
+            var ClassId = {};
+            var iitem = $("#hdnprice").val();
+            var Minprice = $("#price-min").val();
+            var MaxPrice = $("#price-max").val();
+            var parentId = Id;
+            $("#hdnMenuId").val(Id);
+            pageIndex=0;
+            var model = {
+                MinPrice: null,
+                MaxPrice: null,
+                Board: BoardId,
+                Class: ClassId,
+                subject: SubjectId,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                Short: iitem,
+                parentId: parentId
+            };
+            Bindbreadcrumb(title);
+            AjaxCall(model);
+        }
+        function Bindbreadcrumb(id) {
+            var html = "";
+            html = html + '<li><a onclick="home();" id="homemenu" href="#">Home</a></li>';
+            html = html + '<li><a href="#">' + id + '</a></li>';
+            $("#breadcrumb").empty();
+            $("#breadcrumb").append(html);
+        }
+        function home() {
+            var url = "/Catalogue";
+            window.location.href = url;
+        }
+        function addcart(id) {
+            var BId = "";
+            BId = id;
+            var IsAutheticated = '@Request.IsAuthenticated';
+            if (IsAutheticated == 'False') {
+
+                $("#hdnretururl").val("Catalogue," + id);
+                $('#Login').modal('show');
+                $("#sign-up").css("display","none");
+                $("#sign-in").css("display","block");
+                $("#loginidfail").css("display","none");
+            } else {
+                var Ebook = 0;
+                var Pbook=0;
+                $('input[name=Ebook_'+id+']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Ebook:';
+                    }
+                    Ebook=$(this).val();
+                });
+                $('input[name=Pbook_'+id+']:checked').map(function () {
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Pbook:';
+                    }
+                    Pbook=$(this).val();
+
+                });
+                if(Ebook==0 && Pbook==0){
+                    $( "#dialog" ).dialog();
+                    return;
+                }
+                $.post('@Url.Action("AddToCart", "Catalogue")', { BookId: BId,Ebook:Ebook ,Pbook:Pbook},
+                  function (returnedData) {
+                      $("#cartcheck_"+id).removeClass("btn btn-primary")
+                      $("#cartcheck_"+id).addClass("btn btn-success")
+                      $("#cartcheck_"+id).attr("data-toggle", "tooltip")
+                      $("#cartcheck_"+id).attr("title", "Item already added in cart!")
+                      $('[data-toggle="tooltip"]').tooltip();
+                      $(".elem").notify("Item Added To Cart!","success");
+                      Getcart();
+                  });
+            }
+        }
+        function AddToWishList(ID){
+            $("#wish_"+ID).removeClass("fa fa-heart-o");
+            $("#wish_"+ID).addClass("fa fa-heart");
+            var BId = "";
+            BId = ID;
+            var IsAutheticated = '@Request.IsAuthenticated';
+            if (IsAutheticated == 'False') {
+
+                $("#hdnretururl").val("Catalogue," + ID);
+                $('#Login').modal('show');
+                $("#sign-up").css("display","none");
+                $("#sign-in").css("display","block");
+                $("#loginidfail").css("display","none");
+            } else {
+                var Ebook = 0;
+                var Pbook=0;
+                $('input[name=Ebook_'+ID+']:checked').map(function () {
+
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Ebook:';
+                    }
+                    Ebook=$(this).val();
+                });
+                $('input[name=Pbook_'+ID+']:checked').map(function () {
+                    var title = $(this).attr('title');
+                    if (title == undefined) {
+                        title = 'Pbook:';
+                    }
+                    Pbook=$(this).val();
+
+                });
+                $.post('@Url.Action("AddToWishList", "Catalogue")', { BookId: BId,Ebook:Ebook ,Pbook:Pbook},
+                  function (returnedData) {
+
+                      GetWishList();
+
+                  });
+            }
+
+        }
+        function AddwishlistToCart(){
+            $.post('@Url.Action("AddwishlistToCart", "Catalogue")',
+                function (returnedData) {
+
+                    $(".elem").notify("Item Added To Cart!","success");
+                    Getcart();
+                    GetWishList();
+
+                });
+        }
+
+    </script>
+    <script type="text/javascript">
+        function toggleChevron(e) {
+            $(e.target)
+                .prev('.panel-heading')
+                .find("i.indicator")
+                .toggleClass('fa-minus fa-caret-right');
+        }
+        $('#accordion').on('hidden.bs.collapse', toggleChevron);
+        $('#accordion').on('shown.bs.collapse', toggleChevron);
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#list').click(function (event) {
+                event.preventDefault(); $('#items .prod-wrap').addClass('list-group-item');
+                $("#hdnlistgrid").val("list");
+            });
+            $('#grid').click(function (event) {
+                event.preventDefault(); $('#items .prod-wrap').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item');
+                $("#hdnlistgrid").val("grid");
+            });
+            $("div #Addcarts").scrollTop(300);
+
+        });
+    </script>
+    <script type="text/javascript">
+        function Getcart() {
+            var html = '';
+            var total = 0;
+            var count = 0;
+            var elems = [];
+            var TotalItems=0;
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                if (dataVal != null && dataVal.length > 0) {
+                    count = dataVal.length;
+                    $("#empty").css("display","none");
+                    $("#nunempty").css("display","block")
+                    $.each(dataVal, function (i, item) {
+                        TotalItems=parseInt(TotalItems)+1;
+                        var bookPrice=parseFloat(item.Price);
+                        var price = parseInt(item.Quantity) * bookPrice;
+
+                        var discount = item.Discount * parseInt(item.Quantity);
+                        var subtotal = price - discount;
+                        //var EPbook=parseFloat(item.Price)+parseFloat(item.EbookPrice)
+                        var EPbook=parseFloat(item.Price)*parseInt(item.Quantity);
+                        total = total + subtotal;
+                        html = html + '<tr>';
+                        html = html + '<td>  <img class="itme_pic" style="width:40px; height:55px; text-align:center;" src="'+item.Image+'" alt=""></td>';
+                        html = html + '<td>';
+                        html = html + ' ' + item.Title + ' ';
+                        html = html + '<br />';
+                        html = html + '</td>';
+                        //html=html+'<td class="text-right">';
+                        //html=html+''+item.Classname+' ';
+                        //html=html+'</td>'
+                        //html=html+'<td>';
+                        //html=html+''+item.BoardName+'';
+                        //html=html+'</td>'
+                        if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.Both.GetHashCode()"){
+                            html = html + '<td class="tdPrice text-center">';
+                            html = html + '<i class="fa fa-inr" /> <span class="price"><label>' + bookPrice.toFixed(2) + '</label> </span>';
+                            html = html + '</td>';
+                            html = html + '<td>';
+                            html = html + 'BOTH';
+                            html = html + '<br />';
+                            html = html + '</td>';
+                        }
+                        else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.EBook.GetHashCode()"){
+                            html = html + '<td class="tdPrice text-center">';
+                            html = html + '<i class="fa fa-inr" /> <span class="price"><label>' + bookPrice.toFixed(2) + '</label> </span>';
+                            html = html + '</td>';
+                            html = html + '<td class="text-center">';
+                            html = html + 'EBook';
+                            html = html + '<br />';
+                            html = html + '</td>';
+                        }
+                        else if (item.BookType == "@PrachiIndia.Portal.Framework.BookType.PBook.GetHashCode()"){
+                            html = html + '<td class="tdPrice text-center">';
+                            html = html + '<i class="fa fa-inr" /> <span class="price"><label>' + bookPrice.toFixed(2) + '</label> </span>';
+                            html = html + '</td>';
+                            html = html + '<td class="text-center">';
+                            html = html + 'PBook';
+                            html = html + '<br />';
+                            html = html + '</td>';
+                        }
+
+
+                        html = html + '<td class="Quantity" style="text-align:center">';
+                        if (item.IsSolution) { html = html + '<i class="text-center" /> <span class="qty"><label>' + item.Quantity + '</label> </span>'; }
+                        else {
+                            html = html + '<input class="qty" id="Qunt_' + item.Id + '" onChange = "UpdateQuntiy(' + item.Id + ');" style = "width: 40px;border: solid 1px #e2e2e2;text-align: center;" type="text" value="' + item.Quantity + '"/>';
+                        }
+                        html = html + '<span id="spnAddCart_' + item.Id + '" style="display: none;text-align: center;"> <a style="margin-left: -80px;" onclick="AddMoreToCart(' + item.Id + ')" title="Update Quentity" href="#">Save</a></span>';
+                        html = html + '</td>';
+                        html = html + '<td class="text-center">';
+                        html = html + '<i class="fa fa-inr" /> <label>'+discount.toFixed(2)+'</label>';
+                        html = html + '</td>';
+                        html = html + '<td class="Subtotal text-right">';
+                        html = html + '<i class="fa fa-inr" style="padding-right: 5px" />';
+                        html = html + '<label>';
+                        html = html +  subtotal.toFixed(2);
+                        html = html + '</label>';
+                        html = html + '</td>';
+                        html = html + '<td class="text-left">';
+                        html = html + '<span style="margin-top: 3px;"> <span onclick="RemoveAddCart(' + item.Id + ','+item.ItemId+')" style="text-decoration: none; font-size:18px; cursor:pointer;" data-toggle="tooltip" title="Remove"><i class="fa fa-trash" aria-hidden="true"></i></span></span>';
+                        html = html + '</td>';
+                        html = html + '</tr>';
+                        elems.push(''+item.ItemId+'');
+                    });
+                }
+                else{
+                    $("#empty").css("display","block");
+                    $("#nunempty").css("display","none")
+                }
+                window.localStorage.setItem('elems', JSON.stringify(elems));
+                $("#MyCart").empty();
+                $("#MyCart").css("opacity", "1.0")
+                var htmls = ' ' + TotalItems + '';
+                $("#MyCart").append(htmls);
+                $('#tblData').empty();
+                $('#tblData').append(html);
+                $('#totalvalue').empty();
+                $('#totalvalue').html(total+'.00');
+            });
+        }
+        //wishlist Get Start Here Created By deepak:11_02_2016
+        function GetWishList() {
+            var html = '';
+            var htmls='';
+            var total = 0;
+            var count = 0;
+            var elems = [];
+            $.getJSON('@Url.Action("GetWishList", "Catalogue")', {}, function (dataVal) {
+                html=html+' <li>';
+                html=html+'<div class="row" style="margin-top:0; color:#5a5a5a!important;">';
+                html=html+'<div class="col-md-12">';
+                count=dataVal.length;
+                // html=html+'<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">';
+                if (dataVal != null && dataVal.length > 0) {
+                    count = dataVal.length;
+                    $.each(dataVal, function (i, item) {
+                        //alert("Item ID = "+item.Id);
+                        //$("#wish_"+item.Id).removeClass("fa fa-heart-o");
+                        //$("#wish_"+item.Id).addClass("fa fa-heart");
+                        html=html+'<div class="col-sm-1 col-md-1 col-xs-12" style="padding:0">';
+                        html=html+'<img class="itme_pic" style="width:40px; height:40px; text-align:center;" src="'+item.Image+'" alt="">';
+                        html=html+'</div>';
+                        html=html+'<div class="col-sm-3 col-md-3 col-xs-12">';
+                        html = html + '<i class="fa fa-inr" /> <span class="price"><label>' + item.Price + '</label> </span>';
+                        html=html+'</div>';
+                        html=html+'<div class="col-sm-7 col-md-7 col-xs-12">';
+                        html=html+'<p>' + item.Title + ' </p>';
+                        html=html+'</div>';
+                        html=html+'<div class="col-sm-1 col-md-1 col-xs-12">';
+                        html = html + '<span style="margin-top: 3px; float: left;"> <a onclick="RemoveWishlist(' + item.Id + ','+item.ItemId+')" style="text-decoration: none;" data-toggle="tooltip" title="Remove" href="#"><i class="fa fa-trash"></i></a></span>';
+                        html=html+'</div>';
+                        html=html+'<div class="clearfix"></div>';
+
+
+                    });
+                    html=html+'<div class="col-md-12 text-center">';
+
+                    html=html+'<p><a class="btn addcartbtn" id="carttowishlist" onclick="AddwishlistToCart();" data-id="8" style="color:#ffffff!important"><span class="glyphicon glyphicon-shopping-cart"></span> Add to cart</a></p>';
+                    html=html+'</div>';
+                    //html=html+'</form>';
+                    html=html+'</div>';
+                    html=html+'</div>';
+                    html=html+'</li>';
+                    $("#WishListcount").text(count);
+                    $("#wishlistidd").empty();
+                    $("#wishlistidd").append(html);
+
+                }
+                else{
+                    $("#WishListcount").text(count);
+                    $("#wishlistidd").empty();
+                }
+
+
+            });
+        }
+        //Wishlist Get End Herer Created By Deepak :11_02_2016
+        //Remove From Add Cart Start Here By Deepak:10_09_2016
+        function RemoveAddCart(id,itemid) {
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveCart", "Catalogue")', { Id: id }, function (dataVal) {
+                    $("#cartcheck_"+itemid).removeClass("btn btn-success");
+                    $("#cartcheck_"+itemid).addClass("btn btn-primary");
+                    $("#cartcheck_"+itemid).attr("data-toggle", "tooltip")
+                    $("#cartcheck_"+itemid).attr("data-original-title", "")
+                    $(".elem").notify("Item Remove!","success");
+                    Getcart();
+                });
+            } else {
+            }
+        }
+        function RemoveWishlist(id,itemid) {
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveWishList", "Catalogue")', { Id: id }, function (dataVal) {
+                    $(".elem").notify("Item Remove!","success");
+                    GetWishList();
+                });
+            } else {
+            }
+        }
+        //Remove From Add Cart End Here By Deepak:10_09_2016
+
+        //Update Quantity At Key Press Start here BY Deepak:10_09_2016
+        function UpdateQuntiy(id) {
+            var Quantity = $("#Qunt_" + id).val();
+            if ($.isNumeric(Quantity) && Quantity > 0) {
+                $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                    $(".elem").notify("Item Added!","success");
+                    Getcart();
+                });
+            }
+            else{
+                $.notify("Enter Onely Number", "error");
+                Getcart();
+            }
+        }
+        function AddMoreToCart(id) {
+
+            var Quantity = $("#Qunt_" + id).val();
+            $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                location.reload(true);
+            });
+        }
+        function Mainpage() {
+            var url = "/Home/index";
+            window.location.href = url;
+        }
+        function productdetais(id){
+            var url ='@Url.Action("detail", "Catalogue")?id=' + id;
+            //var url="detail?Id=" + id;
+            window.location.href = url;
+        }
+        $("#ex2").slider({});
+        //here we clear login validation massage start here by deepak:05/10/2016
+        function clearvalidation(){
+            $('.field-validation-error').each(function () {
+                $(this).html("");
+            })
+        }
+        //here we clear login validation massage start here by deepak:05/10/2016
+    </script>
+    @*Popup registration dropdown code start here :12/10/2013*@
+    <script>
+        $(function () {
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#StateId").empty();
+                    $('#StateId').html(items);
+                });
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option>Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+    @*Popup registration dropdown code End here :12/10/2013*@
+
+
+    <script type="text/javascript">
+        $('form#frmlogin').removeData("validator");
+        $('form#frmlogin').removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('form#frmlogin'));
+    </script>
+    <script>
+        $(document).on('click', '.panel-heading span.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+        })
+        $(document).ready(function () {
+            $("#seriesdivdesc").hide();
+            $(".tip-top").tooltip({
+                placement: 'top'
+            });
+        });
+    </script>
+
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        var models = {
+            Subject:"hindi",
+            Series :null,
+            Author :null,
+            BookTitle:null,
+            Class :null,
+            Board :null,
+        };
+        $('#autocomplete').autocomplete({
+
+            minLength: 2,
+
+            source: function (request, response) {
+
+                $.getJSON("Catalogue/Searchresulte",{id:request.term}, function (data) {
+
+                    response(data)
+                });
+            },
+            select: function(event, ui) {
+                event.preventDefault();
+                $("#autocomplete").val(ui.item.label);
+                $("#autocomplete").val(ui.item.label);
+                var id=ui.item.value;
+                var title=ui.item.label
+                filtersearch(id,title);
+            },
+            focus: function(event, ui) {
+                event.preventDefault();
+                $("#autocomplete").val(ui.item.label);
+            }
+
+            // delay: 100
+        });
+
+        function  filtersearch( id, title){
+            //  alert(id);
+            var modelsearch = {
+                title:title,
+                Id:id
+            };
+            var SeriesId=0;
+            var SeriesValue=[];
+            searchlist(id);
+        }
+        function  searchlist(id){
+            //SeriesValue.push(SeriesId);
+            // alert(id);
+            var Series = {};
+            Series[0] = id;
+            var pageSize = 12;
+            var pageIndex = 0;
+            var checksearch=0;
+            $("#imgSpinner").hide();
+            var parentId = '@System.Configuration.ConfigurationManager.AppSettings["DefultCategory"]';// 0;/// GetQueryStringParams('Id');
+            $("#hdnMenuId").val(parentId);
+            var BoardId = {};
+            var SubjectId = {};
+            var ClassId = {};
+            var parentId = 0;//$("#hdnMenuId").val();
+            var iitem = $("#hdnprice").val();
+            var model = {
+                MinPrice: null,
+                MaxPrice: null,
+                Board: BoardId,
+                Class: ClassId,
+                subject: SubjectId,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                Short: iitem,
+                parentId: parentId,
+                Series: Series,
+                checksearch:checksearch
+            };
+            AjaxCall(model);
+        }
+
+       
+    </script>
+    @*This Script Use For Slider Script After Testing We Have To Put This Script To Bundle Config. Start Here*@
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/slider.css" rel="stylesheet" />
+    <script src="~/Content/js/bootstrap-slider.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="~/Content/css/product/style_common.css" rel="stylesheet" />
+    <link href="~/Content/css/product/style1.css" rel="stylesheet" />
+
+}

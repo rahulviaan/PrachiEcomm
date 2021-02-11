@@ -1,0 +1,189 @@
+﻿@model List<PrachiIndia.Portal.Models.ProductItem>
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_LayoutCatalouge.cshtml";
+}
+<style type="text/css">
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .cartlist {
+        border: 1px solid #ddd;
+        border-radius: .2em;
+    }
+
+        .cartlist tr.header {
+            background: #f5f5f5;
+            color: #555;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .cartlist td .itme_pic {
+            height: 65px;
+            width: auto;
+            border: 1px solid #ddd;
+            padding: 3px;
+            background: #FFF;
+        }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    var total = 0M;
+    <div class="row panel-body">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table cartlist">
+                    <thead>
+                        <tr class="header">
+                            <th>&nbsp;</th>
+                            <th>Item Name</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Discount</th>
+                            <th>Subtotal(Rs)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblData">
+
+                        @foreach (var item in Model)
+                        {
+                            var price = 0;// item.Quantity * item.Price;
+
+                            var discount = item.Quantity * item.Discount;
+                            var subtotal = price - discount;
+                            total = total + subtotal;
+                            <tr>
+                                <td>  <img class="itme_pic" src="http://www.prachipublications.com/uploads/books/32320439browseworld-01-fs.png" alt=""></td>
+                                <td>
+                                    @item.Title
+                                    
+                                </td>
+                                <td class="tdPrice">
+                                    <i class="fa fa-inr"></i><span class="price"><label>@item.Price</label> </span>
+
+                                </td>
+                                <td class="Quantity">
+                                    @Html.TextBox("Quantity", item.Quantity, new { @id = "Qunt" + item.Id, onclick = "UpdateQuntiy(" + item.Id + ");", style = "width: 50px;text-align: center;" })
+                                    <span id="spnAddCart_@item.Id" style="display: none;text-align: center;"> <a style="margin-left: -80px;" onclick="AddMoreToCart(@item.Id)" title="Remove" href="#">Save</a></span>
+                                </td>
+                                <td>
+                                    @Html.Hidden("Discount", item.Discount)
+                                    <i class="fa fa-inr"></i> <label>@discount</label>
+                                </td>
+                                <td class="Subtotal">
+                                    <i class="fa fa-inr"></i>
+                                    <label>
+                                        @subtotal
+                                    </label>
+                                </td>
+                                <td>
+                                    <span> <a onclick="RemoveAddCart(@item.Id)" title="Remove" href="#">Remove</a></span>
+                                </td>
+
+                            </tr>
+                        }
+
+                        <tr>
+                            <td colspan="7">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-3 col-md-offset-9" style="padding-bottom:10px;">
+                                            <div class="form-horizontal">
+                                                <strong>Total</strong><span id="totalvalue" class="pull-right">@total</span>
+                                            </div>
+                                        </div>
+                                        <hr style="border:#ddd;" />
+                                        @using (Html.BeginForm("Index", "Payment", FormMethod.Post))
+                                        {
+                                            <div class="col-md-3 col-md-offset-9" style="margin-top:10px;">
+                                                <button type="submit" id="btnCheckOut" class="btn btn-block btn-success"><i class="fa fa-shopping-cart"></i>&nbsp;Checkout</button>
+
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+    
+}
+@section scripts{
+    <script type="text/javascript">
+        //$(function () {
+        //    //   AjaxCall();
+
+
+
+
+        //    $(document).on("click", ".qty", function (e) {
+        //        //alert("changed");
+
+
+        //    });
+        //});
+
+
+        function AjaxCall() {
+            var html = '';
+            var total = 0;
+            $.getJSON('@Url.Action("GetCarts", "Catalogue")', {}, function (dataVal) {
+                if (dataVal != null && dataVal.length > 0) {
+                    $.each(dataVal, function (i, item) {
+                        var price = parseInt(item.Quantity) * parseFloat(item.Price);
+                        var discount = parseInt(item.Quantity) * parseFloat(item.Discount);
+                        var subtotal = price - discount;
+                        total = total + subtotal;
+                        html = html + '<tr>';
+                        html = html + '<td>  <img class="itme_pic" src="http://www.prachipublications.com/uploads/books/32320439browseworld-01-fs.png" alt=""></td>';
+                        html = html + '<td>' + item.Title + '</td>';
+                        html = html + '<td class="tdPrice"><i class="fa fa-inr" /> <span class="price">' + item.Price + '/-</span></td>';
+
+                        html = html + '<td class="Quantity"><input class="qty" type="text" value="' + item.Quantity + '"/></td>';
+                        html = html + '<td><i class="fa fa-inr" /> <span class="discount">' + discount + '/-</span></td>';
+                        html = html + '<td class="tdsubtotal"><i class="fa fa-inr" /> <span class="subtotal">' + subtotal + '/-</span></td>';
+                        html = html + '<td><a onclick="RemoveAddCart(' + item.Id + ');" title="Remove" class="fa fa-times" href="#"></a></td>';
+                        html = html + '</tr>';
+                    });
+                }
+                $('#tblData').append(html);
+                $('#totalvalue').html(total);
+            });
+        }
+
+        function RemoveAddCart(id) {
+           // alert(id);
+            var isGood = confirm('Do you wish to remove this item');
+            if (isGood) {
+                $.getJSON('@Url.Action("RemoveCart", "Catalogue")', { Id: id }, function (dataVal) {
+                    location.reload(true);
+                });
+            } else {
+            }
+        }
+
+        function UpdateQuntiy(id) {
+            $("#spnAddCart_" + id).css("display", "block");
+        }
+        function AddMoreToCart(id) {
+
+            var Quantity = $("#Qunt" + id).val();
+            $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                location.reload(true);
+            });
+        }
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿
+
+@model PrachiIndia.Portal.Areas.TestHour.Models.QuestionVM
+
+<div>
+
+    <form id="myForm">
+        @Html.HiddenFor(m => m.Id)
+
+        @Html.DisplayName("Title")
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title" }) <br/>
+        @Html.ValidationMessageFor(model => model.Title,"",new { style="color:red"})
+        @Html.DisplayName("Remarks")
+        @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control", @placeholder = "Remarks" })
+        @Html.ValidationMessageFor(model => model.Remarks, "", new { style = "color:red" })
+        <br />
+        <br />
+        <a href="#" id="btnSubmit" class="btn btn-success btn-block">
+            @if (Model.Id > 0)
+        {<span>Update</span> }
+        else
+        {<span>Save</span>}
+    </a>
+
+</form>
+
+<div style="text-align:center;display:none" id="loaderDiv">
+    <img src="~/img/Loader.gif" width="150" />
+</div>
+
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+            var Validate = true;
+            if (!$("#myForm").valid())
+            {
+                Validate = false;
+                return false;
+            }
+
+            if (Validate) {
+                $("#loaderDiv").show();
+
+                var myformdata = $("#myForm").serialize();
+
+                $.ajax({
+
+                    type: "POST",
+                    url: "/QuestionCatagory/Index",
+                    data: myformdata,
+                    success: function () {
+                        $("#loaderDiv").hide();
+                        $("#myModal").modal("hide");
+                        window.location.href = "/QuestionCatagory/Index";
+
+                    }
+
+                })
+            }
+            })
+
+
+    })
+
+
+</script>

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<PrachiIndia.Portal.Areas.CPanel.Models.EbookOrder>
+@{
+    ViewBag.Title = "e-book Order List";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PrachiIndia.Web.Areas.Model;
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">View e-book Order</h4></div>
+        <div class="panel-body">
+            @using (Ajax.BeginForm("ViewEbookOrder", "EbookOrder", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "MainContainer" }))
+            {
+                foreach (var m in Model)
+                {
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <div class="input-group">
+                                @Html.TextBox("fromdate", "", new { @class = "form-control date-picker", @id = "id-date-picker-1", @placeholder = "From Date", @readonly = "true" })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <div class="input-group">
+                                @Html.TextBox("todate", "", new { @class = "form-control date-picker", @id = "id-date-picker-2", @placeholder = "To Date", @readonly = "true" })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            @Html.TextBox("SearchParameter", "", new { @class = "form-control", @placeholder = "PO,School,Email,Mobile,State" })
+                        </div>
+
+                        <div class="col-md-1 form-group">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-filter fa-1x"></i></button>
+                        </div>
+                    </div>
+                    break;
+                }
+            }
+            <div class="container-fluid" id="MainContainer">
+
+                @Html.Partial("_ViewEbookOrder", Model)
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+    <link href="~/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="~/dist/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script type="text/javascript">
+        $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            dateFormat: "dd/mm/yy",
+            changeYear: true
+        })
+        function Verifyorder(RequestID) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("VerifyOrder")',
+                data: '{RequestID: ' + JSON.stringify(RequestID) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    toastr.success("RequsestID : " + RequestID + " has been verified ", '', { timeOut: 5000 })
+                    $("#Verify_" + RequestID).css("display", "none");
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+        }
+
+        function Sticker_Preview(RequestID) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Sticker_Preview")',
+                data: '{RequestID: ' + JSON.stringify(RequestID) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    toastr.success("RequsestID : " + RequestID + " has been verified ", '', { timeOut: 5000 })
+                    $("#Verify_" + RequestID).css("display", "none");
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+        }
+
+
+        $(".resend").on('click', function () {
+
+            var Requestid = $(this).attr('id');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ResendverificationMail")',
+                data: '{RequestID: ' + JSON.stringify(Requestid) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    toastr.success("Verification mail sent successfully", '', { timeOut: 5000 })
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+
+        });
+
+    </script>

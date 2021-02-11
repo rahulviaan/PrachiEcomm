@@ -1,0 +1,607 @@
+﻿@model PrachiIndia.Web.Areas.Model.Books
+<style type="text/css">
+    .panel .panel-heading i {
+        width: 10px !important;
+        border: none !important;
+    }
+</style>
+@{
+    ViewBag.Title = "ManageBooks";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+
+    var i = Model.Id;
+    var MasterSubjectRepository = new PrachiIndia.Sql.CustomRepositories.MasterSubjectRepository();
+    var MasterSeriesRepositories = new PrachiIndia.Sql.CustomRepositories.MasterSeriesRepositories();
+
+    var ltSubject = MasterSubjectRepository.GetAll();
+    IEnumerable<SelectListItem> lst = (from m in ltSubject select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title.ToString(), Value = m.Id.ToString() });
+    var lstSubject = new SelectList(lst, "Value", "Text");
+
+    var lstSeries1 = MasterSeriesRepositories.GetAll().Where(x => x.SubjectId == Model.SubjectId);
+    IEnumerable<SelectListItem> lst1 = (from m in lstSeries1 select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title.ToString(), Value = m.Id.ToString() });
+    var lstSeries = new SelectList(lst1, "Value", "Text");
+
+
+
+    // Title FindByIdAsync
+    var lstTitle = new List<SelectListItem>() { new SelectListItem { Text = "-- Select --", Value = "" } };
+    //class
+    var MasterClassRepository = new PrachiIndia.Sql.CustomRepositories.MasterClassRepository();
+    var lstClass = MasterClassRepository.GetAll();
+    IEnumerable<SelectListItem> classlst = (from m in lstClass select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title, Value = m.Id.ToString() });
+    SelectList lstCalss = new SelectList(classlst, "Value", "Text");
+
+    //Board
+    var MasterBoardRepository = new PrachiIndia.Sql.CustomRepositories.MasterBoardRepository();
+    var lstBoard = MasterBoardRepository.GetAll();
+    IEnumerable<SelectListItem> boardlst = (from m in lstBoard select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title, Value = m.Id.ToString() });
+    SelectList lstboard = new SelectList(boardlst, "Value", "Text");
+
+    IEnumerable<SelectListItem> listBoard = null;
+    IEnumerable<SelectListItem> listClass = null;
+    if (Model.Id > 0)
+    {
+        var db = new PrachiIndia.Sql.CustomRepositories.CataLogClassRepository();
+        //var Class = db.GetAll().ToList().Where(p => p.CatalogId == Model.Id);
+        //listClass = (from m in Class select m).AsEnumerable().Select(m => new SelectListItem() { Value = m.ClassId.ToString() });
+        var dbBoard = new PrachiIndia.Sql.CustomRepositories.CataLogBoardsRepository();
+        var Board = dbBoard.GetAll().Where(p => p.CatalogId == Model.Id);
+        listBoard = (from m in Board select m).AsEnumerable().Select(m => new SelectListItem() { Value = m.BoardId.ToString() });
+
+    }
+
+
+}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h2 style="font-size:24px; color:#fff;">Manage Book</h2>
+        <a class="pull-right" title="Create new book" style="font-size:12px;color:#fff;" href="@Url.Action("BookList","Admin")"><i class="fa fa-plus"></i>&nbsp; Create New</a>
+    </div>
+    <div class="panel-body">
+
+
+        @using (Html.BeginForm("ManageBooks", "Admin", FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmMain", id = "frmMain", enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(t => t.Id)
+            <input type="hidden" id="hdnSeriesId" />
+            @Html.HiddenFor(m => m.idServer)
+            @Html.HiddenFor(m => m.EncriptionKey)
+            <div class="form-group row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.SubjectId)
+                    @Html.DropDownListFor(model => model.SubjectId, lstSubject, "Please select the subject.", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SubjectId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.SeriesId)
+                    @Html.DropDownListFor(model => model.SeriesId, lstSeries, "Please select the series.", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SeriesId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Title)
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Title) })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Author)
+                    @Html.TextBoxFor(model => model.Author, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Author) })
+                    @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.ISBN)
+                    @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.ISBN) })
+                    @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Price)
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Price) })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.EbookPrice)
+                    @Html.TextBoxFor(model => model.EbookPrice, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.EbookPrice) })
+                    @Html.ValidationMessageFor(model => model.EbookPrice, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.PrintPrice)
+                    @Html.TextBoxFor(model => model.PrintPrice, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PrintPrice) })
+                    @Html.ValidationMessageFor(model => model.PrintPrice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Colour)
+                    @Html.EnumDropDownListFor(x => x.Colour, "Select Type", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Colour, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Ebooksize(MB)")
+                    @Html.TextBoxFor(model => model.EbookSize_MB_, new { @class = "form-control", @placeholder = "Ebooksize(MB)" })
+                    @Html.ValidationMessageFor(model => model.EbookSize_MB_, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="form-group col-md-6">
+                    @Html.Label("PageCount")
+                    @Html.TextBoxFor(model => model.PageCount, new { @class = "form-control", @placeholder = "PageCount" })
+                    @Html.ValidationMessageFor(model => model.PageCount, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(m => m.Edition)
+                    @Html.TextBoxFor(model => model.Edition, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Edition) })
+                    @Html.ValidationMessageFor(model => model.Edition, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Discount)
+                    @Html.TextBoxFor(m => m.Discount, new { @style = "width:100%", @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Discount) })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Description) })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <p><label class="control-label" for="Boards" style="padding:0">Board</label></p>
+
+                    <select multiple="multiple" class="form-control multiselect-ui" name="Boards" ID="Boards">
+                        @if (lstboard != null)
+                        {
+                            foreach (var item in lstboard)
+                            {
+
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <div class="clearfix">
+                    </div>
+                    @Html.ValidationMessageFor(t => t.Boards, "", new { @style = "color:red" })
+                </div>
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Class)
+
+                    <div>
+                        <ul style="list-style-type: none;margin:-10px 0px 5px -50px " id="ulClass">
+                            @for (var classIndex = 0; classIndex < Model.Classes.Count(); classIndex++)
+                            {
+
+                                <li class="active" style="margin-right:1%">
+                                    <input type="checkbox" name="@Model.Classes[classIndex].Id"
+                                           value="@Model.Classes[classIndex].Id" id="@Model.Classes[classIndex].Id"
+                                           @{if (@Model.Classes[classIndex].Selected) { <text> checked='checked' </text>        } } />
+                                    <label for="@Model.Classes[classIndex].Id">@Model.Classes[classIndex].Name</label>
+                                </li>
+                            }
+                        </ul>
+                        @*<ul style="list-style-type: none;margin:-10px 0px 5px -50px " id="ulClass">
+                            @foreach (var cls in lstCalss)
+                            {
+                                if (Model.Id > 0)
+                                {
+                                    bool classs = listClass.Any(cus => cus.Value == cls.Value);
+                                    if (classs == true)
+                                    {
+                                        <li _id="@cls.Value" class="active" style="margin-right:1%"><input type="checkbox" name="Class" checked="checked" value="@cls.Value" id="chkb_@cls.Value" class="chkval_@cls.Value">&nbsp;&nbsp;<label class="chktext_@cls.Value text-info" for="chkb">@cls.Text</label>&nbsp;&nbsp;&nbsp;</li>
+                                    }
+                                    else
+                                    {
+                                        <li _id="@cls.Value" style="margin-right:1%"><input type="checkbox" value="@cls.Value" id="chkb_@cls.Value" class="chkval_@cls.Value">&nbsp;&nbsp;<label class="chktext_@cls.Value text-info" for="chkb">@cls.Text</label>&nbsp;&nbsp;&nbsp;</li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li _id="@cls.Value" style="margin-right:1%"><input type="checkbox" value="@cls.Value" id="chkb_@cls.Value" class="chkval_@cls.Value">&nbsp;&nbsp;<label class="chktext_@cls.Value text-info" for="chkb">@cls.Text</label>&nbsp;&nbsp;&nbsp;</li>
+
+                                }
+                            }
+                        </ul>*@
+                        <div class="clearfix">
+
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(t => t.Class, "", new { @style = "color:red" })
+                </div>
+
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @if (Model.Ebook == 1)
+                {
+                        <input type="checkbox" id="chkebook" checked="checked" style="margin-right:5px;" /> <label for="chkEbook" class="text-info"> E BOOK</label>
+                    }
+                    else
+                    { <input type="checkbox" id="chkebook" style="margin-right:5px;" /> <label for="chkEbook" class="text-info"> E BOOK</label>}
+
+                </div>
+                <div class="col-md-3">
+                    @if (Model.MultiMedia == 1)
+                {
+                        <input type="checkbox" id="chkmultimedia" checked="checked" style="margin-right:5px;" /><label for="chkmultiMedia" class="text-info"> MultiMedia</label>
+                    }
+                    else
+                    { <input type="checkbox" id="chkmultimedia" style="margin-right:5px;" /><label for="chkmultiMedia" class="text-info"> MultiMedia</label>}
+
+                </div>
+                <div class="col-md-3">
+                    @if (Model.Solutions == 1)
+                {
+                        <input type="checkbox" id="chksolutions" checked="checked" style="margin-right:5px;" /><label for="chkSolutions" class="text-info"> Solutions</label>             }
+                else
+                {
+                        <input type="checkbox" id="chksolutions" style="margin-right:5px;" /><label for="chkSolutions" class="text-info"> Solutions</label>
+                    }
+
+                </div>
+                <div class="col-md-3">
+                    <input type="checkbox" id="LessonPlan" style="margin-right:5px;" /><label for="LessonPlan" class="text-info"> Lesson Plan</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="checkbox" id="TestPaper" style="margin-right:5px;" /><label for="TestPaper" class="text-info">Test Paper</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="checkbox" id="TestPaperSolution" style="margin-right:5px;" /><label for="TestPaperSolution" class="text-info">TestPaper Solution</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="checkbox" id="Published" style="margin-right:5px;" /><label for="Published" class="text-info">Published</label>
+                </div>
+
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    @{
+                        var imagename = "no_image.jpg";
+                        if (Model != null && !string.IsNullOrWhiteSpace(Model.Image))
+                        {
+                            imagename = Model.Image;
+                        }
+                    }
+                    <img id="Imgpreview" src="~/ModuleFiles/Items/@imagename" alt="your image" style="width:100px; height:100px;  float:left;" />
+                    <input type="file" name="PostedImage" class="jsFileUpload inputfile" id="PostedImage" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3 col-md-offset-2">
+                    <input type="submit" class="btn btn-large btn-primary" value="Submit" />
+                </div>
+            </div>
+                        }
+        <style>
+            /* CSS REQUIRED */
+            #ulboard ul {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
+
+            #ulboard li {
+                float: left;
+            }
+
+            #ulClass ul {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
+
+            #ulClass li {
+                float: left;
+            }
+
+
+
+            .state-icon {
+                left: -5px;
+            }
+
+            .list-group-item-primary {
+                color: rgb(255, 255, 255);
+                background-color: rgb(66, 139, 202);
+                border: 1px solid #ffffff;
+            }
+
+            /* DEMO ONLY - REMOVES UNWANTED MARGIN */
+            .well .list-group {
+                margin-bottom: 0px;
+            }
+        </style>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <link href="~/dist/css/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <script src="~/dist/js/bootstrap-multiselect.min.js"></script>
+    <script>
+        var CatalogClass = [];
+        function checkboxitem() {
+            $('.list-group.checked-list-box .list-group-item').each(function () {
+                // Settings
+                var $widget = $(this),
+                    $checkbox = $('<input type="checkbox" class="hidden" />'),
+                    color = ($widget.data('color') ? $widget.data('color') : "info"),
+                    style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+                    settings = {
+                        on: {
+                            icon: 'glyphicon glyphicon-check'
+                        },
+                        off: {
+                            icon: 'glyphicon glyphicon-unchecked'
+                        }
+                    };
+
+                $widget.css('cursor', 'pointer')
+                $widget.append($checkbox);
+
+                // Event Handlers
+                $widget.on('click', function () {
+                    $checkbox.prop('checked', !$checkbox.is(':checked'));
+                    $checkbox.triggerHandler('change');
+                    updateDisplay();
+                });
+                $checkbox.on('change', function () {
+                    updateDisplay();
+                });
+
+
+                // Actions
+                function updateDisplay() {
+                    var isChecked = $checkbox.is(':checked');
+
+                    // Set the button's state
+                    $widget.data('state', (isChecked) ? "on" : "off");
+
+                    // Set the button's icon
+                    $widget.find('.state-icon')
+                        .removeClass()
+                        .addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+                    // Update the button's color
+
+                    if (isChecked) {
+                        $widget.addClass(style + color + ' active');
+                    } else {
+                        $widget.removeClass(style + color + ' active');
+                    }
+                }
+
+                // Initialization
+                function init() {
+
+                    if ($widget.data('checked') == true) {
+                        $checkbox.prop('checked', !$checkbox.is(':checked'));
+                    }
+
+                    updateDisplay();
+
+                    // Inject the icon if applicable
+                    if ($widget.find('.state-icon').length == 0) {
+                        $widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+                    }
+                }
+                init();
+            });
+
+        }
+        $(function () {
+            $('.multiselect-ui').multiselect({
+                includeSelectAllOption: true
+            });
+            checkboxitem();
+
+
+            $('input:checkbox').change(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parent().addClass("active");
+                } else {
+                    $(this).parent().removeClass("active");
+                }
+            });
+
+            $(document).on("submit", "#frmMain", function (e) {
+                var $this = $(this);
+                //$(this).button('loading');
+                if ($(this).valid()) {
+                    $('.jsLoading').attr('disabled', 'disabled');
+                    //$('.jsLoading').button("loading")
+                    var Id = $("#hdnid").val();
+                    var SubjectId = $("#SubjectId option:selected").val();
+                    var SeriesId = $("#SeriesId option:selected").val();
+                    var Title = $("#Title").val();
+                    var Author = $("#Author").val();
+                    var ISBN = $("#ISBN").val();
+                    var Price = $("#Price").val();
+                    var Edition = $("#Edition").val();
+                    var Description = $("#Description").val();
+                    //var Board = $("#Board").val();
+                    var EbookPrice = $("#EbookPrice").val();
+                    var PrintPrice = $("#PrintPrice").val();
+                    var Colour = $("#Colour option:selected").val();
+                    var EbookSize_MB_ = $("#EbookSize_MB_").val();
+                    var PageCount = $("#PageCount").val();
+                    var Discount = $("#Discount").val();
+
+                    var chkebook = "";
+                    var chkmultimedia = "";
+                    var chksolutions = "";
+                    var LessonPlan = $('#LessonPlan').prop('checked');
+                    var TestPaper = $('#TestPaper').prop('checked');
+                    var TestPaperSolution = $('#TestPaperSolution').prop('checked');
+                    var Published = $('#Published').prop('checked');
+                    if ($('#chkebook').prop('checked') == true) {
+
+                        chkebook = 1;
+                    }
+                    if ($('#chkmultimedia').prop('checked') == true) {
+
+                        chkmultimedia = 1;
+                    }
+                    if ($('#chksolutions').prop('checked') == true) {
+
+                        chksolutions = 1;
+                    }
+                    var CatalogClass = [];
+                    var postedClasss = [];
+                    var BoardIds = [];
+                    $('#ulboard li.active').each(function () {
+                        var _id = $(this).attr("_id");
+                        //var Title = $(".chktext_" + _id).text();
+                        CatalogBoard.push({
+                            'BoardId': _id
+                        });
+                    });
+
+                    $('#ulClass li.active').each(function (key, value) {
+
+                        var _id = $(this).attr("_id");
+
+                        CatalogClass.push({
+                            'ClassId': _id
+                        });
+
+
+                    });
+                    $('#Boards :selected').each(function (key, value) {
+                        var _id = $(this).val();
+                        BoardIds.push(_id);
+                        //boardids.push({
+                        //    'boardid': _id
+                        //});
+                    });
+
+
+                }
+
+                return false;
+            });
+            function GetSeries() {
+                var SubjectId = $("#SubjectId option:selected").val() == "" ? 0 : $("#SubjectId option:selected").val();
+
+                $("#idSeries").html("");
+                var isoption = "";
+                $.ajax({
+                    type: "POST",
+                    data: { idSubject: SubjectId },
+                    url: '@Url.Action("getSeries", "Admin", new {area= "CPanel" })',
+                    success: function (data) {
+
+                        $.each(data, function (i, item) {
+
+
+                            if ($("#hdnSeriesId").val() == item.Id) {
+                                isoption += '<option value="' + item.Id + '"  selected="selected" >' + item.Title + '</option>';
+                            }
+                            else {
+                                isoption += '<option value="' + item.Id + '">' + item.Title + '</option>';
+                            }
+                        });
+                        if (data.length > 0) {
+                            $("#SeriesId").html(isoption);
+                            $("#SeriesId").focus();
+                        }
+                        else {
+                            isoption = '<option value="">No Series available';
+                            $("#SeriesId").html(isoption);
+                            $("#SeriesId").focus();
+                        }
+                    }
+                });
+                var idSeries = $("#idSeries  option:selected").val();
+                $('#SeriesId option').map(function () {
+                    if ($(this).val() == idSeries) return this;
+                }).attr('selected', 'selected');
+
+                return false;
+            }
+
+
+            function GetBookEnkription() {
+                isoption = '<option value="-1">-- Select --</option>';
+                var SubjectId = $("#SubjectId option:selected").val() == "" ? 0 : $("#SubjectId option:selected").val();
+                var SeriesId = $("#SeriesId option:selected").val() == "" ? 0 : $("#SeriesId option:selected").val();
+                var title = $("#Title option:selected").text() == "" ? 0 : $("#Title option:selected").text();;
+                var isoption = "";
+                $.ajax({
+                    type: "POST",
+                    data: { idSubject: SubjectId, SeriesId: SeriesId, title: title },
+                    url: '@Url.Action("getBookTitle", "Admin", new {area= "CPanel" })',
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+
+                            $("#idServer").val(item.idServer);
+                            $("#EncriptionKey").val(item.EncriptionKey);
+                        });
+                    }
+                });
+                return false;
+            }
+            $(document).on("change", "#SubjectId", function () {
+
+                GetSeries();
+            });
+            $("#OredrNo").keyup(function () {
+                var num = $("#OredrNo").val();
+                if (!$.isNumeric(num)) {
+                    alert("only numeric value allow");
+                    $("#OredrNo").val("");
+                }
+                else {
+
+                }
+            });
+            $(document).on("change", "#Title", function () {
+                var Title = $("#Title  option:selected").text();
+                if (Title != "Other") {
+                    $("#Title1").addClass("hide");
+                    GetBookEnkription();
+                }
+                else {
+                    $("#Title1").removeClass("hide");
+                    $("#idServer").val("");
+                    $("#EncriptionKey").val("");
+                }
+
+            })
+            $(document).on("change", "#SeriesId", function () {
+
+                GetBookTitle();
+
+            })
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#Imgpreview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            $('#ulClass li.active').each(function (key, value) {
+
+                var _id = $(this).attr("_id");
+
+                CatalogClass.push({
+                    'ClassId': _id
+                });
+
+
+            });
+        });
+    </script>
+}

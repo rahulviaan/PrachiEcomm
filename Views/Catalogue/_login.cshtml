@@ -1,0 +1,326 @@
+﻿@using System.Web.Mvc.Html;
+@model PrachiIndia.Portal.Models.LoginViewModel
+
+@*change start here *@
+<div class="container">
+    <div class="modal fade" id="Login" role="dialog">
+        <div class="modal-dialog" style="left:0px">
+            <!-- Modal content-->
+            <div class="modal-content" style="border-radius:0px;">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="clearvalidation();" data-dismiss="modal">
+                        <span class="h4"><span class="glyphicon glyphicon-remove"></span></span>
+                    </button>
+                    <h4 class="modal-title" style="border:none">Log In </h4>
+                </div>
+                <div class="modal-body" style="background: #ffffff;">
+
+                    <div id="orderPageWrapper" class="orderPageWrapper">
+                        <div id="orderPage" class="orderPage">
+                            <!-- ---------------------------------------------------------------- -->
+                            <section id="sign-in" class="row" style="margin-top:0px;">
+                                <!-- --------------------------------------------- -->
+                                <div id="sectionSignIn" class="col-lg-12" style="margin-bottom:0px;">
+                                    <!-- --------------------------------------------- -->
+                                    <h4 class="col-lg-12 text-center" style="border:none">Already have account ! sign in</h4>
+                                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "frmlogin" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="container">
+                                            <div id="loginbox">
+                                                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                                                <form id="loginform" class="form-horizontal" role="form">
+
+
+                                                    <div class="clearfix"></div>
+                                                    <div class="panel-body">
+                                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                        <div style="margin-bottom: 25px" class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control signindiv", @placeholder = "User Name" })
+
+                                                        </div>
+                                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                        <div style="margin-bottom: 10px" class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+                                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control signindiv", @placeholder = "Password" })
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <!--<div class="checkbox">-->
+                                                            <div>
+                                                                @Html.CheckBoxFor(m => m.RememberMe, new { @name = "abc" })
+
+                                                                @Html.LabelFor(m => m.RememberMe)
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">@Html.ActionLink("Forgot password?", "ForgotPassword", "Account")</div>
+                                                        <div style="margin-top:10px" class="form-group">
+                                                            <!-- Button -->
+                                                            <div class="col-sm-12 controls text-center">
+                                                                <input type="submit" value="Log in" class="btn btn-primary form-control signindiv" style="margin:15px 0 0 0; background-color:#333333" />
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-12 control">
+                                                                <div style="border-top: 1px solid #cacaca; padding-top:15px; text-align:center;">
+                                                                    Don't have an account!
+                                                                    @Html.ActionLink("Sign Up Here", "Register", "Account")
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                    @*<h2><span id="" class="btn" onclick="javascript:jsShowHide('sign-up','sign-in');"><u>New user ?  Create your Account </u></span></h2>
+
+
+
+                                        <h2><span id="" class="btn" onclick="javascript:jsShowHide('loginidfail','sign-in');"><u>Forgot ID / Password</u></span></h2>*@
+
+
+                                </div><!-- loginidpassword col-lg-12 -->
+                                <!-- ---------------------------------------------------------------- -->
+                            </section><!-- row -->
+                            
+                            
+
+                            <section id="Cartdetail" class="row" style="display:none">
+                                @*change*@
+                                <center>
+                                    <div class="col-lg-12 text-center" id="">
+                                        <p><span class="h4 text-uppercase"> <strong style="color: #0bc6a0" class="text-success text-uppercase"></strong> YOUR ORDER </span></p>
+                                        <!--  -->
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <span style="color: #0bc6a0" class="h5 text-uppercase"> <u>Order</u> </span>
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+
+                                                                <span class="h5 text-uppercase text-muted">Confirm </span>
+
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <!--  -->
+                                                            <li>
+                                                                <span class="h5 text-uppercase text-muted"> Pay </span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </center>
+                                <div class="row" id="">
+                                    <div class="col-lg-12" id="">
+                                        <div class="col-lg-7" id="">
+                                            <table class="table table-bordered  panel panel-default">
+                                                <tbody id="tbodycart"></tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-5" id="divtotal">
+
+                                        </div> <!-- col-lg-5 -->
+                                    </div>
+
+                                </div>
+                            </section>
+                            <section id="Canfirm" class="row" style="display:none">
+                                <center>
+                                    <div class="col-lg-12 text-center" id="">
+                                        <p><span class="h4 text-uppercase"> <strong style="color: #0bc6a0" class="text-success text-uppercase"></strong> CONFIRM YOUR ORDER </span></p>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <span class="h5 text-uppercase text-muted"><span class="text-muted fa fa-ok-circle" style="color: #0bc6a0"></span> Order </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+
+                                                                <span style="color: #0bc6a0" class="h5 text-uppercase text-muted"><u>Confirm</u> </span>
+
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-uppercase text-muted"> Pay </span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </center>
+                                <div class="row" id="">
+                                    <div class="col-lg-12" id="">
+
+                                        <div class="col-lg-6" id="CanfirmUser">
+
+                                        </div>
+                                        <div class="col-lg-6 panel panel-default" id="ConfirmOrder">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </section>
+                            <section id="Payment" class="row" style="display:none">
+                                <center>
+                                    <div class="col-lg-12 text-center" id="">
+                                        <p><span class="h4 text-uppercase"> <strong style="color: #0bc6a0" class="text-success text-uppercase">THANK YOU !!! </strong> WE HAVE RECEIVED YOUR ORDER </span></p>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <ul class="list-inline">
+                                                            <li>
+                                                                <span class="h5 text-uppercase text-muted"><span class="text-muted fa fa-ok-circle" style="color: #0bc6a0"></span> Order </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-uppercase text-muted"><span class="fa fa-ok-circle" style="color: #0bc6a0"></span> Confirm </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span class="h5 text-muted"> <span class="text-muted fa fa-menu-right"></span> </span>
+                                                            </li>
+                                                            <li>
+                                                                &nbsp;
+                                                            </li>
+                                                            <li>
+                                                                <span style="color: #0bc6a0" class="h5 text-uppercase text-muted"> <u>Pay</u> </span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </center>
+
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="col-lg-12" id="">
+                                                    <div class="col-lg-4" id="Invoicediv">
+                                                    </div>
+                                                    <div class="col-lg-4" id="UserbilingAddress">
+                                                    </div>
+                                                    <div class="col-lg-4" id="DivePayIT">
+                                                        <div class="col-lg-12" id="">
+                                                            <p>Our executive may call you for confirmation of alternate payment options. </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+
+                        </div><!-- orderPage -->
+                    </div><!-- orderPageWrapper -->
+
+                </div>
+                @*<div class="modal-footer" style="margin-top:0px;">
+
+                        <div id="" class="col-lg-12 text-center text-uppercase text-muted">
+                            <p><span class="pull-left small">By creating account, building profile, signing in and sharing Personal Information, I understand and agree all the relevant terms and conditions.    We do not share any information with third party(s) in any form, without your written prior concent.</span></p>
+
+                        </div>
+
+
+                    </div>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+@*change End Here *@
+@section scripts{
+
+    <script>
+        function UpdateQuntiyPopup(id) {
+            alert(122);
+            var Quantity = $("#Qunt_" + id).val();
+            if ($.isNumeric(Quantity) && Quantity > 0) {
+                $.getJSON('@Url.Action("UpdateItemQuntity", "Catalogue")', { Quantity: Quantity, Id: id }, function (dataVal) {
+                    $(".elem").notify("Item Added!", "success");
+                    showcartpopup();
+                });
+            }
+            else {
+                $.notify("Enter Onely Number", "error");
+                showcartpopup();
+            }
+        }
+    </script>                }
+
+

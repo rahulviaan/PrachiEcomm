@@ -1,0 +1,217 @@
+﻿@model List<PrachiIndia.Sql.MasterSery>
+@{
+    ViewBag.Title = "Series";
+}
+@section metatags{
+    <title>Prachi Group - Educational Books Publishers India</title>
+    <meta name="keywords" content="books, epublishing, digital publishing, digital conversion, digital transformation, ebook publishing, ebook conversion, ebook transformation, ebook creation, content publishing, content conversion, content transformation, content creation, content enrichment, ebook enhancement, ebook consulting, epub publishing, epub conversion, epub transformation, xml consulting, xml publishing, xml conversion, xml transformation">
+    <meta name="description" content="We are a leading services company providing content solutions, data analytics and related services to publishers, information providers, and enterprises.">
+}
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>Series</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li>
+                            <span>
+                                Series
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="about" class="" style="padding-bottom:10px">
+    <div id="" class="container">
+        <div class="clearfix"></div>
+        <div class="panel-body">
+            <div id="leftmenusub" class="col-md-3" style="padding:0px; border-right: 0;">
+                <ul class="nav nav-tabs sub-tab h4">
+                    @{
+                        var subjects = (List<PrachiIndia.Sql.MasterSubject>)ViewBag.Subjects;
+                        if (subjects != null && subjects.Any())
+                        {
+                            foreach (var sub in subjects)
+                            {
+                                <li><a href="@Url.Action("Series","Home",new { Id=sub.Id})"><i class="fa fa-angle-right" aria-hidden="true"></i> @sub.Title</a></li>
+                            }
+                        }
+
+                    }
+                    @*<li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> English</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Mathematics</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Science</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Social Science</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Hindi</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Sanskrit</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Art and Craft</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Health and Physical Education</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Term Book</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Environmental Studies</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> General Knowledge</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Moral Education</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Computer</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> French</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Atlas</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Value Education</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Enviromental Studies</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Magic Number</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Assignment for Holidays</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Holiday Homework</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Mathematics(Hindi)</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Smajik Vigyan</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Vigyan</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Physics</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Chemistry</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Rhythmic Rhymes</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Sahitya Prabha</a></li>
+                    <li><a data-toggle="tab" href=""><i class="fa fa-angle-right" aria-hidden="true"></i> Accountancy</a></li>*@
+                </ul>
+            </div>
+            <div id="" class="col-md-9" style="padding: 0;">
+                <div class="panel-body" style="padding-top:0">
+                    <div class="tab-content">
+                        <div id="aboutusintro" class="tab-pane fade active in">
+
+
+                            <div class="panel-body">
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <div class="row">
+                                            @if (string.IsNullOrWhiteSpace(item.Image))
+                                            {
+                                                <div class="col-md-12">
+                                                    <h4>
+                                                        <a href="@Url.Action("SeriesDetail","Home",new {id=item.Id })">
+                                                            @item.Title
+                                                        </a>
+                                                    </h4>
+                                                    <p>@Html.Raw(item.Description)</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="bs-example">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <a href="@Url.Action("SeriesDetail","Home",new {id=item.Id })">
+                                                                @item.Title
+                                                                <span class="pull-right">
+                                                                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <div class="col-md-3">
+                                                                <img src="~/ModuleFiles/Series/@item.Image" class="img-responsive" />
+                                                            </div>
+                                                            <div class="col-md-9">
+
+                                                                <p>@Html.Raw(item.Description)</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                            }
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</section>
+@section scripts{
+    @*<link href="~/Content/js/form/perfect-scrollbar.css" rel="stylesheet" />
+        <script src="~/Content/js/form/perfect-scrollbar.js"></script>*@
+    <style>
+        .panel-heading a {
+            float: none;
+            background-color: transparent;
+            border-bottom: transparent;
+        }
+
+        .nav > li > a {
+            padding: 10px 4px !important;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .nav.nav-tabs a {
+            color: #50599e;
+        }
+
+        .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+            background-color: #e9fafe;
+            border: transparent;
+            border-bottom-color: transparent;
+            border-bottom-color: transparent;
+        }
+
+        .sub-tab li {
+            width: 100%;
+            float: left;
+            border-bottom: solid 1px #f7f7f7;
+        }
+
+        .nav.nav-tabs a:hover {
+            background-color: #e4fbfe;
+            border-radius: 0;
+            border: solid 1px #e4fbfe;
+        }
+
+        .panel-heading a:hover {
+            text-decoration: none;
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+        }
+       .panel-default > .panel-heading {
+            background-color: #ffffff!important;
+            border-color: #f2f2f2!important;
+        }
+       .panel-default {
+    border-color: #f6f1f1!important;
+}
+    </style>
+    <script>
+        var $ = document.querySelector.bind(document);
+
+        new PerfectScrollbar('#leftmenusub');
+        setTimeout(() => $('#leftmenusub').classList.add('ps--focus'), 0);
+        setTimeout(() => $('#leftmenusub').classList.remove('ps--focus'), 750);
+    </script>
+}

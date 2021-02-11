@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+<div class="col-md-12 row">
+<div class="col-sm-3 form-group">
+    <input type="hidden" id="count" value="1">
+    <label for="Board">Board<span style="color:#d43f3a">&nbsp;*</span></label>
+    <select class="form-control" name="POMasterDetails[0].BoardID" id="Board_0" onchange="GetSubject(this, 0);">
+
+    </select>
+
+</div>
+<div class="col-sm-3 form-group">
+
+    <label for="Subject">Subject<span style="color:#d43f3a">&nbsp;*</span></label>
+    <select class="form-control" name="POMasterDetails[0].SubjectID" id="Subject_0" onchange="GetSeries(this, 0);">
+
+    </select>
+</div>
+<div class="col-sm-3 form-group">
+    <label for="Series">Series<span style="color:#d43f3a">&nbsp;*</span></label>
+    <select class="form-control" id="SubjectDetail_0"  name="POMasterDetails[0].SeriesID" onchange="GetClass(this, 0);">
+
+    </select>
+</div>
+    <div class="col-sm-2 form-group">
+        <label for="Class">Class<span style="color:#d43f3a">&nbsp;*</span></label>
+        <select id="valueappend_0" name="POMasterDetails[0].ClassIDs"  class="multiselect-ui form-control" multiple="multiple">
+
+        </select>
+</div>
+
+<div class="col-sm-1" style="padding-top:5px;">
+    <br />
+    <button type="button" id="load_list" class="btn btn-warning"><i class="fa fa-plus" aria-hidden="true"></i></button>
+</div>
+  </div>
+    <div class="clearfix"></div>
+    <div id="valueappen" class="col-md-12 row"></div>
+   

@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "OnLoad";
+    Layout = null;
+}
+<link href="~/Content/fonts/fonts.css" rel="stylesheet" />
+<style>
+
+    .close:focus, .close:hover {
+        opacity: 1 !important;
+    }
+
+    .close {
+        opacity: 1 !important;
+    }
+
+    body {
+        font-family: Poppins-Regular, Helvetica, sans-serif;
+        font-size: 18px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .subscribe {
+        padding: 17px 30px;
+        background-color: #e90202;
+        color: #fff;
+        border: solid 1px #e90202;
+        width: auto;
+        border-radius: 30px;
+        font-size: 18px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+
+        .subscribe:hover {
+            color: #ffffff;
+        }
+
+    .panelpadding h4 {
+        line-height: 30px;
+        font-size: 22px;
+    }
+
+    .panelpadding {
+        padding: 2% 0;
+    }
+
+    .container {
+        padding: 16px;
+        text-align: center;
+        background-color: #ffffff;
+        border: solid 5px #353333;
+        width: 80%;
+        margin: 3% auto;
+    }
+
+    .modal {
+        display: block;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background: rgba(13, 13, 13, 0.9);
+        padding-top: 50px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto 15% auto;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    hr {
+        border: 1px solid #f1f1f1;
+        margin-bottom: 25px;
+    }
+
+    .close {
+        position: absolute;
+        right: 35px;
+        top: 15px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #f1f1f1;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+<div id="Subscribe" class="modal">
+    <span onclick="LoadHomePage()" class="close" title="Close Modal">×</span>
+    <div class="container">
+        <div class="col-md-12 panelpadding">
+            <h4>
+                Education: Expected Best?<br />
+                Investment: Expected less?<br />
+                so, PAY SMART and GET EDUCATED.
+            </h4>
+
+            <h3 class="panelpadding">READEDGE, your Academic Companion.</h3>
+            <p class="panelpadding">
+                <b>Knowledge</b> comes from books and you can find them all in <b>READEDGE,</b><br />
+                Join now to Get the most at its best, pay an exceptional value of<br /> <b>less than Rs. 3 a day</b> and feel the
+                difference.
+            </p>
+            <p class="panelpadding"><a href="@Url.Action("Index","UserSubscription")" class="btn subscribe">Subscribe Readedge</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById('Subscribe');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+    function LoadHomePage() {
+
+        document.getElementById('Subscribe').style.display = 'none'
+        location.href = "/Home";
+    }
+</script>
+

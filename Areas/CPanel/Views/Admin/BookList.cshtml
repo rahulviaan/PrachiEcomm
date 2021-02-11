@@ -1,0 +1,203 @@
+﻿@model List<PrachiIndia.Web.Areas.Model.Books>
+@{
+    ViewBag.Title = "BookList";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+
+    var MasterSubjectRepository = new PrachiIndia.Sql.CustomRepositories.MasterSubjectRepository();
+    var ltSubject = MasterSubjectRepository.GetAll().Where(x => x.Status == 1);
+    IEnumerable<SelectListItem> lst = (from m in ltSubject select m).AsEnumerable().Select(m => new SelectListItem() { Text = m.Title.ToString(), Value = m.Id.ToString() });
+    var lstSubject = new SelectList(lst, "Value", "Text");
+    var subject = ViewBag.Subjects;
+    var series = ViewBag.Series;
+}
+<style type="text/css">
+    .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {
+        border-top: 1px solid #e1e1e1 !important;
+    }
+
+    .panel .panel-heading i {
+        width: 10px !important;
+        border: none !important;
+    }
+</style>
+<div class="panel panel-primary">
+    <div class="panel panel-heading">
+        <h2 style="font-size:24px; color:#fff;">Books</h2>
+
+        <a class="pull-right" title="Create new book" style="font-size:12px;color:#fff;" href="@Url.Action("ManageBooks","Admin")"><i class="fa fa-plus"></i>&nbsp; Create New</a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            @using (Html.BeginForm("BookList", "Admin", FormMethod.Get))
+            {
+            <div class="col-md-5">
+                @Html.Label("Subject")
+                @Html.DropDownListFor(model => subject, lstSubject, "All Subjects", new { @class = "form-control" })
+            </div>
+            <div class="col-md-5">
+                @Html.Label("Series")
+                @Html.DropDownListFor(model => series, (List<SelectListItem>)ViewBag.AllSeries, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1">
+
+                <input type="submit" value="Search" class="btn btn-sm btn-primary" style="margin-top:30%;" />
+            </div>
+            }
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-responsive table-bordered">
+                    <tr class="bg-info">
+                        <th width="20">#</th>
+                        <th width="100" style="text-align:center" valign="middle">Image</th>
+                        <th width="70" style="text-align:center" valign="middle">Board</th>
+                        <th width="70" style="text-align:center" valign="middle">Class</th>
+                        <th width="220" valign="middle">Title</th>
+                        <th width="80" style="text-align:center" valign="middle">
+                            Contents
+                            <table style="width:100%;" border="0">
+                                <tr>
+                                    <td style="text-align:center">E-Book</td>
+                                    <td style="text-align:center">LP</td>
+                                    <td style="text-align:center">WS</td>
+                                    <td style="text-align:center">Sol</td>
+                                    <td style="text-align:center">A/V</td>
+                                </tr>
+                            </table>
+                        </th>
+
+                        <th width="" valign="middle" style="width:130px; text-align:center;">Action</th>
+                    </tr>
+                    <tbody id="tbody">
+                        @if (Model != null && Model.Any())
+                        {
+                            var i = 0;
+                            foreach (var book in Model)
+                            {
+                                i = i + 1;
+                                var publisStatus = "";
+                                if (book.Status == (int)PrachiIndia.Web.Areas.Model.IsPublished.Yes)
+                                {
+                                    publisStatus = "jsActiveInactive btn btn-success btn-sm  glyphicon glyphicon-ok";
+                                }
+                                else
+                                {
+                                    publisStatus = "jsActiveInactive btn btn-warning btn-sm  glyphicon glyphicon-remove";
+                                }
+                                <tr>
+                                    <td>@i</td>
+                                    <td><img id="img" src="/ModuleFiles/Items/@book.Image" onerror="onImgError(this);" onLoad="setDefaultImage(this);" style="height:40px;" /></td>
+                                    <td>@book.Board</td>
+                                    <td>@book.Class</td>
+                                    <td><a href="/CPanel/Admin/BookDetails/@book.Id"> @book.Title</a></td>
+                                    <td>
+                                        <table style="width:100%;" border="0">
+                                            <tr>
+                                                <td style="text-align:center">
+                                                    @if (book.Ebook == 2)
+                                                    {<span>N</span> }
+                                                    else
+                                                    { <span>Y</span>}
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (book.Ebook == 1)
+                                                    {<span>Y</span> }
+                                                    else
+                                                    { <span>N</span>}
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (book.Ebook == 1)
+                                                    {<span>Y</span> }
+                                                    else
+                                                    { <span>N</span>}
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (book.Ebook == 1)
+                                                    {<span>Y</span> }
+                                                    else
+                                                    { <span>N</span>}
+                                                </td>
+                                                <td style="text-align:center">
+                                                    @if (book.Ebook == 1)
+                                                    {<span>Y</span> }
+                                                    else
+                                                    { <span>N</span>}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <a href="/CPanel/Admin/BookDetails/@book.Id" title="View books" class="btn btn-primary btn-sm glyphicon glyphicon-eye-open"></a>&nbsp;
+                                        <a href="@Url.Action("ManageBooks", "Admin", new { Id = book.Id })" title="Edit books" class="btn btn-primary btn-sm glyphicon glyphicon-edit"></a>&nbsp;
+                                        <a href="DeleteBooks/?BookID=@book.Id" title="Update Status" class="@publisStatus"></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7">
+                                    <h4 class="text-center">No books found.</h4>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        function setDefaultImage(source) {
+            var badImg = new Image();
+            badImg.src = "/Images/NoImage.jpg";
+            var cpyImg = new Image();
+            cpyImg.src = source.src;
+
+            if (!cpyImg.width) {
+                source.src = badImg.src;
+            }
+
+        }
+        function onImgError(source) {
+            source.src = "/Images/NoImage.jpg";
+            source.onerror = "";
+            return true;
+        }
+
+        $(document).on("change", "#subject", function () {
+            GetSeries();
+        });
+
+        function GetSeries() {
+            var idSubject = $("#subject option:selected").val() == "" ? 0 : $("#subject option:selected").val();
+            $("#series").html("");
+            var isoption = '<option value="0">All Series';
+            $.ajax({
+                type: "POST",
+                data: { idSubject: idSubject },
+                url: '@Url.Action("getSeries", "Admin", new {area= "CPanel" })',
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+                        isoption += '<option value="' + item.Id + '">' + item.Title + '</option>';
+                    });
+                    if (data.length > 0) {
+                        $("#series").append(isoption);
+                        $("#series").focus();
+                    }
+                    else {
+                        isoption = '<option value="">No Series available';
+                        $("#series").append(isoption);
+                        $("#series").focus();
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+}

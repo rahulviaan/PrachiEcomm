@@ -1,0 +1,50 @@
+﻿@model PrachiIndia.Web.Areas.Model.GSTModel
+@{
+    ViewBag.Title = "Manage GST";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="card-title">Manage HSN Code</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal col-md-6">
+                @using (Html.BeginForm("ManageGST", "Dashboard", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Status</label>
+                        <div class="col-md-9">
+                            @Html.CheckBoxFor(t => t.Status)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">HSN Code</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(t => t.HSNCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(t => t.HSNCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Rate</label>
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(t => t.Rate, new { @class = "form-control", style = "width:90% !important;" })<span style="width:8%">%</span>
+                            @Html.ValidationMessageFor(t => t.Rate)
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                            <label class="control-label col-md-3">Description</label>
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(t => t.Description, new { @class = "form-control" })
+                            </div>
+                        </div>*@
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

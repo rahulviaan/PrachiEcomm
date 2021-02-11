@@ -1,0 +1,106 @@
+﻿@model List<PrachiIndia.Sql.AspNetUser>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+    var states =(List<System.Web.Mvc.SelectListItem>) ViewBag.State;
+    var i = 1;
+}
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Staff <a class="pull-right" title="Create new book" style="font-size:12px;color:#fff;" href="@Url.Action("ManageBooks","Admin")"><i class="fa fa-plus"></i>&nbsp; Create New</a></h4></div>
+        <div class="panel-body">
+            <div class="row">
+                @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
+                {
+                    <div class="col-md-3">
+                        @Html.Label("Type")
+                        <select name="type" id="type" class="form-control">
+                            <option value="">All</option>
+                            <option value="@PrachiIndia.Portal.Models.Roles.Sales">@PrachiIndia.Portal.Models.Roles.Sales</option>
+                            <option value="@PrachiIndia.Portal.Models.Roles.Marketing">@PrachiIndia.Portal.Models.Roles.Marketing</option>
+                            <option value="@PrachiIndia.Portal.Models.Roles.Staff">@PrachiIndia.Portal.Models.Roles.Staff</option>
+                            <option value="@PrachiIndia.Portal.Models.Roles.Driver">@PrachiIndia.Portal.Models.Roles.Driver</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("State")
+                        <select name="StateId" id="StateId" class="form-control">
+                            <option value="-1">All</option>
+                            @foreach (var item in states)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("City")
+                        <select name="CityId" id="CityId" class="form-control"></select>
+                    </div>
+                    <div class="col-md-1">
+
+                        <input type="submit" value="Search" class="btn btn-sm btn-primary" style="margin-top:30%;" />
+                    </div>
+                }
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-border">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>City</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.AspNetRoles.First().Name</td>
+                                    <td>@item.FirstName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.PhoneNumber</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.City</td>
+                                    <td>@item.State</td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#StateId").change(function () {
+                var StateId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account",new { area=""})', { StateId: StateId }, function (dataVal) {
+                    var items = '<option value="0">All</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+}

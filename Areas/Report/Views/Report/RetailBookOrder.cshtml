@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<div class="panel panel-default">
+
+
+
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#first" aria-controls="first" role="tab" data-toggle="tab">E-book(User)</a></li>
+        <li role="presentation"><a href="#second" aria-controls="first" role="tab" data-toggle="tab">E-book(Detailed)</a></li>
+        <li role="presentation"><a href="#third" aria-controls="second" role="tab" data-toggle="tab">P-book(User)</a></li>
+        <li role="presentation"><a href="#fourth" aria-controls="second" role="tab" data-toggle="tab">P-book(Detailed)</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="first">
+            @{Html.RenderAction("UserEbookOrder_User", "Report");}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="second">
+            @{Html.RenderAction("UserEbookOrder", "Report");}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="third">
+            @{Html.RenderAction("UserPrintBookOrder_User", "Report");}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="fourth">
+            @{Html.RenderAction("UserPrintBookOrder", "Report");}
+        </div>
+    </div>
+
+</div>

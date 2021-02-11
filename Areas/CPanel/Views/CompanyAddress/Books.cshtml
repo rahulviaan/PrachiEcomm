@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "Book Order";
+}
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Order Book</h4></div>
+        <div class="panel-body">
+                <div class="col-md-5">
+                    @Html.DropDownList("SubjectId", ViewBag.Subject as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+                <div class="col-md-5">
+                    <select id="SeriesId" class="form-control">
+                        @*<option value="0">Please select</option>*@
+                    </select>
+
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" id="btnFilter">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-default" type="button" id="btnUpdate">
+                        Update
+                    </button>
+                </div>
+            <div class="clearfix"></div>
+            <div class="table-responsive col-md-12" style="padding-top:2%">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>#</th>
+                            <th>Image</th>
+                            @*<th>Id</th>*@
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th> Board</th>
+                            <th>Class</th>
+                            <th>Order No.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblBody"></tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnUpdate").hide();
+            var SubjectId = $('select#SubjectId option:selected').val();
+            var SereiesId = $('select#SeriesId option:selected').val();
+            FillGrid(SubjectId, SereiesId);
+            $('#btnFilter').on('click', function () {
+                var SubjectId = $('select#SubjectId option:selected').val();
+                var SereiesId = $('select#SeriesId option:selected').val();
+                FillGrid(SubjectId, SereiesId);
+            });
+
+            $('#SubjectId').on('change', function () {
+                var SubjectId = $(this).val();
+                $('#SeriesId').html();
+                $.ajax({
+                    type: "POST",
+                    data: { SubjectId: SubjectId },
+                    url: '@Url.Action("GetSeries", "CompanyAddress", new {area= "CPanel" })',
+                    success: function (items) {
+                        $('#SeriesId').append('<option value="0">Please select</option>');
+                        $.each(items, function (i, d) {
+                            // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                            $('#SeriesId').append('<option value="' + d.Id + '">' + d.Title + '</option>');
+                        });
+                    }
+                });
+
+            });
+            $('#SeriesId').on('change', function () {
+                var SubjectId = $("#SubjectId").val();
+                var SereiesId = $(this).val();
+                FillGrid(SubjectId, SereiesId);
+            });
+
+        });
+        //Button of update is enable and disable start here
+
+        $(function () {
+            $('[type=checkbox]').click(function () {
+                alert(123);
+                var checkedChbx = $('[type=checkbox]:checked');
+                if (checkedChbx.length > 0) {
+                    $('#btnUpdate').show();
+                }
+                else {
+                    $('#btnUpdate').hide();
+                }
+
+                //if (checkedChbx.length == $('[type=checkbox]').length) {
+                //    $('#all').show();
+                //}
+                //else {
+                //    $('#all').hide();
+                //}
+            });
+        });
+        //Button of update is enable and disable End here
+
+        function FillGrid(SubjectId, SereiesId) {
+            $("#tblBody").html(' <tr><td colspan="10"><div class="progress"> <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Please wait..     </div>  </div></td></tr>');
+            var isTbody = "";
+            var tbl = "";
+            var tHeader = "";
+            $.ajax({
+                type: "POST",
+                data: { SubjectId: SubjectId, SeriesId: SereiesId },
+                url: '@Url.Action("GetBooks", "CompanyAddress", new {area= "CPanel" })',
+                success: function (items) {
+                    var trRecord = "";
+                    $.each(items, function (i, item) {
+                        var srNo = parseInt(i + 1);
+                        console.log(item);
+                        trRecord = trRecord + "<tr>";
+                        trRecord = trRecord + "<td><input type='checkbox' name='chk' id='chk[]_" + srNo + "' value='" + item.Id + "' checked='' /></td>";
+                        trRecord = trRecord + "<td>" + srNo + "</td>";
+                        trRecord = trRecord + "<td>" + item.Image + "</td>";
+                        trRecord = trRecord + "<td>" + item.Title + "</td>";
+                        trRecord = trRecord + "<td>" + item.Author + "</td>";
+                        trRecord = trRecord + "<td>" + item.ISBN + "</td>";
+
+                        trRecord = trRecord + "<td>" + item.BoardId + "</td>";
+                        trRecord = trRecord + "<td>" + item.ClassId + "</td>";
+                        trRecord = trRecord + "<td><input type='text' name='lname' placeholder='order no' class='form-control'> </td>";
+                        trRecord = trRecord + "</tr>";
+                    });
+                    $("#tblBody").html(trRecord);
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<PrachiIndia.Sql.MasterClass>
+@{
+    ViewBag.Title = "Class";
+}
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4 style="padding: 8px 0;">Class (@Model.Count())<span class="pull-right"><a href="@Url.Action("ManageClass", "Admin")" class="btn btn-primary btn-sm" title='Add Subject'><i class="fa fa-plus"></i></a></span></h4></div>
+        <div class="panel-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr><th>Sr No#</th><th>Title</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @{int count = 0;
+                            foreach (var classes in Model)
+                            {
+                                <tr>
+                                    <td>@(count + 1)</td>
+                                    <td>@classes.Title</td>
+                                    <td>
+                                        @if (classes.Status == 1)
+                                        {
+                                            <input type="checkbox" checked="checked" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@classes.Id,this)" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@classes.Id,this)" />
+                                        }
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        <a title="Edit Subject" class="text-primary" href="@Url.Action("ManageClass", "Admin", new { id = classes.Id })"><i class="fa fa-pencil"></i></a>&nbsp;
+                                        @*<a title="Delete Subject" class="text-danger" onclick="return confirm('Are you sure to delete ?')"  href="@Url.Action("DeleteClass","Admin", new { ClassID = classes.Id })"><i class="glyphicon glyphicon-trash"></i></a>&nbsp;*@
+                                    </td>
+                                </tr>
+                                count = count + 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script type="text/javascript">
+    
+    function ActiveInactive(ID, object) {
+        var ckb = $(object).is(':checked');
+        $.ajax({
+            type: "POST",
+            url: "/Admin/DeleteClass",
+            data: { ClassID: ID, Flag: ckb },
+            success: function (data) {
+                if (data == 'true')
+                    toastr.success("Class Activated Successfully", '', { timeOut: 5000 })
+                else
+                    toastr.success("Class Deactivated Successfully", '', { timeOut: 5000 })
+            },
+            error: function () {
+                alert("Error occured!!")
+            }
+        });
+
+    }
+</script>

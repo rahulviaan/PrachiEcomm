@@ -1,0 +1,220 @@
+﻿@model PrachiIndia.Portal.Areas.PO.Models.SchoolTeacher
+@{
+    ViewBag.Title = "EbookOrder";
+    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+}
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+@using (Html.BeginForm("TeacherRegistration", "PO", FormMethod.Post, new { area = "PO", id = "Form_Specimen" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">Teacher Details</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Name">Name:</label>
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                <input type="text" class="form-control" name="Name" id="Name" maxlength="30">
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="SchoolName">School Name:</label>
+
+                                <input type="text" class="form-control" name="SchoolName" id="SchoolName" maxlength="50">
+
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Email">Email:</label>
+                                <input type="text" class="form-control" name="Email" id="SchoolEmail" maxlength="70">
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ContactNo">Contact No:</label>
+                                @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                                <input type="text" class="form-control" name="ContactNo" id="ContactNo" pattern="\d*" maxlength="10">
+
+                            </div>
+
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="ContactNo">Class:</label>
+                                @Html.ValidationMessageFor(model => model.ClassIds, "", new { @class = "text-danger" })
+                                @Html.ListBoxFor(m => m.ClassIds, Model.Classes, new { @class = "form-control", multiple = "Multiple" })
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ContactNo">Subjects:</label>
+                                @Html.ValidationMessageFor(model => model.SubjectIds, "", new { @class = "text-danger" })
+                                @Html.ListBoxFor(m => m.SubjectIds, Model.Subjects, new { @class = "form-control", multiple = "Multiple" })
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<br />
+<br />
+<br />
+<br />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+@Scripts.Render("~/bundles/jqueryval")
+
+<link href="~/Content/css/multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Content/css/multiselect/bootstrap-multiselect.js"></script>
+<script src="~/Content/css/multiselect/jquery-2.1.3.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+
+
+<style>
+    label {
+        width: 100%;
+        float: left;
+        text-align: left;
+    }
+    .toast-top-right {
+        right: 40% !important;
+        top: 20% !important;
+        opacity: 1 !important;
+    }
+
+    .multiselect.dropdown-toggle.custom-select {
+        border: solid 1px #ccc;
+        padding: 7px 15px;
+        border-radius: 4px;
+    }
+
+    .form-check {
+        float: left;
+    }
+
+    .dropdown-item.multiselect-all {
+        border: none;
+        width: 100%;
+        float: left;
+    }
+
+    .multiselect.dropdown-toggle.custom-select {
+        border: solid 1px #ccc;
+        padding: 7px 15px;
+        border-radius: 4px;
+    }
+
+    .multiselect-container .multiselect-option, .multiselect-container .multiselect-group, .multiselect-container .multiselect-all {
+        padding: 0;
+        width: 100%;
+        border: none;
+    }
+
+    .multiselect-container {
+        padding: 10px 0;
+        height: 200px;
+        overflow-y: scroll;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        $("#ClassIds").multiselect({
+            includeSelectAllOption: true
+        });
+        $("#SubjectIds").multiselect({
+            includeSelectAllOption: true
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $("#ContactNo").on("blur", function () {
+            var Mobile = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                data: { "Mobile": Mobile },
+                url: '@Url.Action("CheckUserByMobile", "PO",new { Area="PO"})',
+                success: function (Result) {
+                    if (Result) {
+                        $("#ContactNo").val("");
+                        toastr.error("Teacher already registered with given mobile number", '', { timeOut: 5000 })
+
+                    }
+                }
+            });
+        });
+
+
+        $("#SchoolEmail").on("blur", function () {
+            //alert();
+
+            var Email = $(this).val();
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            {
+                if (!pattern.test(Email)) {
+                    toastr.error("Please enter a valid e-mail address", '', { timeOut: 5000 })
+                    $("#SchoolEmail").val("");
+                    return false;
+                }
+            }
+
+
+            $.ajax({
+                type: "GET",
+                data: { Email: Email },
+                url: '@Url.Action("CheckUserByEmail", "PO",new { Area="PO"})',
+                success: function (Result) {
+                    if (Result == "1") {
+                        $("#SchoolEmail").val("");
+                        toastr.error("Teacher already registered with given e-mailid", '', { timeOut: 5000 })
+
+                    }
+                }
+            });
+        });
+
+    var message='@ViewBag.Message'
+        if (message == "") {
+            //toastr.error("Something went wrong please tr later", '', { timeOut: 5000 })
+        }
+        else {
+            toastr.success("Data saved successfully", '', { timeOut: 5000 })
+        }
+    });
+
+
+</script>

@@ -1,0 +1,21 @@
+﻿@model List<PrachiIndia.Web.Areas.Model.MasterBoards>
+@{
+    ViewBag.Title = "BoardManager";
+}
+
+<h2>BoardManager</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Sr No</th><th>Name</th><th>Action</th></tr>
+    </thead>
+
+    @if (Model != null && Model.Any())
+    {
+        <tbody>
+            @foreach (var board in Model)
+            {
+                <tr><td>@board.OredrNo</td><td>@board.Title</td><td><i class="fa fa-pencil"></i></td></tr>
+            }
+        </tbody>
+    }
+</table>

@@ -1,0 +1,132 @@
+﻿@model IEnumerable<PrachiIndia.Sql.MasterSery>
+
+@{
+    ViewBag.Title = "Series";
+}
+<style type="text/css">
+    #tbody a {
+        cursor: pointer;
+    }
+</style>
+<div class="panel-body inprdservice">
+    <div class="col-md-12 inprdservicehead" style="margin-bottom:0;">
+        <div class="panel-header"><h4 class="card-title">Series (@Model.Count()) <span class="pull-right"><a href="@Url.Action("ManageSeries","Admin")" class="btn btn-primary btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></a></span></h4></div>
+    </div>
+
+    <div class="panel-body">
+        <div class="table-responsive panel-body">
+            <div class="row" style="padding: 0px 0 20px 0;">
+                @using (Html.BeginForm("Series", "Admin", FormMethod.Get))
+                {
+                    <div class="col-md-6">
+                        @Html.DropDownList("subject", (SelectList)ViewBag.Subject, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary"><span class="fa fa-search bigger-110"></span></button>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr><th>Sr No#</th><th>Title</th><th>DVD Type</th><th>Action</th></tr>
+                        </thead>
+                        @if (Model != null && Model.Any())
+                        {
+                            <tbody id="tbody">
+                                @{int count = 0;
+                                    foreach (var series in Model)
+                                    {
+                                        <tr>
+                                            <td>@(count + 1)</td>
+                                            <td>@series.Title</td>
+                                            <td>@series.GetDVDName(series.DvdType)</td>
+
+                                            <td>
+                                                @if (series.Status == 1)
+                                                {
+                                                    <input type="checkbox" checked="checked" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@series.Id,this)" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" title="Update Status" style="cursor:pointer" onchange="ActiveInactive(@series.Id,this)" />
+                                                }
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                                <a title="Edit Subject" class="text-primary" href="@Url.Action("ManageSeries", "Admin", new { id = series.Id })"><i class="fa fa-pencil"></i></a>&nbsp;
+                                                @*<a title="Delete Subject" class="text-danger" onclick="return confirm('Are you sure to delete ?')" href="@Url.Action("DeleteSeries", "Admin", new { SeriesID = series.Id })"><i class="glyphicon glyphicon-trash"></i></a>&nbsp;*@
+                                            </td>
+                                        </tr>
+                                        count = count + 1;
+                                    }
+                                }
+                            </tbody>
+                                    }
+                                    else
+                                    {
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <h4 class="text-center">Record not found.</h4>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/js/common.js"></script>
+    <script src="~/Scripts/jquery.toaster.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script type="text/javascript">
+
+        @*$(document).ready(function () {
+            var Message = '@ViewBag.Message';
+            if (Message == "SUCCESS") {
+                toastr.success("Series deleted successfully", '', { timeOut: 5000 })
+            }
+        })*@
+
+        $(document).on("change", "#idSubject", function () {
+
+            var idSubject = $("#idSubject option:selected").val() == "" ? 0 : $("#idSubject option:selected").val();
+            FillGrid(idSubject);
+        });
+
+        function ActiveInactive(ID, object) {
+            var ckb = $(object).is(':checked');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DeleteSeries",
+                data: { SeriesID: ID, Flag: ckb },
+                success: function (data) {
+                    if (data == 'true')
+                        toastr.success("Series Activated Successfully", '', { timeOut: 5000 })
+                    else
+                        toastr.success("Series Deactivated Successfully", '', { timeOut: 5000 })
+                },
+                error: function () {
+                    alert("Error occured!!")
+                }
+            });
+
+        }
+
+    </script>
+}

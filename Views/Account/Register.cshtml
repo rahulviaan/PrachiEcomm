@@ -1,0 +1,199 @@
+﻿@model PrachiIndia.Portal.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var list = PrachiIndia.Portal.Framework.Utility.GetAllCountry();
+    //var State = PrachiIndia.Portal.Framework.Utility.GetSates();
+    //var City = PrachiIndia.Portal.Framework.Utility.GetCities();
+    //ViewData["list"] = list;
+    //ViewData["State"] = State;
+    //ViewData["City"] = City;
+}
+<div style="clear:both; height:10px;"></div>
+<div class="container" style="margin:8% 0 3% 0;">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel-body" style="background-color:#fff;box-shadow: 0px 0px 5px #f6f6f6;border: solid 1px #e9e9e9;">
+                <div class="panel-heading">
+                    <h3 style="margin:10px 0px 10px 0;border-bottom: solid 1px #e9e9e9;padding-bottom: 20px;">
+                        Register Here
+                        <span class="pull-right" style="font-size:14px;">@Html.ActionLink("Sign In", "Login")</span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput"> Name<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Email<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Password<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Confirm Password<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.confirmPassword, "", new { @class = "text-danger" })
+                                @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Phone No.<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        @*<div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Role</label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Role, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.Role, new SelectList(ViewBag.Roles, "Name", "Name"),new { @id = "CountryId", @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>*@
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Country</label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.CounteryId, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.CounteryId, (IEnumerable<SelectListItem>)ViewData["list"], new { @id = "CountryId", @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div id="divIndia" style="display:none;">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-4 control-label" for="textinput">State</label>
+                                <div class="col-md-8">
+                                    @Html.ValidationMessageFor(m => m.StateId, "", new { @class = "text-danger" })
+                                    @Html.DropDownList("StateId", new List<SelectListItem> { new SelectListItem { Text = "- Select State - ", Value = "0" } }, new { @class = "form-control" })
+                                    <span class="help-block"> </span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="col-md-4 control-label" for="textinput">City</label>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("CityId", new List<SelectListItem> { new SelectListItem { Text = "- Select City - ", Value = "0" } }, new { @class = "form-control" })
+                                    <span class="help-block"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divOther" style="display:none;">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-4 control-label" for="textinput">State</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(t => t.State, new { @class = "form-control" })
+                                    <span class="help-block"> </span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="col-md-4 control-label" for="textinput">City</label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(t => t.City, new { @class = "form-control" })
+                                    <span class="help-block"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">Address<span style="color:red;font-size:medium">*</span></label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="col-md-4 control-label" for="textinput">PinCode </label>
+                            <div class="col-md-8">
+                                @Html.ValidationMessageFor(m => m.Pincode, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control" })
+                                <span class="help-block"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            <div class="col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" value="Save" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* change End Here *@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/Dashboard/js/jquery-1.8.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <style>
+        .form-control {
+            border-radius: 0px;
+        }
+    </style>
+    <script>
+        $(function () {
+
+            $('#CountryId').change(function () {
+                var BId = $('#CountryId').val();
+                if (BId == 0) {
+                    $('#divIndia').css("display", "none");
+                    $('#divOther').css("display", "none");
+                }
+                else if (BId != 86) {
+                    $('#divIndia').css("display", "none");
+                    $('#divOther').css("display", "block");
+                }
+                else {
+                    $('#divOther').css("display", "none")
+                    $('#divIndia').css("display", "block")
+
+                    $.getJSON('@Url.Action("GetSate", "Account")', { id: BId }, function (dataVal) {
+                        var items = '<option value="0">- Select State - </option>';
+                        $.each(dataVal, function (i, district) {
+                            items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                        });
+                        $("#StateId").empty();
+                        $("#CityId").empty();
+                        $("#CityId").html('<option value="0">- Select City - </option>');
+                        $('#StateId').html(items);
+                    });
+                }
+            });
+            $("#StateId").change(function () {
+                var CityId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account")', { StateId: CityId }, function (dataVal) {
+                    var items = '<option value="0">Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+
+    </script>
+}

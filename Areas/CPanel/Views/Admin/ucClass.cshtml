@@ -1,0 +1,120 @@
+﻿@model PrachiIndia.Web.Areas.Model.MasterClasses
+@{
+
+    Layout = null;
+    var i = Model.Id;
+    var lstClass = new List<SelectListItem>() { new SelectListItem { Text = "--select Class--", Value = "" } };
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { role = "form", autocomplete = "off", name = "frmMain", id = "frmMain", }))
+{
+
+
+    <input type="hidden" id="hdnid" value="@Model.Id" />
+    <div class="row">
+        <div class="col-lg-8">
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Title) })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-4">
+            @Html.LabelFor(m => m.OredrNo)
+            @Html.TextBoxFor(model => model.OredrNo, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.OredrNo) })
+            @Html.ValidationMessageFor(model => model.OredrNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control",cols="60", @placeholder = Html.DisplayNameFor(model => model.Description) })
+            </div>
+        </div>
+        <div class="row">
+            @*<div class="col-lg-6">
+                @Html.LabelFor(m => m.IdClass)
+                @Html.DropDownListFor(model => model.IdClass, lstClass, new { @class = "form-control" })
+            </div>*@
+            <div class="col-lg-6 hide">
+
+                @Html.TextBoxFor(model => model.IdServer, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery.toaster.js"></script>
+<script>
+
+    function getClass() {
+        var isoption = '<option value="0">---Select---</option>';
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetAllClass", "Readedge", new {area= "CPanel" })',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    isoption += '<option value="' + item.idServer + '">' + item.Title + '</option>';
+                });
+                isoption += '<option value="0">None</option>';
+                $("#IdClass").html(isoption);
+            }
+        });
+        return false;
+    }
+    $(function () {
+        getClass();
+        if ('@Model' != null) {
+            setTimeout(function () { $("#IdClass").val('@Model.IdServer').attr("selected", "selected"); }, 3000);
+        }
+        $(document).on("change", "#IdClass", function () {
+            var IdServer = $("#IdClass option:selected").val() == "" ? 0 : $("#IdClass option:selected").val();
+         
+            $("#IdServer").val(IdServer);
+        });
+        $(document).on("submit", "#frmMain", function (e) {
+            if ($(this).valid()) {
+                var Id = $("#hdnid").val();
+                var Title = $("#Title").val();
+                var OredrNo = $("#OredrNo").val();
+                var Description = $("#Description").val();
+                var IdServer = $("#IdServer").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateMasterClass", "Admin", new {area= "CPanel" })',
+                    data: { Id: Id, Title: Title, OredrNo: OredrNo, Description: Description, IdServer: IdServer },
+                    success: function (data) {
+
+                        $("#tdtitle_" + Id).html($("#Title").val());
+                        $("#tdorder_" + Id).html($("#OredrNo").val());
+
+                        $(".jstoast").remove();
+                        if (data.Id > 0) {
+                           FillGrid();
+                            if (Id > 0) {
+                                $.toaster({ priority: 'success', title: 'Update ', message: " successfully." });
+                            }
+                            else { $.toaster({ priority: 'success', title: 'Inserted ', message: " successfully." }); }
+                        }
+                        else {
+                            $.toaster({ priority: 'danger', title: '', message: 'Sorry for inconvinience. Please try again.' });
+                        }
+                        setTimeout(function () { bootbox.hideAll(); }, 2000);
+                        return false;
+                    }
+                });
+            }
+            return false;
+        });
+
+        $("#OredrNo").keyup(function () {
+            var num = $("#OredrNo").val();
+            if (!$.isNumeric(num)) {
+                alert("only numeric value allow");
+                $("#OredrNo").val("");
+            }
+            else {
+
+            }
+        });
+
+    });
+
+</script>

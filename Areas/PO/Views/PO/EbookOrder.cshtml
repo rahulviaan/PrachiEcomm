@@ -1,0 +1,860 @@
+﻿
+@{
+    ViewBag.Title = "EbookOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /*============city tab start here===========*/
+    section {
+        padding: 100px 0;
+    }
+    body {
+        background:#f1f2f7!important;
+    }
+    .form-control {
+        border-radius:3px!important;
+    }
+    .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+    .EbookOrderdiv {
+        display:none;
+    }
+    .ui-autocomplete {
+        background-color: #ffffff;
+        width: 300px;
+        height: 200px;
+        float: left;
+        margin-top: 21.5%;
+        padding-left: 0px;
+        overflow-y: scroll;
+    }
+
+        .ui-autocomplete li {
+            list-style: none;
+            padding: 5px 5px;
+            cursor: pointer;
+        }
+
+            .ui-autocomplete li:hover {
+                background-color: #f8f8f8;
+            }
+            .preloader {
+    margin-top: 25%;
+}
+
+    /*============city tab end here===========*/
+</style>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+
+<section class="block-parallax-1 headdingimg">
+    <div class="parallax-bg"></div>
+    <div class="md-box">
+        <div class="container">
+            <div class="panel-body" style="padding-bottom: 0;padding-top:0;">
+                <div class="col-md-12 headtitle text-center">
+                    <h2>e-Book Order</h2>
+                </div>
+                <div class="col-md-12 text-center">
+                    <ul class="innerbradcrum">
+                        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li>e-Book Order</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="clearfix"></div>
+<section id="about" class="maincontact" style="padding:5px 0">
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12 serviceshead">
+                <h2>e-Book Order FORM</h2>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel-body" style="background-color:#fff;box-shadow: 0 1px 3px rgba(33,33,33,.2);border: solid 1px #f2eded;">
+               
+                <div class="col-md-12">
+                    @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "Form_Specimen" }))
+                     {
+                        <div class="panel-body">
+                            <p id="mailStatus1"></p>
+                            <div class="row formsubmit">
+                                <div class="col-md-12 wrapcontrol">
+                                    <div class="heading" style="border-bottom:solid 1px #cccccc; margin-bottom:3%">
+                                        <h4><b>School Details</b></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="firstname">School Name<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                    <div class="required-div" id="validation_SchoolName_Specimen"></div>
+                                    <input class="form-control" name="SchoolName" id="SchoolName_Specimen" required="required" type="text">
+                                    
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    
+                                        <div class="required-div" id="validation_School_Address_Specimen" style="top: -10px;"></div>
+                                        <label for="lastname">Address<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <textarea class="form-control" id="School_Address_Specimen" rows="1" name="School_Address" style="border:solid 1px #cccccc; height:34px; border-radius:0; box-shadow:none;"></textarea>
+                                    
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_Board_Specimen"></div>
+                                        <label for="lastname">Board<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <select class="form-control" name="Board" id="Board_Specimen">
+
+
+                                        </select>
+                                    
+                                </div>
+                                
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_Strength_Specimen"></div>
+                                        <label for="Strength">Strength<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input class="form-control" id="Strength_Specimen" name="Strength" required="required" type="text">
+                                   </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_Principal_Name_Specimen"></div>
+                                        <label for="lastname">Principal<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input class="form-control" id="Principal_Name_Specimen" name="Principal_Name" required="required" type="text">
+                                    </div>
+                                <div class="col-sm-4 ui-widget form-group">
+                                        <div class="required-div" id="validation_CITYDESC_Specimen" ></div>
+                                        <label for="lastname">City<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input id="CITYDESC_Specimen" name="CityDesc" class="form-control" required="required" type="text">
+                                        <input id="CityId" name="CityId" class="form-control" required="required" type="hidden">
+                                    </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_ITIncharge_Specimen"></div>
+                                        <label for="email">IT Incharge<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input class="form-control" id="ITIncharge_Specimen" name="ITIncharge" required="required">
+                                    </div>
+                                <div class="col-sm-4 form-group">
+                                        <label for="email">Phone</label>
+                                        <input class="form-control" id="School_Landline_Specimen" name="School_Landline" required="required">
+                                    </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_School_Mobile_Specimen"></div>
+                                        <label for="email">Mobile<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input class="form-control" id="School_Mobile_Specimen" name="School_Mobile" required="required">
+                                    </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_School_Email_Specimen"></div>
+                                        <label for="email">Email<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                        <input class="form-control" id="School_Email_Specimen" name="School_Email" onblur="validateEmail();" required="required" type="email">
+                                    </div>
+                                <div class="col-sm-4 form-group">
+                                        <div class="required-div" id="validation_NoOfSystem_Specimen"></div>
+                                        <label for="email">No of Systems<i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                                        <input class="form-control" id="NoOfSystem_Specimen" onblu name="NoOfSystem" required="required" type="email">
+                                    </div>
+                                <div class="clearfix"></div>
+                                <div class="panel" style="background-color:#fbfbfb;padding-top:5px;border: 1px solid #fef2f2;">
+                                    <div class="col-md-12">
+                                        <div class="heading" style="border-bottom:solid 1px #cccccc;">
+                                            <h4><b>Representative Details</b></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="heading" style="margin-bottom:1%">
+                                                <h4><b>Sales</b></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_SName_Specimen"></div>
+                                                <label for="lastname">Name<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                                <select name="SName" class="form-control" id="SName_Specimen">
+                                                    <option value=""></option>
+                                                </select>
+</div>
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_MobileNo_Specimen"></div>
+                                                <label for="lastname">Mobile<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                                <input class="form-control" id="SMobileNo_Specimen" name="SMobileNo" required="required" type="text">
+                                            </div>
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_Area_Specimen"></div>
+                                                <label for="lastname">Area<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                                <input class="form-control" name="SArea" id="SArea_Specimen" required="required" type="text">
+                                            </div>
+
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_Email_Specimen"></div>
+                                                <label for="lastname">E-mail<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+                                                <input class="form-control" name="SEmail" id="SEmail_Specimen" required="required" type="email">
+                                             </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-12">
+                                            <div class="heading" style="margin-bottom:1%">
+                                                <h4><b>Marketing</b></h4>
+                                            </div>
+                                        </div>
+                                        <!--Market person details-->
+                                        <div class="col-sm-3 form-group">
+                                                <label for="lastname">Name</label>
+                                                <select name="MName" class="form-control" id="MName_Specimen">
+                                                    <option value=""></option>
+                                                </select>
+                                        </div>
+                                        <div class="col-sm-3 form-group">
+                                                @*<div class="required-div" id="validation_MobileNo_Specimen"></div>*@
+                                                <label for="lastname">Mobile</label>
+                                                <input class="form-control" id="MMobileNo_Specimen" name="MMobileNo" required="required" type="text">
+                                            </div>
+
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_Email_Specimen"></div>
+                                                <label for="lastname">Area</label>
+                                                <input class="form-control" name="MArea" id="MArea_Specimen" required="required" type="text">
+                                            </div>
+
+                                        <div class="col-sm-3 form-group">
+                                                <div class="required-div" id="validation_Email_Specimen"></div>
+                                                <label for="lastname">E-mail</label>
+                                                <input class="form-control" name="MEmail" id="MEmail_Specimen" required="required" type="email">
+                                            </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-sm-12 form-group valuecnt" id="valueappen" style="padding:10px 0;">
+                                    <div class="col-md-12">
+                                        <div class="heading" style="border-bottom:solid 1px #cccccc; margin-bottom:3%">
+                                            <h4><b>Subject Details</b></h4>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-sm-3 form-group">
+                                        <input type="hidden" id="count" value="1">
+                                        <label for="Board">Board<span style="color:#d43f3a">&nbsp;*</span></label>
+                                        <select class="form-control" name="SubjectDetail[0].Board" id="Board_0" onchange="GetSubject(this, 0);"></select>
+
+                                    </div>*@
+                                    <div class="col-sm-4 form-group">
+
+                                        <input type="hidden" id="count" value="1" />
+                                        <label for="lastname">Subject</label>
+                                        <select class="form-control" name="SubjectDetail[0].Subject" id="Subject_0" onchange="GetSeries(this, 0); ">
+                                        </select>
+
+                                    </div>
+                                    <div class="col-sm-4 form-group">
+                                      <label for="lastname">Series</label>
+                                        <select class="form-control" name="SubjectDetail[0].Series" id="SubjectDetail_0" onchange="GetClass(this, 0);">
+                      
+                                        </select>
+                                         </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label for="lastname">Class<small><i class="fa fa-asterisk" aria-hidden="true"></i></small></label>
+
+                                        <select class="form-control multiselect-ui" multiple="multiple" id="valueappend_0" name="SubjectDetail[0].Classes">
+                                           
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1 form-group" style="margin-top:2%; width:auto; float:left;">
+                                        <span class="btn btn-success" id="load_list" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                
+                                <div class="clearfix"></div>
+                                <div class="col-sm-12 text-center">
+                                    <input value="SUBMIT" id="btnGetInTouchWith1" name="btnGetInTouchWith" class="btn btn-primary" type="button">
+                                    <input value="RESET" name="submit" id="submit_specimen" class="btn btn-primary" type="reset">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div id="validation1"></div>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+<div id="loader" style="background:rgba(254, 254, 254, 0.5);width: 100%;height: auto;position: fixed;z-index: 9999999999999999999;top: 0;right: 0;left: 0;bottom: 0; display:none">
+        <div class="preloader text-center">
+            <img src="~/Content/tinymce/skins/lightgray/img/loader.gif" />
+        </div>
+    
+</div>
+
+
+@section scripts{
+    <style>
+        
+        .toast-top-right {
+                            right: 40%!important;
+                            top:20%!important;
+                            opacity:1!important;
+                         } 
+        .modal-lg {
+            width: 65% !important;
+        }
+
+        .ui-widget-content {
+            position: absolute !important;
+            z-index: 9999 !important;
+        }
+
+        .multiselect-selected-text, .multiselect {
+            text-align: left !important;
+            float: left !important;
+            padding-left: 4px !important;
+            font-size: 12px;
+        }
+
+
+
+        .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+            background-color: #ffffff !important;
+        }
+
+        .required-div {
+            position: absolute;
+            right: 16px;
+            font-size: 11px;
+            top: -10%;
+        }
+
+        .valuecnt {
+            margin-bottom: 1%;
+        }
+
+    </style>
+<link href="~/Content/js/form/multiselect.css" rel="stylesheet" />
+<script src="~/Content/js/form/multiselect.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            GetBoard(0);
+            loadSubject(0,0)
+        $('.multiselect-ui').multiselect({
+            includeSelectAllOption: true
+        });
+        // start append here
+        $('#load_list').click(function () {
+           // var BoardID = $("#Board_Specimen").val();
+            var count = parseInt($("#count").val());
+            $("#count").val(count + 1);
+            $("#valueappen").append('<div class="clearfix"></div><div id="row_' + count + '" style="margin:10px 0;"><div class="col-sm-4 valuecnt"><select class="form-control" id="Subject_' + count + '" name="SubjectDetail[' + count + '].Subject" id="' + count + '" onchange="GetSeries(this,' + count + ')";></select></div><div class="col-sm-4 valuecnt"><select class="form-control" name="SubjectDetail[' + count + '].Series" id="SubjectDetail_' + count + '" onchange="GetClass(this, ' + count + ');"></select></div><div class="col-sm-3 valuecnt"><select multiple="multiple" class="form-control" name="SubjectDetail[' + count + '].Classes" id="valueappend_' + count + '"><option value="Other">Other</option></select></div><div class="col-sm-1 form-group" style="width:auto; float:left;"><button type="button" onclick="removeRow(' + count + ')" class="btn btn-danger remove"><i class="fa fa-trash" aria-hidden="true"></i></button></div></div><div class="clearfix"></div></div>');
+            $("#valueappend_" + count).multiselect({
+                includeSelectAllOption: true
+            });
+            //GetBoard(count);
+            loadSubject(0,count);
+        });
+
+            $("#CITYDESC_Specimen").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("AutoCompleteCity", "PO",new { Area="PO"})',
+                        type: "GET",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {label: item.CityName, value: item.CityName };
+                            }))
+
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "", results: ""
+                },
+                selectFirst: true,
+                change: function (event, ui) {
+                    if (ui.item == null) {
+                        //here is null if entered value is not match in suggestion list
+                        toastr.error("Please choose city from list", '', { timeOut: 5000 })
+                        $(this).val((ui.item ? ui.item.id : ""));
+                    }
+                }
+
+            });
+
+
+            $("#myBtn4").click(function () {
+                $("#booksmodal4").modal();
+            });
+            $("#myBtn5").click(function () {
+                $("#booksmodal5").modal();
+            });
+            $("#CITYDESC").on("focus", function () {
+
+                $("#CityId").val("");
+                $("#CITYDESC").val("");
+
+            });
+        $("#btnGetInTouchWith1").on("click", function () {
+            var Name = $("#SchoolName_Specimen").val();
+            var Principal = $("#Principal_Name_Specimen").val();
+            var SchoolEmail = $("#School_Email_Specimen").val();
+            var SchoolAddress = $("#School_Address_Specimen").val();
+            var Board = $("#Board_Specimen").val();
+            var City = $("#CITYDESC_Specimen").val();
+            var RequestedBy = $("#RequestedBy_Specimen").val();
+            var Designation = $("#Designation_Specimen").val();
+            var MobileNo = $("#MobileNo_Specimen").val();
+            var Landline = $("#Landline_Specimen").val();
+            var Email = $("#Email_Specimen").val();
+            var Strength = $("#Strength_Specimen").val();
+            var ITIncharge = $("#ITIncharge_Specimen").val();
+            var Description = $("#Description_Specimen").val();
+            var SchoolMobile = $("#School_Mobile_Specimen").val();
+            var NoOfSystem = $("#NoOfSystem_Specimen").val();
+            var SArea = $("#SArea_Specimen").val();
+            var SName = $("#SName_Specimen").val();
+
+            var validationStatus = true;
+
+            $("#validation_SchoolName_Specimen").empty();
+            $("#validation_School_Email_Specimen").empty();
+            $("#validation_Principal_Name_Specimen").empty();
+            $("#validation_School_Address_Specimen").empty();
+            $("#validation_CITYDESC_Specimen").empty();
+            $("#validation_Board_Specimen").empty();
+            $("#validation_RequestedBy_Specimen").empty();
+            $("#validation_Designation_Specimen").empty();
+            $("#validation_MobileNo_Specimen").empty();
+            $("#validation_Landline_Specimen").empty();
+            $("#validation_Email_Specimen").empty();
+            $("#validation_Required_Subjects").empty();
+            $("#validation_Description_Specimen").empty();
+            $("#validation_Strength_Specimen").empty();
+            $("#validation_ITIncharge_Specimen").empty();
+            $("#validation_School_Mobile_Specimen").empty();
+            $("#validation_NoOfSystem_Specimen").empty();
+            $("#validation_Area_Specimen").empty();
+            $("#validation_SName_Specimen").empty();
+
+            if (SName == "") {
+                $("#validation_SName_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+            if (SArea == "") {
+                $("#validation_Area_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+            if (NoOfSystem == "") {
+                $("#validation_NoOfSystem_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+            //if (SchoolMobile == "") {
+            //    $("#validation_School_Mobile_Specimen").append("<br />Requried").css("color", "Red");
+
+            //    validationStatus = false;
+            //}
+            if (ITIncharge == "") {
+                $("#validation_ITIncharge_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+            if (Strength == "") {
+                $("#validation_Strength_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+            if (Name == "") {
+                $("#validation_SchoolName_Specimen").append("<br />Requried").css("color", "Red");
+
+                validationStatus = false;
+            }
+
+            if (Principal == "") {
+                $("#validation_Principal_Name_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+            if (SchoolEmail == "") {
+                $("#validation_School_Email_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (SchoolAddress == "") {
+                $("#validation_School_Address_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (City == "") {
+                $("#validation_CITYDESC_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (Board == "") {
+                $("#validation_Board_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (RequestedBy == "") {
+                $("#validation_RequestedBy_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (Designation == "") {
+                $("#validation_Designation_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (MobileNo == "") {
+                $("#validation_MobileNo_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+
+            if (Email == "") {
+                $("#validation_Email_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+            if (Description == "") {
+                $("#validation_Description_Specimen").append("<br />Requried").css("color", "Red");
+                validationStatus = false;
+            }
+            $('[id^=Board_]').each(function () {
+                var va = ($(this).val())
+                if (va == "0") {
+                    validationStatus = false;
+                    $(this).css('border-color', 'red');
+                }
+                else {
+                    $(this).css('border-color', '#cccccc')
+                }
+            })
+            $('[id^=Subject_]').each(function () {
+                var va = ($(this).val())
+                if (va == "0") {
+                    validationStatus = false;
+                    $(this).css('border-color', 'red');
+                }
+                else {
+                    $(this).css('border-color', '#cccccc')
+                }
+            })
+            $('[id^=SubjectDetail_]').each(function () {
+                var va = ($(this).val())
+                if (va == "0" || va == null) {
+                    validationStatus = false;
+                    $(this).css('border-color', 'red');
+                }
+                else {
+                    $(this).css('border-color', '#cccccc')
+                }
+            })
+            $('[id^=valueappend_]').each(function () {
+                var va = ($(this).val())
+                if (va == "0" || va == null) {
+                    validationStatus = false;
+                    $("#valueappend").css('border-color', 'red');
+                }
+                else {
+                    $(this).css('border-color', '#cccccc')
+                }
+            })
+            if (validationStatus) {
+                $("#loader").css("display","block")
+                    $("#btnGetInTouchWith1").attr("disabled", "disabled");
+                    var datastring = $("#Form_Specimen").serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AssistanceMail", "PO",new { Area="PO"})',
+                        data: datastring,
+                        success: function (data) {
+                            if (data == "Message sent") {
+                                $("#validation1").empty();
+                                $("#mailStatus1").css("color", "green").html(data);
+                                $("#btnGetInTouchWith1").removeAttr("disabled");
+                                $("#loader").css("display", "none");
+                               toastr.success("order submitted successfully", '', { timeOut: 5000 })
+                               $("#Form_Specimen")[0].reset();
+
+                            }
+                            else {
+                                $("#mailStatus1").css("color", "red").html(data);
+                            }
+                            $("#mailStatus1").fadeOut(10000);
+                        }
+                    });
+                }
+                else {
+                    toastr.error("Please fill required fields", '', { timeOut: 5000 })
+                    return false;
+                }
+
+            })
+
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetSalesEmployee", "PO",new { Area="PO"})',
+                data: { "Type": "Sales" },
+                success: function (Result) {
+                    var ddlObj = $("#SName_Specimen");
+                    ddlObj.empty();
+                    ddlObj.append($("<option value='0'>Select </option>"));
+                    $.each(Result, function (key, value) {
+                        ddlObj.append($("<option></option>").val(value.UserName).html(value.UserName));
+                    });
+                }
+            });
+            $("#SName_Specimen").change(function () {
+                var UserID = $("#SName_Specimen").val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetEmpDetail", "PO",new { Area="PO"})',
+                    data: { "Type": "Sales", "UserName": UserID },
+                    success: function (Result) {
+                        $.each(Result, function (key, value) {
+                            $("#SMobileNo_Specimen").val(value.MobileNo);
+                            $("#SArea_Specimen").val(value.Area);
+                            $("#SEmail_Specimen").val(value.Email);
+                        });
+                    }
+
+                })
+            });
+
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetSalesEmployee", "PO",new { Area="PO"})',
+                data: { "Type": "Marketing" },
+                success: function (Result) {
+                    var ddlObj = $("#MName_Specimen");
+                    ddlObj.empty();
+
+                    ddlObj.append($("<option value='0'>Select </option>"));
+                    $.each(Result, function (key, value) {
+                        ddlObj.append($("<option></option>").val(value.UserName).html(value.UserName));
+                    });
+                }
+            });
+
+            $("#MName_Specimen").change(function () {
+                var UserID = $("#MName_Specimen").val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetEmpDetail", "PO",new { Area="PO"})',
+                    data: { "Type": "Marketing", "UserName": UserID },
+                    success: function (Result) {
+                        $.each(Result, function (key, value) {
+                            $("#MMobileNo_Specimen").val(value.MobileNo);
+                            $("#MArea_Specimen").val(value.Area);
+                            $("#MEmail_Specimen").val(value.Email);
+                        });
+                    }
+
+                })
+            });
+
+        })
+
+
+        $("#Strength_Specimen").on("blur", function () {
+                var x = $(this).val();
+                if (isNaN(x)) {
+                    toastr.error("Please enter numeric value", '', { timeOut: 5000 })
+                    $(this).val("");
+                    return false;
+                }
+                if (x < 1) {
+                    toastr.error("value can not be less than 1", '', { timeOut: 5000 })
+                    $("#Strength_Specimen").val("");
+                    return false;
+                }
+        })
+        $("#School_Landline_Specimen").on("blur", function () {
+            var x = $(this).val();
+            if (isNaN(x)) {
+                toastr.error("Please enter valid  mobile number", '', { timeOut: 5000 })
+                $(this).val("");
+                return false;
+            }
+        })
+
+        $("#NoOfSystem_Specimen").on("blur", function () {
+            var x = $(this).val();
+            if (isNaN(x)) {
+                toastr.error("Please enter numeric value", '', { timeOut: 5000 })
+                $(this).val("");
+                return false;
+
+            }
+            if (x < 1) {
+                toastr.error("value can not be less than 1", '', { timeOut: 5000 })
+                $("#NoOfSystem_Specimen").val("");
+                return false;
+            }
+            if (x > 50) {
+                toastr.error("value can not be greater than 50", '', { timeOut: 5000 })
+                $("#NoOfSystem_Specimen").val("");
+                return false;
+            }
+        })
+
+        $("#School_Email_Specimen").on("blur", function () {
+            var Email = $(this).val();
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            {
+                if(!pattern.test(Email))
+                {
+                    toastr.error("Please enter a valid e-mail address", '', { timeOut: 5000 })
+                    $("#School_Email_Specimen").val("");
+                    return false;
+                }
+            }
+
+
+            $.ajax({
+                type: "GET",
+                data: { Email: Email },
+                url: '@Url.Action("CheckUserByEmail", "PO",new { Area="PO"})',
+                success: function (Result) {
+                    if (Result == "1")
+                    {
+                        $("#School_Email_Specimen").val("");
+                        toastr.error("User Already registered with given e-mail ID", '', { timeOut: 5000 })
+
+                    }
+                }
+            });
+        })
+
+
+
+    $("#School_Mobile_Specimen").on("blur", function () {
+        var Mobile = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                data: { "Mobile": Mobile },
+                url: '@Url.Action("CheckUserByMobile", "PO",new { Area="PO"})',
+                success: function (Result) {
+                    if (Result) {
+                        $("#School_Mobile_Specimen").val("");
+                        toastr.error("User Already registered with given mobile number", '', { timeOut: 5000 })
+
+                    }
+                }
+            });
+    })
+
+
+
+    function removeRow(id) {
+        $("#row_" + id).remove();
+        var count = parseInt($("#count").val());
+        $("#count").val(count - 1);
+        while (id <= (count - 1)) {
+            //$("#Board_" + (id + 1)).attr("name", "SubjectDetail[" + id + "].Board");
+            //$("#Subject_" + (id + 1)).attr("id", "Board_" + id);
+
+            $("#Subject_" + (id + 1)).attr("name", "SubjectDetail[" + id + "].Subject");
+            $("#Subject_" + (id + 1)).attr("id", "Subject_" + id);
+
+
+            $("#SubjectDetail_" + (id + 1)).attr("name", "SubjectDetail[" + id + "].Series");
+            $("#SubjectDetail_" + (id + 1)).attr("id", "SubjectDetail_" + id);
+
+            $("#valueappend_" + (id + 1)).attr("name", "SubjectDetail[" + id + "].Classes");
+            $("#valueappend_" + (id + 1)).attr("id", "valueappend_" + id);
+            id++;
+        }
+
+    }
+
+    function loadSubject(Control, RowID) {
+        //var BoardID = $(Control).val();
+        $.ajax({
+            type: "GET",
+            data: {"BoardID":0},
+            url: '@Url.Action("GetAllSubject", "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Subject_" + RowID);
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.SubjectID).html(value.Subject));
+                });
+            }
+        });
+    }
+
+    function GetBoard(Row) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllBoard",  "PO",new { Area="PO"})',
+            success: function (Result) {
+                var ddlObj = $("#Board_Specimen");
+                ddlObj.empty();
+                ddlObj.append($("<option value='0'>Select </option>"));
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.BoardID).html(value.Board));
+                });
+            }
+        });
+    }
+
+
+    function GetSeries(Control, Row) {
+        var SubjectID = $(Control).val();
+        //var BoardID = $("#Board_" + Row).val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllSeries", "PO",new { Area="PO"})',
+            data: { "SubjectID": SubjectID, "BoardID": 0 },
+            success: function (Result) {
+                var ddlObj = $("#SubjectDetail_" + Row);
+                //alert(ddlObj.attr("name"));
+                ddlObj.empty();
+                ddlObj.append("<option value='0'>Select</option>");
+
+                $.each(Result, function (key, value) {
+                    //alert(value.Series);
+                    ddlObj.append($("<option></option>").val(value.SeriesID).html(value.Series));
+                });
+            }
+        });
+    }
+    function GetClass(Control, Row) {
+        var SeriesID = $(Control).val();
+       // var BoardID = $("#Board_"+Row).val();
+        var SubjectID = $("#Subject_"+Row).val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetAllClasses","PO",new { Area="PO"})',
+            data: { "SeriesID": SeriesID, "BoardID": 0, "subject": SubjectID },
+            success: function (Result) {
+                var ddlObj = $("#valueappend_" + Row);
+                ddlObj.empty();
+                $.each(Result, function (key, value) {
+                    ddlObj.append($("<option></option>").val(value.ClassID).html(value.Class));
+                });
+                $("#valueappend_" + Row).multiselect("rebuild");
+            }
+        });
+    }
+</script>
+
+}

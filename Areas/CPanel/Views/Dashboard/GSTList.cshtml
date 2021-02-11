@@ -1,0 +1,52 @@
+﻿@model List<PrachiIndia.Web.Areas.Model.GSTModel>
+@{
+    ViewBag.Title = "GST List";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="card-title">Tax List</h4>
+        </div>
+        <div class="panel-body table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sr No#</th>
+                        <th>Status</th>
+                        <th>HSN Code</th>
+                        <th>Rate</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                @if (Model != null && Model.())
+                {
+                    var i = 1;
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td><input type="checkbox" /></td>
+                                <td>@item.HSNCode</td>
+                                <td>@item.Rate</td>
+                                <td>@item.Description</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <h5 class="text-center">No records found!</h5>
+                            </td>
+                        </tr>
+                    </tfoot>
+                }
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PrachiIndia.Portal.Areas.TestHour.Models.QuestionVM>
+@if (Model != null)
+{
+    int count = 1;
+    foreach (var item in Model)
+    {
+        <tr id="row_@item.Id">
+            <td>@count</td>
+            <td>@item.Title</td>
+            <td>@item.Remarks</td>
+            <td><a href="#" class="btn btn-success" onclick="AddEditQuestion(@item.Id)"><i class="glyphicon glyphicon-pencil"></i> </a> </td>
+            <td><a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.Id)"><i class="glyphicon glyphicon-trash"></i> </a></td>
+        </tr>
+        count = count + 1;
+    }
+}
+else
+{
+    <tr>
+        <td colspan="3" style="color:red;font:bold;text-align:center"><h3> No Data Found</h3> </td>
+
+    </tr>
+}

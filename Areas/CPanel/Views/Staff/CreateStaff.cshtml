@@ -1,0 +1,117 @@
+﻿@model PrachiIndia.Portal.Models.StaffModel
+@{
+    ViewBag.Title = "CreateStaff";
+    Layout = "~/Areas/CPanel/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    .col-md-6 {
+        width: 48%;
+    }
+</style>
+<div class="panel panel-primary">
+    <div class="panel panel-heading">
+        <h2 style="font-size:24px; color:#fff;">Create new</h2>
+        <a class="pull-right" title="Staff List" style="font-size:12px;color:#fff;" href="@Url.Action("Index","Staff")"><i class="glyphicon glyphicon-list"></i>&nbsp; Create New</a>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("CreateStaff", "Staff", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("Name")
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Role")
+                    @Html.DropDownListFor(t => t.Role, (List<SelectListItem>)ViewData["Roles"], new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Role, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("Email")
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Mobile")
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("Password")
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Confirm Password")
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("State")
+                    @Html.DropDownList("StateId", (List<SelectListItem>)ViewData["State"], new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("City")
+                    @Html.DropDownList("CityId", new List<SelectListItem> { new SelectListItem { Text = "- Select City - ", Value = "0" } }, new { @class = "form-control" })
+                    <span class="help-block"> </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("Address")
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Pin/Zip")
+                    @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Pincode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("Vehicle Type")
+                    @Html.TextBoxFor(m => m.VehicleType, new { @class = "form-control" })
+                  
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("Vehicle No")
+                    @Html.TextBoxFor(m => m.VehicleNo, new { @class = "form-control" })
+                   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br />
+                    <input type="submit" class="btn btn-primary btn-lg" value="Create" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#StateId").change(function () {
+                var StateId = $("#StateId").val();
+                $.getJSON('@Url.Action("GetCity", "Account",new { area=""})', { StateId: StateId }, function (dataVal) {
+                    var items = '<option value="0">Select</option>';
+                    $.each(dataVal, function (i, district) {
+                        items += "<option value='" + district.Value + "'>" + district.Text + "</option>";
+                    });
+                    $("#CityId").empty();
+                    $('#CityId').html(items);
+                });
+            });
+        });
+
+    </script>
+}
