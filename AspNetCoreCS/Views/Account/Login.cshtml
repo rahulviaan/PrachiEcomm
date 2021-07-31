@@ -68,9 +68,14 @@
                                                 <b style="color:white">@ViewBag.Message</b>
                                             </div>
                                             <div class="form-group text-center">
-                                                <p><a asp-controller="Home" asp-action="Home"  style="height:54px;color:white">Guest User ?</a></p>
-
+                                                <p><a asp-controller="Home" asp-action="Home" style="height:54px;color:white;float:left;">Guest User ?</a>
+                                                   <a asp-area="" asp-controller="UserSubscription" asp-action="index"  style="height:54px;color:white;float:right;">Subscription</a>
+                                                </p>
+                                             
+                                               
                                             </div>
+
+                                            
                                         </form>
                                     </div>
 

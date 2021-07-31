@@ -129,4 +129,114 @@ namespace DAL.Models.Entities
         public int ClassId { get; set; }
         public int SubjectId { get; set; }
     }
+
+    public partial class SubscriptionPayment {
+        public Int64 Id { get; set; }
+        public string UserId  { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public decimal Amount { get; set; }
+        public string TransactionId { get; set; }
+        public string RequestLog { get; set; }
+        public string RequestHash { get; set; }
+        public string Error { get; set; }
+        public string PGType { get; set; }
+        public string PayUMoneyId { get; set; }
+        public string AddtionalCharge { get; set; }
+        public string ResponseLog { get; set; }
+        public string ResponseHas { get; set; }
+        public int Status { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public int DiscountPer { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int SubscriptionId { get; set; }
+    }
+
+    public partial class UserSubscription
+    {
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public Nullable<int> TypeId { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public string TransactionId { get; set; }
+        public Nullable<bool> Active { get; set; }
+
+        public virtual AspNetUsers AspNetUser { get; set; }
+        public virtual SubscriptionMaster SubscriptionMaster { get; set; }
+    }
+
+    public partial class SubscriptionMaster
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SubscriptionMaster()
+        {
+            this.SubscriptionPayments = new HashSet<SubscriptionPayment>();
+            this.UserSubscriptions = new HashSet<UserSubscription>();
+        }
+
+        public int Id { get; set; }
+        public string SubscriptionType { get; set; }
+        public Nullable<int> DaysValidity { get; set; }
+        public Nullable<decimal> Amount { get; set; }
+        public string Image { get; set; }
+        public Nullable<bool> Active { get; set; }
+        public Nullable<int> Prefix { get; set; }
+        public string Suffix { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SubscriptionPayment> SubscriptionPayments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserSubscription> UserSubscriptions { get; set; }
+    }
+
+    public partial class ReadEdgeSubscriptionPayment
+    {
+        public Int64 Id { get; set; }
+        public string UserId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public decimal Amount { get; set; }
+        public string TransactionId { get; set; }
+        public string RequestLog { get; set; }
+        public string RequestHash { get; set; }
+        public string Error { get; set; }
+        public string PGType { get; set; }
+        public string PayUMoneyId { get; set; }
+        public string AddtionalCharge { get; set; }
+        public string ResponseLog { get; set; }
+        public string ResponseHas { get; set; }
+        public int Status { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public int DiscountPer { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int SubscriptionId { get; set; }
+    }
+
+    public partial class AspNetUsersModel
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public DateTime? dtmAdd { get; set; }
+        public DateTime? dtmUpdate { get; set; }
+        public int? Status { get; set; }
+        public int? IsVerified { get; set; }
+        public DateTime? dtmDob { get; set; }
+        public string ProfileImage { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string PinCode { get; set; }
+        public string Address { get; set; }  
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string UserName { get; set; }
+        public string PasswordHash { get; set; }
+
+        
+    }
 }

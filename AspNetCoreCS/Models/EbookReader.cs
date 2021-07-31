@@ -162,7 +162,7 @@ namespace ReadEdgeCore.Models
             return null;
         }
 
-        string GetCurrentPageHtmlString(string dire)
+        string GetCurrentPageHtmlString(string dire,string htmlpagename = "")
         {
             var currentindex = _HttpContextAccessor.HttpContext.Session.GetInt32("currentindex");
             //var currentindex = HttpContext.Current.Session["currentindex"];
@@ -173,7 +173,17 @@ namespace ReadEdgeCore.Models
             }
 
             //this.Title = readerBooks.Title;
-            var pagename = Common.readerBooks.Pages[index - 1].Path;
+            string pagename = string.Empty;
+            if (htmlpagename != "")
+            {
+                 pagename = Common.readerBooks.Pages.Where(x => x.Path.Contains(htmlpagename)).FirstOrDefault().Path;
+                 var Cindex   = Common.readerBooks.Pages.Where(x => x.Path.Contains(htmlpagename)).FirstOrDefault().Index;
+                _HttpContextAccessor.HttpContext.Session.SetInt32("currentindex", Cindex);
+            }
+            else
+            {
+                pagename = Common.readerBooks.Pages[index - 1].Path;
+            }
             lastindex = Common.readerBooks.Pages.Count();
             return GetHtml(dire, pagename);
         }
@@ -443,6 +453,24 @@ namespace ReadEdgeCore.Models
             //HttpContext.Current.Session["currentindex"] = pageIndex;
             _HttpContextAccessor.HttpContext.Session.SetInt32("currentindex", pageIndex);
             var result = GetCurrentPageHtmlString(dire);
+            return result;
+        }
+
+        public string LoadPageWithdivNaviagaion(string htmlpagewithanchortag) {
+            var dire = rootPath + folderPath + "\\" + sub;
+            var lstpage = htmlpagewithanchortag.Split("#");
+            string htmlpage = string.Empty;
+            if (lstpage != null)
+            {
+                htmlpage = lstpage[0];
+            }
+            var result = GetCurrentPageHtmlString(dire, htmlpage);
+            if (lstpage.Count()!=1)
+            {
+                result = result.Replace("</html>", "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script><script type='text/javascript'>$(document).ready(function () {$('html, body').animate({scrollTop: $('#"+ lstpage[1] + "').offset().top}, 'slow');});</script></html>");
+
+            }
+            result = result + "pageindexxx" + _HttpContextAccessor.HttpContext.Session.GetInt32("currentindex");
             return result;
         }
 

@@ -32,7 +32,8 @@ namespace DAL.Models.Entities
         public virtual DbSet<SessionMgt> SessionMgt { get; set; }
         public virtual DbSet<ClassSubjects> ClassSubjects { get; set; }
         public virtual DbSet<ErrorLog> ErrorLog { get; set; }
-     
+
+
 
     }
 }

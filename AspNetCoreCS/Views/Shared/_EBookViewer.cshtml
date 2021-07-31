@@ -313,14 +313,24 @@
             });
         }
 
-        function GetHtml(val) {
-            $.ajax({
-                type: "Get",
-                url: '@Url.Action("OpenLink", "Library")',
-                data: { PageReference: val },
+    function GetHtml(val) {
+       
+        var res = val.split("(");
+        var htmlpage = res[1].split(")")[0];
+
+           $.ajax({
+                url: '@Url.Action("Loadpagewihthtml", "Home")',
+                type: 'Get',
+                data: { hmtlpage: htmlpage },
                 success: function (data) {
+                    IsAudio();
+                    var pagendexlst = data.split("pageindexxx");
+                    var pageindex = pagendexlst[1];
+                    $("#PageList").val(pageindex);
+                    $("#CurrentIndex").val(pageindex);
                     $("#resultDiv").html(data);
-                }
+
+                },
             });
             event.preventDefault();
         }
@@ -347,7 +357,8 @@
             }
         }
 
-        function LoadPage(id) {
+    function LoadPage(id) {
+        
             $.ajax({
                 url: '@Url.Action("Loadpage", "Home")',
                 type: 'Get',
@@ -356,7 +367,8 @@
                     IsAudio();
                     $("#resultDiv").html(data);
                 },
-            });
+        });
+
         }
 
 

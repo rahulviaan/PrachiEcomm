@@ -1,0 +1,407 @@
+﻿
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<section id="about" class="" style="padding-bottom:10px">
+    <div id="" class="container">
+        <div class="clearfix"></div>
+        <div class="panel-body">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="subscrihead"><h2><b>Choose</b> Your Plan!</h2></div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <div class="subsmaindiv">
+                                    <div class="mntdiv">
+                                        <b> 3</b> Months
+                                    </div>
+                                    <div class="subspricediv-1">
+                                        <i class="fa fa-inr" aria-hidden="true"></i> 300
+                                    </div>
+                                    <div class="subslistdiv">
+                                        <ul>
+                                            <li>
+                                                Full Content <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>
+                                                Email Support <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>&nbsp;</li>
+                                        </ul>
+                                    </div>
+                                    <div class="subsbtndiv">
+                                        <button type="button" class="subsbtn-1 btn" onclick="javascript:Subscribe(1);">Subscribe</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <div class="subsmaindiv">
+                                    <div class="mntdiv">
+                                        <b> 6</b> Months
+                                    </div>
+                                    <div class="subspricediv-2">
+                                        <i class="fa fa-inr" aria-hidden="true"></i> 500
+                                    </div>
+                                    <div class="subslistdiv">
+                                        <ul>
+                                            <li>
+                                                Full Content <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>
+                                                Email Support <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>&nbsp;</li>
+                                        </ul>
+                                    </div>
+                                    <div class="subsbtndiv">
+                                        <button type="button" class="subsbtn-2 btn" onclick="javascript:Subscribe(2);">Subscribe</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <div class="subsmaindiv">
+                                    <div class="mntdiv">
+                                        <b> 12</b> Months
+                                    </div>
+                                    <div class="subspricediv-3">
+                                        <i class="fa fa-inr" aria-hidden="true"></i> 800
+                                    </div>
+                                    <div class="subslistdiv">
+                                        <ul>
+                                            <li>
+                                                Full Content <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>
+                                                Email Support <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li>
+                                                On Call Support <span class="checkicn"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="subsbtndiv">
+                                        <button type="button" class="subsbtn-3 btn" onclick="javascript:Subscribe(3);">Subscribe</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+</section>
+<form action="/UserSubscription/Payment" method="post" name="form1">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="UserDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="UserDetail">User Info</h3>
+                </div>
+                <input type="hidden" id="Type" name="Type" value="1">
+                <div class="modal-body">
+                    <div class="col-md-12 form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" maxlength="30" placeholder="Name" />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" id="Email" name="Email" maxlength="30" placeholder="Email" />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label>Mobile</label>
+                        <input type="text" class="form-control" id="Mobile" name="ContactNumber" maxlength="10" placeholder="Mobile" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button style="margin:0 auto" type="submit" class="btn btn-default btn-2 subjectBtn" aria-label="Close" id="btnGetOtp" onclick="GetSubscription();">Proceed</button>
+
+                    <div id="otpLoader" style="display: none">
+                        <img src="~/images/loader.gif" height="60" /> Please wait...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="exampleModalCenterMessage" tabindex="-1" role="dialog" aria-labelledby="UserDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="UserDetail">Congratulations !!!!</h3>
+            </div>
+            <input type="hidden" id="Type" name="Type" value="1">
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <h2 style="color:green;">Your order is successful</h2>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <a style="margin:0 auto"  class="btn btn-default btn-2 subjectBtn" asp-action="Login" asp-controller="Account">Go to Login</a>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .block-parallax-1 .md-box {
+        padding: 68px 0 !important;
+    }
+
+    .subscrihead {
+        width: 100%;
+        height: auto;
+        text-align: center;
+        float: left;
+        padding: 3% 0;
+    }
+
+        .subscrihead h2 {
+            font-size: 3em;
+            font-weight: normal;
+            color: #808080;
+        }
+
+    .subsmaindiv {
+        width: 100%;
+        float: left;
+        height: auto;
+        background-color: #fff;
+        box-shadow: 7px 7px 23px rgba(106, 99, 99, 0.4);
+        border-radius: 20px;
+        margin: 5% 0;
+    }
+
+    .mntdiv {
+        font-size: 2em;
+        text-align: center;
+        color: #808080;
+        padding: 5% 0;
+    }
+
+    .subspricediv-1 {
+        background-image: linear-gradient(to top, #f281cf, #f283d4, #f284d9, #f286df, #f188e4);
+        padding: 20px;
+        color: #fff;
+        font-size: 3em;
+        font-weight: bold;
+        width: 75%;
+        border-radius: 0 70px 76px 0;
+        float: left;
+        height: auto;
+        text-align: center;
+    }
+
+    .subspricediv-2 {
+        background-image: linear-gradient(to top, #53ccdd, #54cfdb, #57d1d9, #5ad4d7, #5ed6d5);
+        padding: 20px;
+        color: #fff;
+        font-size: 3em;
+        font-weight: bold;
+        width: 75%;
+        border-radius: 0 70px 76px 0;
+        float: left;
+        height: auto;
+        text-align: center;
+    }
+
+    .subspricediv-3 {
+        background-image: linear-gradient(to top, #6976df, #6a74dd, #6a72da, #6b70d8, #6b6ed5);
+        padding: 20px;
+        color: #fff;
+        font-size: 3em;
+        font-weight: bold;
+        width: 75%;
+        border-radius: 0 70px 76px 0;
+        float: left;
+        height: auto;
+        text-align: center;
+    }
+
+    .subslistdiv {
+        width: 100%;
+        float: left;
+        height: auto;
+        padding: 5% 10%;
+        color: #808080;
+    }
+
+        .subslistdiv ul {
+            list-style: none;
+            font-size: 20px;
+            line-height: 38px;
+            margin: 0;
+            padding: 0;
+        }
+
+            .subslistdiv ul li {
+                border-bottom: solid 1px #b3b3b3;
+                line-height: 65px;
+            }
+
+    .checkicn {
+        float: right;
+        color: #b3b3b3;
+        font-size: 26px;
+    }
+
+    .subsbtndiv {
+        width: 100%;
+        float: left;
+        height: auto;
+        text-align: center;
+        padding: 7%;
+    }
+
+    .subsbtn-1 {
+        padding: 6px;
+        background-color: #f45d7c;
+        color: #fff;
+        border: solid 1px #f45d7c;
+        width: 100%;
+        border-radius: 20px;
+        font-size: 1.8em;
+        text-transform: uppercase;
+        height: 60px;
+    }
+
+        .subsbtn-1:hover {
+            color: #fff;
+        }
+
+    .subsbtn-2 {
+        padding: 6px;
+        background-color: #28a5f9;
+        color: #fff;
+        border: solid 1px #28a5f9;
+        width: 100%;
+        border-radius: 20px;
+        font-size: 1.8em;
+        text-transform: uppercase;
+        height: 60px;
+    }
+
+        .subsbtn-2:hover {
+            color: #fff;
+        }
+
+    .subsbtn-3 {
+        padding: 6px;
+        background-color: #7451ab;
+        color: #fff;
+        border: solid 1px #7451ab;
+        width: 100%;
+        border-radius: 20px;
+        font-size: 1.8em;
+        text-transform: uppercase;
+        height: 60px;
+    }
+
+        .subsbtn-3:hover {
+            color: #fff;
+        }
+</style>
+<script src="~/js/3.4.1_jquery.min.js"></script>
+<script>
+    function Subscribe(type) {
+        localStorage.setItem('Type', type)
+
+              $('#exampleModalCenter').modal('hide');
+            var AlreadyUser = '@ViewBag.AlreadyUser'
+            if (AlreadyUser=="False") {
+                $('#exampleModalCenter').modal('show');
+            }
+            if ("@HttpContextAccessor.HttpContext.Session.GetString("IsVerified")" == "NO" && "@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
+
+                $('#OtpCenter').modal('show');
+            }
+         //var IsAutheticated = 'False';
+            //if (IsAutheticated == 'False') {
+            //    $('#Login').modal('show');
+            //    $("#sign-up").css("display", "none");
+            //    $("#sign-in").css("display", "block");
+            //    $("#loginidfail").css("display", "none");
+            //    }
+            //else {
+            //    location.href = "/UserSubscription/payment?Type=" + type;
+            //}
+
+        $("#Type").val(type);
+    }
+
+    @*function GetSubscription() {
+        var Type= localStorage.getItem('Type')
+        var Name = $("#Name").val();
+        var Email = $("#Email").val();
+        var MobileNo = $("#Mobile").val();
+
+        var isValid = true;
+
+        if (Name == "") {
+            isValid = false;
+        }
+        if (Email == "") {
+            isValid = false;
+        }
+        if (MobileNo == "") {
+            isValid = false;
+        }
+
+        if (isValid) {
+            $.ajax({
+                data: { Type: Type, Name: Name, Email: Email, ContactNumber: MobileNo },
+                url: '@Url.Action("payment", "UserSubscription")',
+                type: 'Get',
+                success: function (data) {
+
+                }
+            })
+        }
+        else {
+            alert("All fields are mandatory...");
+        }*@
+
+
+
+
+
+            $(document).ready(function () {
+
+                var message = '@ViewBag.Message';
+                if (message == "1") {
+                    
+                    $('#exampleModalCenterMessage').modal('show');
+                }
+                $("#form1").validate({
+                    rules: {
+                        field1: "required", field2: "required", field3:"required"
+                    },
+                    messages: {
+
+                        field1: "Please specify your name",
+                        field2: "Please specify",
+                        field3: "Please specify your",
+                    }
+                })
+
+                $('#btn').click(function () {
+                    $("#form1").valid();
+                    $("#form1").submit();
+                });
+            });
+</script>

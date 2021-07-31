@@ -43,8 +43,13 @@
                 <div class="col-md-4">
 
                     <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="https://www.prachiindia.com/ModuleFiles/Items/@book.ImageName" /></p>
+		    <div id="BuyNowLink">
+			<p><a href="https://prachiindia.com/Catalogue/detail?id=@book.Id" target="_blank"><span style="color: #b93538;">BUY E-BOOK FOR FULL CONTENT</span></a></p>
+		    </div>
                 </div>
-                @if ((book.Id >= 942 && book.Id <= 949))
+
+
+                @if (1==2)
                 {
                 <div class="col-md-8">
                     <h3>@book.Title</h3>
@@ -74,7 +79,7 @@
                     @if (thbid > 0)
                     {
                         @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="10" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>*@
-                        @*<p><a asp-controller="home" asp-action="LoginTestHour" id="TPG" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>*@
+                        @*<p><a asp-controller="home" asp-action="LoginTestHour" id="TPG" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>*@
                         @*<form method='post' action='http://testhour.mielib.com/Account/GoToTestEdge' name='testedge_form'>
                 <input type="hidden" id="UserName" name="UserName" value="@ViewBag.UserName" />
                 <input type="hidden" id="Password" name="Password" value="@ViewBag.UserName" />
@@ -90,16 +95,25 @@
 
                     if (string.IsNullOrEmpty(userid))
                     {
-                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
                     }
                     else
                     {
-                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
 
                         }
                     }
                     </div>
                 }
+		else if ((book.Id >= 941 && book.Id <= 965))
+                {
+                <div class="col-md-8">
+                    <h3>@book.Title</h3>
+                    <hr />
+                    <p>@book.Author</p>
+                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+                </div>
+		}
                 else
                 {
                 <div class="col-md-8">
@@ -135,11 +149,11 @@
                     {
                         if (string.IsNullOrEmpty(userid))
                         {
-                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
                         }
                         else
                         {
-                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>
+                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
 
                         }
                     }
@@ -163,6 +177,13 @@
             if (AlreadyUser=="False") {
                 $('#exampleModalCenter').modal('show');
             }
+
+	    if ("@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
+	        $('#BuyNowLink').css("display", "block");
+            }else {
+	        $('#BuyNowLink').css("display", "none");
+            }
+
             if ("@HttpContextAccessor.HttpContext.Session.GetString("IsVerified")" == "NO" && "@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
 
                 $('#OtpCenter').modal('show');
@@ -217,7 +238,7 @@
                             $("#divcountdown").css("display", "block");
 
 
-                            var timer2 = "0:30";
+                            var timer2 = "2:00";
                             var interval = setInterval(function () {
 
 
@@ -376,7 +397,7 @@
 
             <div class="modal-body">
                 <div class="col-md-12 form-group">
-                    <label>You can not access this feature contact to admin</label>
+                    <label>Test paper generator is not available for guest user !!</label>
                 </div>
             </div>
 

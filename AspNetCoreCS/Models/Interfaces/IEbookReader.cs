@@ -11,5 +11,6 @@ namespace ReadEdgeCore.Models.Interfaces
         string LoadPage(int pageID);
         string OpenEbook();
         string OpenPage(string pageReference);
+        string LoadPageWithdivNaviagaion(string hmtlpage);
     }
 }

@@ -1,0 +1,62 @@
+﻿@using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Models
+
+@model SubscriptionMail 
+
+
+<div>
+    <P>Hello @Model.Name,</P>
+    <p>Please be informed that your subscription to Readedge is completed with,</p>
+    <p>Order ID: @Model.TransactionId on,</p>
+    <p>
+        Order Date: @Model.UpdatedDate
+    </p>
+    <p>
+        Your payment of Rs. @Model.Amount has been received successfully by us.
+    </p>
+    <p>
+        Please find attached a brief Order Summary and keep it handy for future references.
+    </p>
+    <p>
+        Get started:
+    </p>
+   <p> User-Id: @Model.UserName</p>
+    <p>Password: @Model.Password</p>
+
+    <p>
+        Link: <a href="http://readedge.mielib.com/">readedge.mielib.com</a>
+    </p>
+
+
+    <p>
+        We thank you for your business and look forward to doing more in future.
+    </p>
+    <p>
+        --Thanks Again--
+    </p>
+    <p>
+        PRACHI INDIA
+    </p>
+    <p>
+        ------Complete order summary attached------
+    </p>
+    <p>
+        -------with every detail of bill to, plan type, payment info etc.-----
+    </p>
+    <p>
+
+        NEED HELP?
+    </p>
+    <p>
+        Our Customer Support Team are always on hand to answer any questions you may have.
+    </p>
+    <p>
+        Helpline number: 9142-62-62-62
+    </p>
+    <p>
+        Or
+    </p>
+    <p>
+        you can write us to digitalsupport@prachiinida.com
+    </p>
+    <p>
+</div>

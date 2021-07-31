@@ -42,7 +42,8 @@ namespace ReadEdgeCore.Controllers
         private readonly ErrorLog _errorLog;
 
         private Dictionary<string, string> Inputs = new Dictionary<string, string>();
-        public string Url = "http://202.140.136.39:82/Account/GoToTestEdge";
+        //public string Url = "http://202.140.136.39:82/Account/GoToTestEdge";
+        public string Url = "http://testhour.mielib.com/Account/GoToTestEdge";
         //public string Method = "post";
         public string FormName = "TestHourForm";
 
@@ -79,6 +80,7 @@ namespace ReadEdgeCore.Controllers
 
         public ActionResult Home()
         {
+    
             return View();
         }
 
@@ -833,7 +835,8 @@ namespace ReadEdgeCore.Controllers
             var encodedContent = new FormUrlEncodedContent(parameters);
 
 
-            var url = "http://202.140.136.39:82/api/MasterData/SearchBook";
+            //var url = "http://202.140.136.39:82/api/MasterData/SearchBook";
+            var url = "http://testhour.mielib.com/api/MasterData/SearchBook";
             //HttpResponseMessage response = await client.GetAsync(url);
             //response.EnsureSuccessStatusCode();
             //var resp = await response.Content.ReadAsStringAsync();
@@ -1185,7 +1188,7 @@ namespace ReadEdgeCore.Controllers
         //    return View(ViewName, libraryVM);
         //}
 
-
+    
         private async Task<List<ChapterContent>> ChapterContents(LibraryVM libraryVM, List<Chapter> chapterList)
         {
             var ChapterIds = chapterList.Select(x => Convert.ToInt64(x.Id)).ToList();
@@ -1208,8 +1211,15 @@ namespace ReadEdgeCore.Controllers
         public IActionResult Loadpage(int PageId = 1)
         {
             var result = _ebookReader.LoadPage(PageId);
+           // result= result.Replace("</html>", "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script><script type='text/javascript'>$(document).ready(function (){$(document).ready(function () {$('html, body').animate({scrollTop: $('#a6').offset().top}, 'slow');});});</script></html>");
             return Content(result);
         }
+        public IActionResult Loadpagewihthtml(string hmtlpage)
+        {
+            var result = _ebookReader.LoadPageWithdivNaviagaion(hmtlpage);
+            return Content(result);
+        }
+
         public JsonResult IsAudio()
         {
             var isAudio = Convert.ToBoolean(_httpContextAccessor.HttpContext.Session.GetInt32("Audio"));
@@ -1366,7 +1376,9 @@ namespace ReadEdgeCore.Controllers
             {
                 _httpContextAccessor.HttpContext.Session.SetString("ContactNo", ContactNo);
                 var OTP = Common.GenerateRandomNo().ToString();
-                var Msg = "Your OTP for Readedge trial is " + OTP;
+                //var Msg = "Your OTP for Readedge trial is " + OTP;
+                var Msg = "Your%20OTP%20for%20Readedge%20trial%20is%20"+OTP+"%20Prachi%20India%20Pvt%20Ltd";
+                          //"Your%20OTP%20for%20Readedge%20trial%20is%20"+OTP+"%20Prachi%20India%20Pvt%20Ltd"
                 _httpContextAccessor.HttpContext.Session.SetString("OTP", OTP);
                 _httpContextAccessor.HttpContext.Session.SetString("IsVerified", "NO");
                 var MaskedNumber = ContactNo.Mask(2, 5, '*');

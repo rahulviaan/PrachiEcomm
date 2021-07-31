@@ -114,17 +114,20 @@
                     <a asp-area="" asp-controller="Home" asp-action="Dashboard" asp-route-type="@HttpContextAccessor.HttpContext.Session.GetInt32("ClassType")"><i class="ft-monitor"></i><span class="menu-title">Dashboard</span></a>
                 </li>
                 @*<li class=" nav-item">
-                        <a asp-area="" asp-controller="Home" asp-action="Library"><i class="ft-layers"></i><span class="menu-title">Library</span></a>
+            <a asp-area="" asp-controller="Home" asp-action="Library"><i class="ft-layers"></i><span class="menu-title">Library</span></a>
 
-                    </li>*@
+        </li>*@
                 <li class=" nav-item">
                     <a asp-area="" asp-controller="Home" asp-action="MyLibrary"><i class="ft-book"></i><span class="menu-title">My Library</span></a>
                 </li>
+                <li class=" nav-item" id="idSubscription" style="display:none;">
+                    <a asp-area="" asp-controller="UserSubscription" asp-action="index"><i class="ft-book"></i><span class="menu-title">Subscription</span></a>
+                </li>
 
                 @*<li class=" nav-item">
-                        <a href="#"><i class="ft-clock"></i><span class="menu-title">Test Hour</span></a>
+            <a href="#"><i class="ft-clock"></i><span class="menu-title">Test Hour</span></a>
 
-                    </li>*@
+        </li>*@
             </ul>
         </div>
     </div>
@@ -212,7 +215,10 @@
            if ("@HttpContextAccessor.HttpContext.Session.GetString("IsVerified")" == "NO") {
 
                $('#logoff').css('display','none');
-            }
+        }
+        if ("@HttpContextAccessor.HttpContext.Session.GetString("UserId")" == "") {
+            $("#idSubscription").css('display', 'block');
+        }
         //doPoll();
         //$("#Progresstext").css("display", "block");
         //$("#Progressbar").css("display", "flex");

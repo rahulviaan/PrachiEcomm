@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Filters;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
+using GleamTech.DocumentUltimateExamples.AspNetCoreCS.Models;
 
 namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
 {
@@ -89,7 +90,7 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             services.AddScoped<IPrachiuser, PrachiUser>();
             services.AddScoped<IPrachiUserRepository, PrachiUserLoginRepository>();
             services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReadEdgeCoreContext")));
-            services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlite("Data Source=ReadedgeCore.db"));
+            //services.AddDbContext<ReadEdgeCoreContext>(options => options.UseSqlite("Data Source=ReadedgeCore.db"));
 
             #region DI Regeistration
             services.AddScoped<IUserRepository, UserRepository>();
@@ -103,6 +104,16 @@ namespace GleamTech.DocumentUltimateExamples.AspNetCoreCS
             services.AddScoped<IEbookReader, EbookReader>();
             services.AddScoped<ReadEdgeUserLoginInfo, ReadEdgeUserLoginInfo>();
             services.AddScoped<ErrorLog, ErrorLog>();
+            services.AddScoped<ISubscriptionOrderPaymentRepository, SubscriptionOrderPaymentRepository>();
+            services.AddScoped<Subscription, Subscription>();
+            services.AddScoped<UserSubscription, UserSubscription>();
+            services.AddScoped<RemotePost, RemotePost>();
+            services.AddScoped<SubscriptionMail, SubscriptionMail>();
+            services.AddScoped<SubscriptionPayment, SubscriptionPayment>();
+            services.AddScoped<AspNetUsers, AspNetUsers>();
+
+            
+
 
 
             ///===============
