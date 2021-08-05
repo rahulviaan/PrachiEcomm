@@ -42,124 +42,24 @@
             <div class="row">
                 <div class="col-md-4">
 
-                    <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="https://www.prachiindia.com/ModuleFiles/Items/@book.ImageName" /></p>
+                    <p style="border:solid 5px #cccccc;"><img class="img-responsive" src="~/images/coverpage.png" /></p>
 		    <div id="BuyNowLink">
 			<p><a href="https://prachiindia.com/Catalogue/detail?id=@book.Id" target="_blank"><span style="color: #b93538;">BUY E-BOOK FOR FULL CONTENT</span></a></p>
 		    </div>
                 </div>
 
 
-                @if (1==2)
-                {
+            
+          
                 <div class="col-md-8">
-                    <h3>@book.Title</h3>
+                    <h3>Animal_Tracks</h3>
                     <hr />
-                    <p>@book.Author</p>
                     @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
-
-                    @if (book.CBSE)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="8" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Chapter <span>Based Self Evaluation</span></a></p>
-                    }
-
-                    @if (book.MTP)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="9" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solution to Model <span>Test Papers</span></a></p>
-                    }
-
-                    @if (book.BEP)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="6" class="btn btn-default btn-2 subjectBtn" style="height:54px">Solved CBSE Board <span>Examination Papers (5*3 Sets)</span></a></p>
-                    }
-
-                    @if (book.ConceptMap)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="7" class="btn btn-default btn-2 subjectBtn" style="height:54px">Concept Chart <span>Chapter at a Glance</span></a></p>
-                    }
-                    @if (thbid > 0)
-                    {
-                        @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="10" class="btn btn-default btn-2 subjectBtn" style="height:54px">Test Paper Generator</a></p>*@
-                        @*<p><a asp-controller="home" asp-action="LoginTestHour" id="TPG" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>*@
-                        @*<form method='post' action='http://testhour.mielib.com/Account/GoToTestEdge' name='testedge_form'>
-                <input type="hidden" id="UserName" name="UserName" value="@ViewBag.UserName" />
-                <input type="hidden" id="Password" name="Password" value="@ViewBag.UserName" />
-                <input type="hidden" id="MobNo" name="MobNo" value="9811778611" />
-                <input type="hidden" id="Email" name="Email" value="errahulraj17@gmail.com" />
-                <input type="hidden" id="FirstName" name="FirstName" value="Rahul" />
-                <input type="hidden" id="LastName" name="LastName" value="Srivastava" />
-                <input type="hidden" id="MasterBookId" name="MasterBookId" value="@book.Id" />
-                <input type="hidden" id="Gender" name="Gender" value="0" />
-                <input type="hidden" id="Api_Key" name="Api_Key" value="6stSN88P7Yh+AQU8+0Dp4VH6v5i2l8xjTiFkE8HzB+j3pGEt+aUFE5Ied/O5U4nCUopJX7V1Om9ur/dQG9P2ObGcggumlKd31fYlp9yMfkGsYP2uo6dMucbNzVycPKuDAndnyPgkaJtS6Jr/K0Av93w/oS0K1MHwQNlYOi6Qi1+lXyhyPNIG4Ki5j9kf9PfrKY9H22E6ClNr5jfpDTKhuAp2tuqdyPSaOlR5jKYKsIY2Ys7ASP6HC+VFFps4/WtBD5/dqfg0th1NU06G8PcKFTHqpzZmH0YXXTBxA0Blyxhuv0dTn4b8Xp+vCtgPtwyQtSU78y/qss25MPF0Dwgmupcj1j5DzXmNkEjCwaCNOGQ=" />
-                <button type="submit" class="btn btn-default btn-2 subjectBtn">Test Paper Generator</button>
-            </form>*@
-
-                    if (string.IsNullOrEmpty(userid))
-                    {
-                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
-                    }
-                    else
-                    {
-                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
-
-                        }
-                    }
-                    </div>
-                }
-		else if ((book.Id >= 941 && book.Id <= 965))
-                {
-                <div class="col-md-8">
-                    <h3>@book.Title</h3>
-                    <hr />
-                    <p>@book.Author</p>
-                    <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
+         
+                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="Animal_Tracks" asp-route-AllowedCBPages="@book.AllowedCBPages" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Read Now</a></p>
+                   
                 </div>
-		}
-                else
-                {
-                <div class="col-md-8">
-                    <h3>@book.Title</h3>
-                    <hr />
-                    <p>@book.Author</p>
-                    @*<p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="0" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>*@
-                    @if (book.IsEbook)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-AllowedCBPages="@book.AllowedCBPages" asp-route-type="5" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsEbook)">Course Book</a></p>
-                    }
-
-                    @if (book.IsLessonPlan)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="1" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsLessonPlan)">Lesson Plans</a></p>
-                    }
-
-                    @if (book.IsWorkbook)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="2" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsWorkbook)">Worksheets</a></p>
-                    }
-
-                    @if (book.IsSolutions)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="4" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsSolutions)">Solutions</a></p>
-                    }
-
-                    @if (book.IsMultiMedia)
-                    {
-                        <p><a asp-controller="home" asp-action="ViewContent" asp-route-BookId="@book.Id" asp-route-BookName="@book.Title" asp-route-type="3" class="btn btn-default btn-2 subjectBtn" disabled="@(!book.IsMultiMedia)">Video Tutorials</a></p>
-                    }
-                    @if (thbid > 0)
-                    {
-                        if (string.IsNullOrEmpty(userid))
-                        {
-                            <p><a onclick="OpenAlert()" id="TPG"  class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
-                        }
-                        else
-                        {
-                            <p><a asp-controller="home" asp-action="LoginTestHour" asp-route-BookId="@thbid" class="btn btn-default btn-2 subjectBtn" target="_blank">Test Paper Generator</a></p>
-
-                        }
-                    }
-
-                </div>
-                }
+               
 
             </div>
         </div>
@@ -328,79 +228,3 @@
     </script>
 
 }
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="UserDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="UserDetail">User Info</h3>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12 form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" id="Name" maxlength="30" placeholder="Name" />
-                </div>
-                <div class="col-md-12 form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="Email" maxlength="30" placeholder="Email" />
-                </div>
-                <div class="col-md-12 form-group">
-                    <label>Mobile</label>
-                    <input type="text" class="form-control" id="Mobile" maxlength="10" placeholder="Mobile" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a asp-controller="Account" style="background-color:#b62025;" asp-action="Login" asp-route-type="@ViewBag.CourseBookType" class="btn btn-default btn-2 subjectBtn">Already User</a>
-                <button style="margin:0 auto" type="button" class="btn btn-default btn-2 subjectBtn" aria-label="Close" id="btnGetOtp">Save</button>
-
-                <div id="otpLoader" style="display: none">
-                    <img src="~/images/loader.gif" height="60" /> Please wait...
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="OtpCenter" tabindex="-1" role="dialog" aria-labelledby="OtpDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="OtpDetail">Verification</h3>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12 form-group">
-                    <label>OTP sent to your mobile number <span id="spanMobileNumber"></span></label>
-                    <input type="text" class="form-control" id="OTP" maxlength="4" placeholder="Enter OTP here !!!" />
-                </div>
-                <div class="col-md-12 form-group text-right" id="divresendotp">
-                    <a href="javascript:resendOTP()">Resend OTP</a>
-                </div>
-                <div class="countdown" id="divcountdown"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-2 subjectBtn" style="margin:0 auto" id="btnSave">Save</button>
-                <div id="otpVerifyLoader" style="display: none">
-                    <img src="~/images/loader.gif" height="60" /> Please wait...
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="TPGModaL" tabindex="-1" role="dialog" aria-labelledby="OtpDetail" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="OtpDetail"><i class="material-icons" style="font-size:36px;color:red">warning</i></h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="col-md-12 form-group">
-                    <label>Test paper generator is not available for guest user !!</label>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>

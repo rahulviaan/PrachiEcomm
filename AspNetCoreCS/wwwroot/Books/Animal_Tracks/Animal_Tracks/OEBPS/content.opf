@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="ean" prefix="rendition: http://www.idpf.org/vocab/rendition/# ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+<dc:title id="tit01">Animal Tracks</dc:title>
+<meta refines="#tit01" property="title-type">main</meta>
+<dc:identifier id="ean">00000000000</dc:identifier>
+<dc:language>en-US</dc:language>
+<dc:creator id="aut01">Waterford Press Inc</dc:creator>
+<meta refines="#aut01" property="role" scheme="marc:relators">aut</meta>
+<dc:publisher>Sample</dc:publisher>
+<dc:date>2019</dc:date>
+<meta name="cover" content="cover-image"/>
+<meta property="rendition:layout">pre-paginated</meta>
+<meta property="dcterms:modified">2021-05-08T11:00:37Z</meta>
+<meta name="fixed-layout" content="true"/>
+<meta name="original-resolution" content="600x1354"/>
+<meta property="rendition:orientation">auto</meta>
+<meta property="ibooks:specified-fonts">true</meta>
+<meta property="ibooks:binding">true</meta>
+<meta property="rendition:spread">auto</meta>
+<!--<meta property="media:duration">00:02:05</meta>-->
+</metadata>
+<manifest>
+<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+<item id="cover-image" href="images/p001.jpg" media-type="image/jpeg" properties="cover-image"/>
+<item id="coverhtml" href="cover.xhtml" media-type="application/xhtml+xml"/>
+
+<item id="Page_01-xhtml" href="Page_01.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_02-xhtml" href="Page_02.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_03-xhtml" href="Page_03.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_04-xhtml" href="Page_04.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_05-xhtml" href="Page_05.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_06-xhtml" href="Page_06.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_07-xhtml" href="Page_07.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_08-xhtml" href="Page_08.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_09-xhtml" href="Page_09.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_10-xhtml" href="Page_10.xhtml" media-type="application/xhtml+xml"/>
+<item id="Page_11-xhtml" href="Page_11.xhtml" media-type="application/xhtml+xml"/>
+
+<item id="p002.jpg" href="images/p002.jpg" media-type="image/jpeg"/>
+<item id="p003.jpg" href="images/p003.jpg" media-type="image/jpeg"/>
+<item id="p004.jpg" href="images/p004.jpg" media-type="image/jpeg"/>
+<item id="p005.jpg" href="images/p005.jpg" media-type="image/jpeg"/>
+<item id="p006.jpg" href="images/p006.jpg" media-type="image/jpeg"/>
+<item id="p007.jpg" href="images/p007.jpg" media-type="image/jpeg"/>
+<item id="p008.jpg" href="images/p008.jpg" media-type="image/jpeg"/>
+<item id="p009.jpg" href="images/p009.jpg" media-type="image/jpeg"/>
+<item id="p010.jpg" href="images/p010.jpg" media-type="image/jpeg"/>
+<item id="p011.jpg" href="images/p011.jpg" media-type="image/jpeg"/>
+<item id="p012.jpg" href="images/p012.jpg" media-type="image/jpeg"/>
+
+<item id="style.css" href="css/style.css" media-type="text/css"/>
+</manifest>
+<spine toc="ncx">
+<itemref idref="coverhtml"/>
+<itemref idref="Page_01-xhtml" properties="page-spread-left"/>
+<itemref idref="Page_02-xhtml" properties="page-spread-right"/>
+<itemref idref="Page_03-xhtml" properties="page-spread-left"/>
+<itemref idref="Page_04-xhtml" properties="page-spread-right"/>
+<itemref idref="Page_05-xhtml" properties="page-spread-left"/>
+<itemref idref="Page_06-xhtml" properties="page-spread-right"/>
+<itemref idref="Page_07-xhtml" properties="page-spread-left"/>
+<itemref idref="Page_08-xhtml" properties="page-spread-right"/>
+<itemref idref="Page_09-xhtml" properties="page-spread-left"/>
+<itemref idref="Page_10-xhtml" properties="page-spread-right"/>
+<itemref idref="Page_11-xhtml" properties="page-spread-left"/>
+</spine>
+<guide>
+<reference href="cover.xhtml" type="COVER" title="Cover"/>
+<reference href="Page_02.xhtml" type="TEXT" title="Text"/>
+</guide>
+</package>
+
+	

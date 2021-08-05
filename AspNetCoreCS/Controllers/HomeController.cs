@@ -187,16 +187,16 @@ namespace ReadEdgeCore.Controllers
             List<ClassModel> classList = Factory.GetClassModelList();
             List<ClassSubjects> classSubjectsList = new List<ClassSubjects>();
             _httpContextAccessor.HttpContext.Session.SetInt32("ClassType", type);
-            if (type == 1)
-            {
-                classList = classes.Where(x => x.Status == 1 && x.OredrNo < 15).OrderBy(y => y.OredrNo).ToList();
+            //if (type == 1)
+            //{
+            //    classList = classes.Where(x => x.Status == 1 && x.OredrNo < 15).OrderBy(y => y.OredrNo).ToList();
 
-            }
-            else
-            {
-                classList = classes.Where(x => x.Status == 1 && x.OredrNo >= 15).OrderBy(y => y.OredrNo).ToList();
-            }
-            //classList = classes.Where(x => x.Status == 1).OrderBy(y => y.OredrNo).ToList();
+            //}
+            //else
+            //{
+            //    classList = classes.Where(x => x.Status == 1 && x.OredrNo >= 15).OrderBy(y => y.OredrNo).ToList();
+            //}
+            classList = classes.Where(x => x.Status == 1).OrderBy(y => y.OredrNo).ToList();
             ViewBag.ClassList = classList;
             ViewBag.Subjects = _library.GetSubjectByClassType(type).ToList();
             var userLibrary = await _library.GetAllLibrary();
@@ -906,7 +906,7 @@ namespace ReadEdgeCore.Controllers
             {
                 var result = _library.GetAllLibrary().Result;
                 var File = result.Where(x => x.BookId == libraryVM.BookId).FirstOrDefault();
-                Common.readerBooks = _ebookReader.GetReaderBooks(File.EpubName.Split('.')[0], File.EncriptionKey);
+                Common.readerBooks = _ebookReader.GetReaderBooks("Animal_Tracks", null);
                 ViewBag.PageList = new SelectList(Common.readerBooks.Pages, "Index", "Index");
                 ViewBag.Ebook = _ebookReader.OpenEbook();
                 ViewBag.Title = Common.readerBooks.Title;

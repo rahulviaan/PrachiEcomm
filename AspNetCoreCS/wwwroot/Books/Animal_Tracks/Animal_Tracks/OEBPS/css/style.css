@@ -1,0 +1,8 @@
+img {left:0px!important; top:0px!important; width: 600px; height: 1354px; position:absolute; z-index:-1; margin:0px;}
+
+body, div, dl, dt, dd, h1, h2, h3, h4, h5, h6, p, pre, code, blockquote {
+	margin:0;
+	padding:0;
+	border-width:0;
+	text-rendering:optimizeSpeed;
+}

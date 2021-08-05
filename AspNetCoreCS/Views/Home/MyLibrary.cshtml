@@ -26,8 +26,8 @@
         <b>Subject</b> :
         @Html.DropDownList("SubjectId", new SelectList(ViewBag.Subject, "Id", "Title"), "--Select--", new { @class = "select-css" })
 
-        <b>Class</b> :
-        @Html.DropDownList("ClassId", new SelectList(ViewBag.Class, "Id", "Title"), "--Select--", new { @class = "select-css" })
+        @*<b>Class</b> :
+        @Html.DropDownList("ClassId", new SelectList(ViewBag.Class, "Id", "Title"), "--Select--", new { @class = "select-css" })*@
 
         <button type="button" class="btn btn-secondary" id="searchId" style="margin-left:10px;width: auto;">Go</button>
     </div>
@@ -46,7 +46,7 @@
 
         $("#searchId").click(function () {
             var valid = true;
-            $("#resultDiv").html("<div style='width:100%!important; text-align:center!important;'><img src='~/images/loader.gif' style='height:50px;width:50px;'/></div>");
+            $("#resultDiv").html("<div style='width:100%!important; text-align:center!important;'><img src='/images/loader.gif' style='height:50px;width:50px;'/></div>");
             var SearchParameter = $("#Parameter").val();
             var SubjectId = $("#SubjectId").val();
             var ClassID = $("#ClassId").val();

@@ -57,11 +57,11 @@ namespace ReadEdgeCore.Controllers
                     if (readEdgeLogin.LoginAllowed)
                     {
                        
-                        if (role == null && role.Name!="Teacher" && role != null && role.Name!= "Admin" && role.Name!= "Marketing" && role.Name!= "user" && role.Name != "Sales" && role.Name!= "School")
-                        {
-                            ViewBag.Message = "You are not subscribed user !!!";
-                            return View();
-                        }
+                        //if (role == null && role.Name!="Teacher" && role != null && role.Name!= "Admin" && role.Name!= "Marketing" && role.Name!= "user" && role.Name != "Sales" && role.Name!= "School")
+                        //{
+                        //    ViewBag.Message = "You are not subscribed user !!!";
+                        //    return View();
+                        //}
                         var userbookidsresult = _prachiUser.GetUserBookIds(result.Result.Id);
                         string userbookids = string.Empty;
                         if (userbookidsresult.Count != 0)
@@ -102,7 +102,7 @@ namespace ReadEdgeCore.Controllers
                         _prachiUser.InsertReadEdgeUserLoginInfo(_readEdgeUserLoginInfo);
                         _HttpContextAccessor.HttpContext.Session.SetString("Id", _readEdgeUserLoginInfo.Id.ToString());
                         _HttpContextAccessor.HttpContext.Session.SetString("IsVerified", "YES");
-                        return RedirectToAction("Home", "Home");
+                        return RedirectToAction("Dashboard", "Home");
 
                     }
                     else {

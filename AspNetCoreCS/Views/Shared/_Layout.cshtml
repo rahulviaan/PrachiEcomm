@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compent=" width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title>@ViewData["Title"]  ReadEdge</title>
+    <title>Waterford Press</title>
     <environment include="atible" content="IE=edge">
         <meta name="viewport" contDevelopment">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -97,7 +97,7 @@
                 <li class="nav-item mr-auto">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Dashboard">
                         <h3 class="brand-text">
-                            <img src="~/images/login-logo.png" />
+                            <img src="~/images/login-logo.png" style="width: 160px;"/>
                         </h3>
                     </a>
                 </li>
@@ -107,9 +107,9 @@
         <div class="navigation-background"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item">
+                @*<li class=" nav-item">
                     <a asp-area="" asp-controller="Home" asp-action="Home"><i class="ft-home"></i><span class="menu-title">Home</span></a>
-                </li>
+                </li>*@
                 <li class=" nav-item">
                     <a asp-area="" asp-controller="Home" asp-action="Dashboard" asp-route-type="@HttpContextAccessor.HttpContext.Session.GetInt32("ClassType")"><i class="ft-monitor"></i><span class="menu-title">Dashboard</span></a>
                 </li>
@@ -120,9 +120,9 @@
                 <li class=" nav-item">
                     <a asp-area="" asp-controller="Home" asp-action="MyLibrary"><i class="ft-book"></i><span class="menu-title">My Library</span></a>
                 </li>
-                <li class=" nav-item" id="idSubscription" style="display:none;">
+                @*<li class=" nav-item" id="idSubscription" style="display:none;">
                     <a asp-area="" asp-controller="UserSubscription" asp-action="index"><i class="ft-book"></i><span class="menu-title">Subscription</span></a>
-                </li>
+                </li>*@
 
                 @*<li class=" nav-item">
             <a href="#"><i class="ft-clock"></i><span class="menu-title">Test Hour</span></a>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+<head>
+<meta name="dtb:uid" content="00000000000"/>
+<meta name="dtb:depth" content="5"/>
+<meta name="dtb:totalPageCount" content="0"/>
+<meta name="dtb:maxPageNumber" content="0"/>
+</head>
+<docTitle><text>Animal Tracks</text></docTitle>
+<navMap>
+<navPoint id="np1" playOrder="1"><navLabel><text>Cover</text></navLabel><content src="cover.xhtml" /></navPoint>
+<navPoint id="np2" playOrder="2"><navLabel><text>2 TOES</text></navLabel><content src="Page_01.xhtml" /></navPoint>
+<navPoint id="np3" playOrder="3"><navLabel><text>4 TOES</text></navLabel><content src="Page_03.xhtml" /></navPoint>
+<navPoint id="np4" playOrder="4"><navLabel><text>5 TOES</text></navLabel><content src="Page_04.xhtml" /></navPoint>
+<navPoint id="np5" playOrder="5"><navLabel><text>4 AND 5 TOES</text></navLabel><content src="Page_06.xhtml" /></navPoint>
+<navPoint id="np6" playOrder="6"><navLabel><text>FAMILIAR BIRDS</text></navLabel><content src="Page_09.xhtml" /></navPoint>
+<navPoint id="np7" playOrder="7"><navLabel><text>ANIMAL SIGNS</text></navLabel><content src="Page_10.xhtml" /></navPoint>
+<navPoint id="np8" playOrder="8"><navLabel><text>SCAT</text></navLabel><content src="Page_11.xhtml" /></navPoint>
+
+</navMap>
+</ncx>
