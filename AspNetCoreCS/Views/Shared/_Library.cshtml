@@ -7,19 +7,19 @@
         <div class="col-md-3">
             <div class="panel-body BooksDiv">
                 <p style="margin-top:0;"><img class="img-responsive" src="~/images/coverpage.png" /></p>
-                <h3 data-toggle="tooltip" data-original-title="@Item.BookName">@Item.BookName</h3>
-                <p data-toggle="tooltip" data-original-title="@Item.Author">@Item.Author</p>
+                @*<h3 data-toggle="tooltip" data-original-title="@Item.BookName">Animal Tracks</h3>*@
+                @*<p data-toggle="tooltip" data-original-title="@Item.Author">@Item.Author</p>*@
 
                 @if (Item.IsInLibrary)
                 {
                     if (Item.IsBundleUploaded)
                     {
-                        <p><a asp-controller="home" asp-action="BookDetail" asp-route-bookid="@Item.BookId" class="btn-2 btn-library btn-2g btn">Read Now</a></p>
+                        <p><a asp-controller="home" asp-action="BookDetail" asp-route-bookid="@Item.BookId" class="btn-2 btn-library btn-2g btn">View Details</a></p>
 
                     }
                     else
                     {
-                        <p><a disabled="disabled" class="btn-2 btn-library btn-2g btn">Read Now</a></p>
+                        <p><a disabled="disabled" class="btn-2 btn-library btn-2g btn">View Details</a></p>
                     }
                 }
                 else
